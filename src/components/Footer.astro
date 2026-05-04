@@ -17,11 +17,11 @@ const projectLinks = [
   { label: 'CONTRIBUTING.md', href: `${GITHUB_URL}/blob/main/CONTRIBUTING.md` },
 ];
 
-const relatedLinks = [
-  { label: 'mycelium-io', href: 'https://github.com/mycelium-io/mycelium' },
-  { label: 'mem0', href: 'https://github.com/mem0ai/mem0' },
-  { label: 'Cognee', href: 'https://github.com/topoteretes/cognee' },
+const stackLinks = [
   { label: 'Apache OpenDAL', href: 'https://opendal.apache.org' },
+  { label: 'SQLite', href: 'https://sqlite.org' },
+  { label: 'Tantivy', href: 'https://github.com/quickwit-oss/tantivy' },
+  { label: 'rmcp', href: 'https://github.com/modelcontextprotocol/rust-sdk' },
 ];
 ---
 <footer class="footer section-pad" role="contentinfo">
@@ -62,11 +62,11 @@ const relatedLinks = [
         </ul>
       </div>
 
-      <!-- Related column -->
+      <!-- Stack column -->
       <div class="footer-col">
-        <div class="eyebrow col-head">Related</div>
+        <div class="eyebrow col-head">Stack</div>
         <ul role="list">
-          {relatedLinks.map(({ label, href }) => (
+          {stackLinks.map(({ label, href }) => (
             <li>
               <a href={href} target="_blank" rel="noopener noreferrer">{label}</a>
             </li>
