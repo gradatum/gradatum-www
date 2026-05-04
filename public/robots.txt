@@ -1,4 +1,9 @@
+# Pre-public soft-launch — gradatum-www domain reserved, project not yet announced.
+# Remove these directives at D5 public reveal to enable indexing.
 User-agent: *
-Allow: /
+Disallow: /
 
-Sitemap: https://gradatum.org/sitemap-index.xml
+# When ready for public reveal, replace with:
+# User-agent: *
+# Allow: /
+# Sitemap: https://gradatum.org/sitemap-index.xml
