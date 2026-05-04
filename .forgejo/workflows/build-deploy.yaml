@@ -11,45 +11,31 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      - name: Checkout gradatum-www
+      - name: Checkout
         uses: actions/checkout@v4
         with:
-          path: gradatum-www
-          fetch-depth: 0
+          fetch-depth: 1
 
-      # gradatum repo is available locally on LXC 500 — no clone needed
-      # The runner has access to ~/projects/gradatum/ directly
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
+      - name: Versions
+        run: |
+          node --version
+          pnpm --version
 
       - name: Install dependencies
-        working-directory: gradatum-www
         run: pnpm install --frozen-lockfile
 
-      - name: Build site
-        working-directory: gradatum-www
+      - name: Build
         run: pnpm build
-        env:
-          # Site URL for canonical links + sitemap
-          SITE: https://gradatum.org
 
       - name: Verify build output
-        working-directory: gradatum-www
         run: |
-          test -f dist/index.html && echo "OK: index.html"
-          test -f dist/CNAME && echo "OK: CNAME"
-          test -f dist/sitemap-index.xml && echo "OK: sitemap"
-          wc -c dist/index.html
+          test -f dist/index.html && echo "OK: index.html present"
+          test -f dist/CNAME && echo "OK: CNAME present"
+          test -f dist/sitemap-index.xml && echo "OK: sitemap present"
+          echo "HTML size: $(wc -c < dist/index.html) bytes"
+          echo "CSS size: $(find dist/_assets -name '*.css' -exec wc -c {} + 2>/dev/null | tail -1 || echo '0') bytes"
 
       - name: Deploy to gh-pages
-        working-directory: gradatum-www
         env:
           FORGEJO_TOKEN: ${{ secrets.FORGEJO_TOKEN }}
         run: |
@@ -58,16 +44,20 @@ jobs:
 
           COMMIT_SHA=$(git rev-parse --short HEAD)
           COMMIT_MSG=$(git log -1 --pretty=%s)
-          DEPLOY_DIR=$(mktemp -d)
+          DEPLOY_DIR=$(mktemp -d /tmp/gh-pages-XXXXXX)
 
-          # Clone gh-pages branch (or create orphan)
-          git clone --branch gh-pages \
-            "http://motreffs:${FORGEJO_TOKEN}@localhost:3000/motreffs/gradatum-www.git" \
-            "${DEPLOY_DIR}" 2>/dev/null || \
-            (mkdir -p "${DEPLOY_DIR}" && \
-             cd "${DEPLOY_DIR}" && \
-             git init -b gh-pages && \
-             git remote add origin "http://motreffs:${FORGEJO_TOKEN}@localhost:3000/motreffs/gradatum-www.git")
+          REPO_URL="http://motreffs:${FORGEJO_TOKEN}@localhost:3000/motreffs/gradatum-www.git"
+
+          # Try to clone gh-pages branch; if it doesn't exist, init orphan
+          if git ls-remote --heads "${REPO_URL}" gh-pages | grep -q gh-pages; then
+            git clone --branch gh-pages --depth 1 "${REPO_URL}" "${DEPLOY_DIR}"
+          else
+            mkdir -p "${DEPLOY_DIR}"
+            cd "${DEPLOY_DIR}"
+            git init -b gh-pages
+            git remote add origin "${REPO_URL}"
+            cd -
+          fi
 
           # Clear old content (keep .git)
           find "${DEPLOY_DIR}" -mindepth 1 -maxdepth 1 -not -name '.git' -exec rm -rf {} +
@@ -80,15 +70,16 @@ jobs:
           git config user.email "ci@localhost"
           git add -A
           git commit -m "deploy: ${COMMIT_SHA} — ${COMMIT_MSG}" --allow-empty
-
           git push origin HEAD:gh-pages --force
 
+          cd -
           rm -rf "${DEPLOY_DIR}"
+          echo "Deployed to gh-pages: ${COMMIT_SHA}"
 
       - name: Summary
         run: |
-          echo "## Deploy Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- Branch: gh-pages" >> $GITHUB_STEP_SUMMARY
-          echo "- Domain: https://gradatum.org" >> $GITHUB_STEP_SUMMARY
-          echo "- Commit: $(cd gradatum-www && git rev-parse --short HEAD)" >> $GITHUB_STEP_SUMMARY
-          echo "- HTML size: $(wc -c < gradatum-www/dist/index.html) bytes" >> $GITHUB_STEP_SUMMARY
+          echo "## Deploy Summary" >> "$GITHUB_STEP_SUMMARY" || true
+          echo "- Branch: gh-pages" >> "$GITHUB_STEP_SUMMARY" || true
+          echo "- Domain: https://gradatum.org" >> "$GITHUB_STEP_SUMMARY" || true
+          echo "- Commit: $(git rev-parse --short HEAD)" >> "$GITHUB_STEP_SUMMARY" || true
+          echo "- HTML size: $(wc -c < dist/index.html) bytes" >> "$GITHUB_STEP_SUMMARY" || true
