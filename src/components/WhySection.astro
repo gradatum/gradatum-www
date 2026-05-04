@@ -1,0 +1,96 @@
+---
+---
+<section id="why" class="why section-pad section-gap" aria-labelledby="why-title">
+  <div class="why-inner">
+    <div class="eyebrow">I · The problem</div>
+    <h2 id="why-title" class="why-h2">
+      LLMs forget. Agents reinvent the wheel every session.
+      Teams of agents can't share what they learn.
+    </h2>
+
+    <div class="why-grid">
+      <div class="why-col">
+        <div class="eyebrow col-label">Existing solutions</div>
+        <ul class="problem-list" role="list">
+          <li><strong>SaaS lock-in</strong> (mem0, Zep)</li>
+          <li><strong>Heavy stacks</strong> (Cognee + Postgres + pgvector + Neo4j)</li>
+          <li><strong>Built for humans</strong>, not agents (Obsidian, Logseq)</li>
+          <li><strong>Transient context</strong>, not persistent KB (Letta / MemGPT)</li>
+        </ul>
+      </div>
+
+      <div class="why-col">
+        <div class="eyebrow col-label">What Gradatum does</div>
+        <p class="why-answer">
+          One Rust binary. SQLite + Markdown on disk.
+          No PostgreSQL. No Redis. No SaaS.
+          Pluggable LLM (or none). Multi-vault. Hierarchical ACL.
+          Hybrid search — BM25 + ANN + PageRank.
+          The Markdown files are the source of truth — not the index.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .why {
+    background: var(--paper);
+  }
+
+  .why-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .why-h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 3.5vw, 2.875rem);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin-top: 1rem;
+    max-width: 56rem;
+    line-height: 1.1;
+  }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-top: 3.5rem;
+  }
+
+  .col-label {
+    margin-bottom: 1rem;
+    letter-spacing: 0.18em;
+  }
+
+  .problem-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+
+  .problem-list li {
+    font-size: 1.0625rem;
+  }
+
+  .problem-list li::before {
+    content: '— ';
+    color: var(--muted);
+  }
+
+  .why-answer {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 768px) {
+    .why-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+</style>

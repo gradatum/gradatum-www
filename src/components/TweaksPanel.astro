@@ -1,0 +1,286 @@
+---
+// TweaksPanel — interactive island (client:load)
+// Controls: dark mode / density / typeFamily / diagramMode
+// Uses localStorage to persist preferences across page loads
+// Zero dependency — vanilla JS in <script>
+---
+<div class="tweaks-panel" id="tweaks-panel" role="region" aria-label="Display settings">
+  <button
+    class="tweaks-toggle"
+    id="tweaks-toggle"
+    aria-expanded="false"
+    aria-controls="tweaks-controls"
+    aria-label="Toggle display settings"
+    title="Display settings"
+  >
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/>
+      <line x1="8" y1="1" x2="8" y2="3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="8" y1="13" x2="8" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="1" y1="8" x2="3" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="13" y1="8" x2="15" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    Tweaks
+  </button>
+
+  <div class="tweaks-controls" id="tweaks-controls" hidden>
+    <!-- Dark mode -->
+    <fieldset class="tweak-group">
+      <legend class="tweak-legend">Mode</legend>
+      <div class="tweak-options">
+        <label class="tweak-opt">
+          <input type="radio" name="dark" value="true" />
+          <span>Dark</span>
+        </label>
+        <label class="tweak-opt">
+          <input type="radio" name="dark" value="false" />
+          <span>Light</span>
+        </label>
+      </div>
+    </fieldset>
+
+    <!-- Density -->
+    <fieldset class="tweak-group">
+      <legend class="tweak-legend">Density</legend>
+      <div class="tweak-options">
+        <label class="tweak-opt">
+          <input type="radio" name="density" value="compact" />
+          <span>Compact</span>
+        </label>
+        <label class="tweak-opt">
+          <input type="radio" name="density" value="comfortable" />
+          <span>Comfortable</span>
+        </label>
+        <label class="tweak-opt">
+          <input type="radio" name="density" value="airy" />
+          <span>Airy</span>
+        </label>
+      </div>
+    </fieldset>
+
+    <!-- Type family -->
+    <fieldset class="tweak-group">
+      <legend class="tweak-legend">Type</legend>
+      <div class="tweak-options">
+        <label class="tweak-opt">
+          <input type="radio" name="type" value="sans" />
+          <span>Sans</span>
+        </label>
+        <label class="tweak-opt">
+          <input type="radio" name="type" value="serif" />
+          <span>Serif</span>
+        </label>
+        <label class="tweak-opt">
+          <input type="radio" name="type" value="mono" />
+          <span>Mono</span>
+        </label>
+      </div>
+    </fieldset>
+
+    <!-- Diagram mode -->
+    <fieldset class="tweak-group">
+      <legend class="tweak-legend">Diagram</legend>
+      <div class="tweak-options">
+        <label class="tweak-opt">
+          <input type="radio" name="diagram" value="svg" />
+          <span>SVG</span>
+        </label>
+        <label class="tweak-opt">
+          <input type="radio" name="diagram" value="ascii" />
+          <span>ASCII</span>
+        </label>
+      </div>
+    </fieldset>
+  </div>
+</div>
+
+<script>
+  // Run after DOM ready
+  (function initTweaks() {
+    const h = document.documentElement;
+    const toggleBtn = document.getElementById('tweaks-toggle') as HTMLButtonElement | null;
+    const controlsEl = document.getElementById('tweaks-controls') as HTMLElement | null;
+
+    if (!toggleBtn || !controlsEl) return;
+
+    // --- Sync radio inputs to current html state ---
+    function syncRadio(name: string, value: string) {
+      const inputs = document.querySelectorAll<HTMLInputElement>(`input[name="${name}"]`);
+      inputs.forEach(input => {
+        input.checked = input.value === value;
+      });
+    }
+
+    function loadState() {
+      const dark = h.getAttribute('data-dark') ?? 'true';
+      const density = h.getAttribute('data-density') ?? 'comfortable';
+      const type = h.getAttribute('data-type') ?? 'sans';
+      const diagram = h.getAttribute('data-diagram') ?? 'svg';
+      syncRadio('dark', dark);
+      syncRadio('density', density);
+      syncRadio('type', type);
+      syncRadio('diagram', diagram);
+    }
+
+    // --- Toggle panel visibility ---
+    toggleBtn.addEventListener('click', () => {
+      const expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+      toggleBtn.setAttribute('aria-expanded', String(!expanded));
+      controlsEl.hidden = expanded;
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && !controlsEl.hidden) {
+        controlsEl.hidden = true;
+        toggleBtn.setAttribute('aria-expanded', 'false');
+        toggleBtn.focus();
+      }
+    });
+
+    // --- Handle radio changes ---
+    controlsEl.addEventListener('change', (e: Event) => {
+      const target = e.target as HTMLInputElement;
+      if (!target || target.tagName !== 'INPUT') return;
+
+      const name = target.name;
+      const value = target.value;
+
+      if (name === 'dark') {
+        h.setAttribute('data-dark', value);
+        localStorage.setItem('grd-dark', value);
+      } else if (name === 'density') {
+        h.setAttribute('data-density', value);
+        localStorage.setItem('grd-density', value);
+      } else if (name === 'type') {
+        h.setAttribute('data-type', value);
+        localStorage.setItem('grd-type', value);
+      } else if (name === 'diagram') {
+        h.setAttribute('data-diagram', value);
+        localStorage.setItem('grd-diagram', value);
+      }
+    });
+
+    // Also restore diagram attr (not set in inline script)
+    const savedDiagram = localStorage.getItem('grd-diagram') ?? 'svg';
+    h.setAttribute('data-diagram', savedDiagram);
+
+    loadState();
+  })();
+</script>
+
+<style>
+  .tweaks-panel {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+  }
+
+  .tweaks-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--paper);
+    color: var(--ink-soft);
+    border: 1px solid var(--rule);
+    padding: 0.5rem 0.875rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+    min-height: 44px;
+  }
+
+  .tweaks-toggle:hover {
+    color: var(--ink);
+    border-color: var(--accent);
+  }
+
+  .tweaks-toggle:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .tweaks-controls {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 14rem;
+    box-shadow: 0 4px 24px color-mix(in srgb, var(--ink) 12%, transparent);
+  }
+
+  .tweaks-controls[hidden] {
+    display: none;
+  }
+
+  .tweak-group {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .tweak-legend {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    display: block;
+    width: 100%;
+  }
+
+  .tweak-options {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .tweak-opt {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    transition: color 0.15s ease;
+  }
+
+  .tweak-opt:hover {
+    color: var(--ink);
+  }
+
+  .tweak-opt input[type="radio"] {
+    accent-color: var(--accent);
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+  }
+
+  .tweak-opt input[type="radio"]:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 480px) {
+    .tweaks-panel {
+      bottom: 1rem;
+      right: 1rem;
+    }
+
+    .tweaks-controls {
+      min-width: 11rem;
+    }
+  }
+</style>

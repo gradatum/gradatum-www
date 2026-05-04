@@ -1,0 +1,144 @@
+---
+// Properties table — roman numeral key column, sourced from src/data/properties.toml
+const rows: Array<{ key: string; value: string }> = [
+  {
+    key: 'Embedded',
+    value: 'One Rust binary. No PostgreSQL. No Redis. No external services. apt install and you\'re running.',
+  },
+  {
+    key: 'Self-hosted',
+    value: 'Your memory, your machine. No telemetry. No vendor lock-in.',
+  },
+  {
+    key: 'LLM-agnostic',
+    value: 'Plug any OpenAI-compatible backend (Ollama, vLLM, llama.cpp, OpenRouter, Anthropic) — or run heuristic-only with no LLM at all.',
+  },
+  {
+    key: 'Multi-vault',
+    value: 'Separate main from staging and bench-* vaults for testing, migration, A/B prompts. Atomic swap when ready.',
+  },
+  {
+    key: 'Hierarchical ACL',
+    value: 'Bearer-scoped access to memory loci. Configure from presets (flat, hierarchical, multi-project, team) or write your own.',
+  },
+  {
+    key: 'Multi-storage',
+    value: 'OpenDAL abstraction — 8 backends: Local FS, S3/R2, Azure, GCS, WebDAV, SFTP, HDFS, IPFS. NFS explicitly rejected.',
+  },
+  {
+    key: 'Markdown truth',
+    value: 'Notes are Markdown files with YAML frontmatter. Readable by humans, by Obsidian, by cat. The database is an index, not the source of truth.',
+  },
+  {
+    key: 'Hybrid search',
+    value: 'BM25 (Tantivy) + semantic ANN (sqlite-vec) + PageRank graph + cross-encoder rerank. Multi-signal fusion via RRF.',
+  },
+];
+
+const toRoman = (n: number): string => {
+  const vals = [1000,900,500,400,100,90,50,40,10,9,5,4,1];
+  const syms = ['M','CM','D','CD','C','XC','L','XL','X','IX','V','IV','I'];
+  let result = '';
+  for (let i = 0; i < vals.length; i++) {
+    while (n >= vals[i]!) { result += syms[i]; n -= vals[i]!; }
+  }
+  return result;
+};
+---
+<section class="props section-pad section-gap" aria-labelledby="props-title">
+  <div class="props-inner">
+    <div class="eyebrow">II · Properties</div>
+    <h2 id="props-title" class="props-h2">The Gradatum approach</h2>
+
+    <table class="props-table" aria-label="Gradatum properties">
+      <tbody>
+        {rows.map((row, i) => (
+          <tr>
+            <td class="prop-key" aria-label={`Property: ${row.key}`}>
+              <span class="prop-numeral" aria-hidden="true">{toRoman(i + 1)}</span>
+              <span class="prop-name">{row.key}</span>
+            </td>
+            <td class="prop-val">{row.value}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<style>
+  .props {
+    background: var(--paper);
+  }
+
+  .props-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .props-h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 3.5vw, 2.875rem);
+    font-weight: 500;
+    margin-top: 1rem;
+  }
+
+  .props-table {
+    width: 100%;
+    margin-top: 3rem;
+    border-collapse: collapse;
+  }
+
+  .props-table tr {
+    border-top: 1px solid var(--rule);
+  }
+
+  .prop-key {
+    padding: 1.375rem 2rem 1.375rem 0;
+    width: 16rem;
+    vertical-align: top;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.5rem;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .prop-numeral {
+    font-size: 0.875rem;
+    font-style: normal;
+    font-family: var(--font-mono);
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    margin-right: 0.625rem;
+    display: inline-block;
+    min-width: 1.5rem;
+    vertical-align: baseline;
+  }
+
+  .prop-val {
+    padding: 1.375rem 0;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 768px) {
+    .props-table,
+    .props-table tbody,
+    .props-table tr,
+    .props-table td {
+      display: block;
+    }
+
+    .prop-key {
+      padding: 1rem 0 0.25rem;
+      width: 100%;
+      white-space: normal;
+    }
+
+    .prop-val {
+      padding: 0 0 1rem;
+    }
+  }
+</style>

@@ -1,0 +1,283 @@
+---
+// Roadmap — source: ../gradatum/docs/PHASES.md
+// Décomposition Phase 2 : P2.0 / P2.1 / P2.2 (correction vs proto monolithique)
+// Phase 1 = DONE (v0.1.0-alpha, 244 tests, 22 crates)
+// Phase 2 = in flight (3 sub-phases)
+// Phase 3/4 = planned
+
+interface Phase {
+  num: string;
+  title: string;
+  subtitle: string;
+  state: 'done' | 'next' | 'todo';
+  deliverables: string[];
+  tag?: string;
+}
+
+const phases: Phase[] = [
+  {
+    num: '1',
+    title: 'Functional core',
+    subtitle: 'DONE · v0.1.0-alpha',
+    state: 'done',
+    tag: 'v0.1.0-alpha',
+    deliverables: [
+      '22 crates — types, embed, index, vault, curator',
+      'SQLite + FTS5 + Tantivy + PageRank',
+      'OpenDAL multi-storage + NFS reject guard',
+      'BM25 drift detection — Phase A running',
+      '244 tests · 12 benches',
+      'RFC-0001 versioning · RFC-0002 cross-platform · RFC-0003 HTTP/MCP',
+    ],
+  },
+  {
+    num: '2.0',
+    title: 'Service mode',
+    subtitle: 'MVP — vault-mem v1.6.2 equivalent',
+    state: 'next',
+    deliverables: [
+      'gradatum-server — Axum + rmcp 0.17 SSE :19090',
+      'gradatum-worker — async queue consumer',
+      'gradatum-admin — CLI init / vault ops / backup',
+      'gradatum-mcp-stub — stdio → HTTP proxy for Claude Code / ZeroClaw',
+      'Bearer auth argon2id + rate limiting + ACL glob patterns',
+      '12 MCP methods — vault_authors / classify / context / …',
+    ],
+  },
+  {
+    num: '2.1',
+    title: 'Migration data',
+    subtitle: 'vault-mem v1.6.2 → gradatum LIVE',
+    state: 'next',
+    deliverables: [
+      'gradatum migrate-from-v0 CLI tool',
+      'ULID assignment + wikilink resolution',
+      'Validation post-migration (drift count zero)',
+      'Coexistence plan v1.6.2 ↔ gradatum (caveat A4)',
+      'D5 real-world usage counter starts (≥30 days → v0.1.0 public)',
+    ],
+  },
+  {
+    num: '2.2',
+    title: 'Skill agent',
+    subtitle: 'gradatum-usage for Claude Code / ZeroClaw',
+    state: 'next',
+    deliverables: [
+      'SKILL.md gradatum-usage — 12 MCP methods mapped',
+      'Anti-rejet curator rules + 10 canonical sections',
+      'Triple sync: LXC 500 + libskills + Monarch',
+      'Council Art.19 obligatory + dogfooding D5',
+    ],
+  },
+  {
+    num: '3',
+    title: 'Index v2',
+    subtitle: 'Hybrid search quality leap',
+    state: 'todo',
+    deliverables: [
+      'sqlite-vec ANN (HNSW embeddings)',
+      'Tantivy full-text (FTS5 → Tantivy migration)',
+      'RRF fusion k=60 + cross-encoder rerank',
+      'Circuit breaker + Heuristic auto-fallback',
+      '/metrics Prometheus · JSON tracing',
+      'Search recall +30% vs v1 (measured)',
+    ],
+  },
+  {
+    num: '4',
+    title: 'Polish',
+    subtitle: 'Production quality + packaging',
+    state: 'todo',
+    deliverables: [
+      '.deb + Docker + offline bundle tar.gz',
+      'gradatum-admin backup/restore atomic',
+      'SIEM audit log JSONL + FIM groups',
+      'DEPLOYMENT-HA.md — Litestream + rsync patterns',
+      'OSS docs complete (CONTRIBUTING / SECURITY / CoC)',
+    ],
+  },
+];
+
+const stateLabel: Record<Phase['state'], string> = {
+  done: '✓ shipped',
+  next: 'in flight',
+  todo: 'planned',
+};
+---
+<section id="roadmap" class="roadmap section-pad section-gap" aria-labelledby="roadmap-title">
+  <div class="roadmap-inner">
+    <div class="eyebrow">VI · Status & Roadmap</div>
+    <h2 id="roadmap-title" class="roadmap-h2">Phase 1 complete. Five to go.</h2>
+    <p class="roadmap-meta">
+      <code>v0.1.0-alpha</code> · 244 tests · 22 crates ·
+      BM25 + drift detection running on the maintainer's primary workstation.
+    </p>
+
+    <div class="phases-list" role="list">
+      {phases.map((p) => (
+        <div class={`phase-row state-${p.state}`} role="listitem">
+          <div class="phase-num" aria-hidden="true">
+            {p.num}
+          </div>
+
+          <div class="phase-body">
+            <div class="phase-header">
+              <div>
+                <div class="phase-title">{p.title}</div>
+                <div class="phase-subtitle">{p.subtitle}</div>
+              </div>
+              {p.tag && (
+                <span class="phase-tag">{p.tag}</span>
+              )}
+            </div>
+
+            <ul class="phase-deliverables" role="list">
+              {p.deliverables.map((d) => (
+                <li>{d}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div class={`phase-status status-${p.state}`} aria-label={`Status: ${stateLabel[p.state]}`}>
+            {stateLabel[p.state]}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .roadmap {
+    background: var(--paper);
+  }
+
+  .roadmap-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .roadmap-h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 3.5vw, 2.875rem);
+    font-weight: 500;
+    margin-top: 1rem;
+  }
+
+  .roadmap-meta {
+    margin-top: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+
+  /* Phase rows */
+  .phases-list {
+    margin-top: 3.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .phase-row {
+    display: grid;
+    grid-template-columns: 7rem 1fr 8rem;
+    gap: 2rem;
+    padding: 1.75rem 0;
+    border-top: 1px solid var(--rule);
+    align-items: start;
+  }
+
+  /* Large italic phase number */
+  .phase-num {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 0.9;
+    color: var(--muted);
+  }
+
+  .state-done .phase-num {
+    color: var(--accent);
+  }
+
+  .phase-title {
+    font-family: var(--font-serif);
+    font-size: 1.75rem;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+
+  .phase-subtitle {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    margin-top: 0.375rem;
+  }
+
+  .phase-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .phase-tag {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 0.2em 0.6em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .phase-deliverables {
+    list-style: none;
+    margin-top: 0.875rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .phase-deliverables li {
+    font-size: 0.9375rem;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  .phase-deliverables li::before {
+    content: '— ';
+    color: var(--rule);
+  }
+
+  /* Status badge */
+  .phase-status {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-align: right;
+    color: var(--muted);
+    padding-top: 0.5rem;
+  }
+
+  .status-done {
+    color: var(--accent);
+  }
+
+  @media (max-width: 768px) {
+    .phase-row {
+      grid-template-columns: 4rem 1fr;
+      grid-template-rows: auto auto;
+    }
+
+    .phase-status {
+      grid-column: 2;
+      text-align: left;
+      padding-top: 0.5rem;
+    }
+  }
+</style>

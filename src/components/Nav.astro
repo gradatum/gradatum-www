@@ -1,0 +1,114 @@
+---
+import GlyphLogo from './GlyphLogo.astro';
+
+const VERSION = 'v0.1.0-alpha';
+const GITHUB_URL = 'https://github.com/mymomot/gradatum';
+---
+<header class="nav-bar" role="banner">
+  <div class="nav-inner">
+    <a href="/" class="nav-brand" aria-label="Gradatum — home">
+      <GlyphLogo />
+      <span class="nav-brand-name">Gradatum</span>
+      <span class="eyebrow nav-version">{VERSION}</span>
+    </a>
+
+    <nav aria-label="Primary navigation">
+      <ul class="nav-links" role="list">
+        <li><a href="#why">why</a></li>
+        <li><a href="#arch">architecture</a></li>
+        <li><a href="#vocab">vocabulary</a></li>
+        <li><a href="#roadmap">roadmap</a></li>
+        <li><a href="#install">install</a></li>
+        <li>
+          <a href={GITHUB_URL} class="nav-github" target="_blank" rel="noopener noreferrer">
+            github ↗
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav-bar {
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+
+  .nav-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1.5rem var(--pad-x);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    text-decoration: none;
+    color: var(--ink);
+    flex-shrink: 0;
+  }
+
+  .nav-brand-name {
+    font-family: var(--font-serif);
+    font-size: 1.375rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .nav-version {
+    margin-left: 0.75rem;
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  nav a {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  nav a:hover {
+    color: var(--ink);
+  }
+
+  .nav-github {
+    color: var(--accent) !important;
+  }
+
+  @media (max-width: 768px) {
+    .nav-inner {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1rem var(--pad-x);
+    }
+
+    nav ul {
+      gap: 1rem;
+    }
+
+    .nav-version {
+      display: none;
+    }
+  }
+</style>

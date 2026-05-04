@@ -1,0 +1,207 @@
+---
+interface Backend {
+  name: string;
+  tier: 'primary' | 'secondary' | 'experimental';
+  scheme: string;
+  notes: string;
+}
+
+const backends: Backend[] = [
+  { name: 'Local FS', tier: 'primary', scheme: 'fs',
+    notes: 'Default. NVMe local only — NFS explicitly rejected per RFC-0002 §8.' },
+  { name: 'S3 / R2', tier: 'primary', scheme: 's3',
+    notes: 'AWS S3, Cloudflare R2, MinIO, Backblaze B2.' },
+  { name: 'Azure Blob', tier: 'secondary', scheme: 'azblob',
+    notes: 'Azure Blob Storage via OpenDAL azblob service.' },
+  { name: 'GCS', tier: 'secondary', scheme: 'gcs',
+    notes: 'Google Cloud Storage. Service account or ADC auth.' },
+  { name: 'WebDAV', tier: 'secondary', scheme: 'webdav',
+    notes: 'Self-hosted WebDAV (Nextcloud, Nginx, Apache).' },
+  { name: 'SFTP', tier: 'secondary', scheme: 'sftp',
+    notes: 'SSH File Transfer Protocol. Useful for NAS with SSH.' },
+  { name: 'HDFS', tier: 'experimental', scheme: 'hdfs',
+    notes: 'Hadoop Distributed FS. Enterprise / data-lake.' },
+  { name: 'IPFS', tier: 'experimental', scheme: 'ipfs',
+    notes: 'InterPlanetary File System. Decentralised, content-addressed.' },
+];
+
+const tierLabel: Record<Backend['tier'], string> = {
+  primary: 'primary',
+  secondary: 'secondary',
+  experimental: 'experimental',
+};
+---
+<section class="storage section-pad section-gap" aria-labelledby="storage-title">
+  <div class="storage-inner">
+    <div class="eyebrow">V · Multi-storage</div>
+    <h2 id="storage-title" class="storage-h2">Eight backends. One abstraction.</h2>
+    <p class="storage-desc">
+      Gradatum uses <a href="https://opendal.apache.org" target="_blank" rel="noopener noreferrer" class="storage-link">Apache OpenDAL</a>
+      as a unified storage abstraction layer. Switch backends without touching application code.
+      NFS is explicitly rejected — see RFC-0002 §8.
+    </p>
+
+    <ul class="backends-grid" role="list" aria-label="Storage backends">
+      {backends.map((b) => (
+        <li class={`backend-card tier-${b.tier}`}>
+          <div class="backend-header">
+            <span class="backend-name">{b.name}</span>
+            <span class={`backend-tier tier-badge-${b.tier}`} aria-label={`Tier: ${tierLabel[b.tier]}`}>
+              {tierLabel[b.tier]}
+            </span>
+          </div>
+          <code class="backend-scheme">{b.scheme}://</code>
+          <p class="backend-notes">{b.notes}</p>
+        </li>
+      ))}
+    </ul>
+
+    <div class="storage-config">
+      <div class="eyebrow config-label">Example — gradatum.toml</div>
+      <pre class="config-pre"><code><span class="c"># Per-vault storage configuration</span>
+[vaults.main.storage]
+backend = "s3"
+bucket  = "my-gradatum-vault"
+region  = "us-east-1"
+root    = "/gradatum/main"
+
+[vaults.staging.storage]
+backend = "fs"
+root    = "~/.gradatum/vaults/staging"  <span class="c"># local NVMe for testing</span>
+
+<span class="c"># NFS explicitly rejected — see RFC-0002 §8</span>
+<span class="c"># backend = "nfs"  ← will fail at startup with nfs_check.rs guard</span></code></pre>
+    </div>
+  </div>
+</section>
+
+<style>
+  .storage {
+    background: var(--paper);
+  }
+
+  .storage-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .storage-h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 3.5vw, 2.875rem);
+    font-weight: 500;
+    margin-top: 1rem;
+  }
+
+  .storage-desc {
+    margin-top: 1.25rem;
+    font-size: 1.0625rem;
+    color: var(--ink-soft);
+    max-width: 48rem;
+    line-height: 1.6;
+  }
+
+  .storage-link {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* Backends grid */
+  .backends-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 2.5rem;
+    list-style: none;
+  }
+
+  .backend-card {
+    padding: 1.375rem;
+    border: 1px solid var(--rule);
+    background: var(--bg);
+  }
+
+  .backend-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .backend-name {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .backend-tier {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.2em 0.5em;
+    flex-shrink: 0;
+  }
+
+  .tier-badge-primary {
+    background: color-mix(in srgb, var(--accent) 15%, transparent);
+    color: var(--accent);
+  }
+
+  .tier-badge-secondary {
+    background: color-mix(in srgb, var(--ink-soft) 15%, transparent);
+    color: var(--ink-soft);
+  }
+
+  .tier-badge-experimental {
+    background: color-mix(in srgb, var(--muted) 15%, transparent);
+    color: var(--muted);
+  }
+
+  .backend-scheme {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .backend-notes {
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* Config snippet */
+  .storage-config {
+    margin-top: 2.5rem;
+  }
+
+  .config-label {
+    margin-bottom: 0.75rem;
+  }
+
+  .config-pre {
+    border-left: 3px solid var(--accent);
+    overflow-x: auto;
+  }
+
+  .c {
+    color: var(--code-green);
+  }
+
+  @media (max-width: 1024px) {
+    .backends-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .backends-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

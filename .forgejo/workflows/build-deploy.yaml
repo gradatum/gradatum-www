@@ -1,0 +1,94 @@
+name: Build & Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: [self-hosted, linux, x64, lxc-500]
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout gradatum-www
+        uses: actions/checkout@v4
+        with:
+          path: gradatum-www
+          fetch-depth: 0
+
+      # gradatum repo is available locally on LXC 500 — no clone needed
+      # The runner has access to ~/projects/gradatum/ directly
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Install dependencies
+        working-directory: gradatum-www
+        run: pnpm install --frozen-lockfile
+
+      - name: Build site
+        working-directory: gradatum-www
+        run: pnpm build
+        env:
+          # Site URL for canonical links + sitemap
+          SITE: https://gradatum.org
+
+      - name: Verify build output
+        working-directory: gradatum-www
+        run: |
+          test -f dist/index.html && echo "OK: index.html"
+          test -f dist/CNAME && echo "OK: CNAME"
+          test -f dist/sitemap-index.xml && echo "OK: sitemap"
+          wc -c dist/index.html
+
+      - name: Deploy to gh-pages
+        working-directory: gradatum-www
+        env:
+          FORGEJO_TOKEN: ${{ secrets.FORGEJO_TOKEN }}
+        run: |
+          git config user.name "Forgejo CI"
+          git config user.email "ci@localhost"
+
+          COMMIT_SHA=$(git rev-parse --short HEAD)
+          COMMIT_MSG=$(git log -1 --pretty=%s)
+          DEPLOY_DIR=$(mktemp -d)
+
+          # Clone gh-pages branch (or create orphan)
+          git clone --branch gh-pages \
+            "http://motreffs:${FORGEJO_TOKEN}@localhost:3000/motreffs/gradatum-www.git" \
+            "${DEPLOY_DIR}" 2>/dev/null || \
+            (mkdir -p "${DEPLOY_DIR}" && \
+             cd "${DEPLOY_DIR}" && \
+             git init -b gh-pages && \
+             git remote add origin "http://motreffs:${FORGEJO_TOKEN}@localhost:3000/motreffs/gradatum-www.git")
+
+          # Clear old content (keep .git)
+          find "${DEPLOY_DIR}" -mindepth 1 -maxdepth 1 -not -name '.git' -exec rm -rf {} +
+
+          # Copy fresh build
+          cp -r dist/. "${DEPLOY_DIR}/"
+
+          cd "${DEPLOY_DIR}"
+          git config user.name "Forgejo CI"
+          git config user.email "ci@localhost"
+          git add -A
+          git commit -m "deploy: ${COMMIT_SHA} — ${COMMIT_MSG}" --allow-empty
+
+          git push origin HEAD:gh-pages --force
+
+          rm -rf "${DEPLOY_DIR}"
+
+      - name: Summary
+        run: |
+          echo "## Deploy Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- Branch: gh-pages" >> $GITHUB_STEP_SUMMARY
+          echo "- Domain: https://gradatum.org" >> $GITHUB_STEP_SUMMARY
+          echo "- Commit: $(cd gradatum-www && git rev-parse --short HEAD)" >> $GITHUB_STEP_SUMMARY
+          echo "- HTML size: $(wc -c < gradatum-www/dist/index.html) bytes" >> $GITHUB_STEP_SUMMARY

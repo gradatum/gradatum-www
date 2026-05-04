@@ -1,0 +1,129 @@
+---
+const GITHUB_URL = 'https://github.com/mymomot/gradatum';
+---
+<section id="install" class="qs section-pad section-gap" aria-labelledby="qs-title">
+  <div class="qs-inner">
+    <div class="eyebrow">VIII · Quick start</div>
+    <h2 id="qs-title" class="qs-h2">
+      Build from source today.
+      <span class="qs-muted">apt install with Phase 4.</span>
+    </h2>
+
+    <div class="qs-blocks">
+      <!-- Block 1: Clone & build -->
+      <div class="qs-block">
+        <div class="eyebrow block-label">Clone & build</div>
+        <pre class="qs-pre"><code><span class="c"># clone & build</span>
+git clone {GITHUB_URL}
+cd gradatum && cargo build --release --workspace
+
+<span class="c"># initialize a vault with the hierarchical preset</span>
+gradatum-admin init --preset=hierarchical \
+  --projects=projecta,projectb
+
+<span class="c"># start the server (Phase 2.0+)</span>
+systemctl --user start gradatum-server</code></pre>
+      </div>
+
+      <!-- Block 2: Write & search -->
+      <div class="qs-block">
+        <div class="eyebrow block-label">Write & search</div>
+        <pre class="qs-pre"><code><span class="c"># write a note</span>
+gradatum write --locus=projecta/backend \
+  --section=decisions \
+  "Use ULID for stable note identity"
+
+<span class="c"># search across loci</span>
+gradatum search "ULID identity" --locus="projecta/*"
+
+<span class="c"># list vaults</span>
+gradatum-admin vault list</code></pre>
+      </div>
+
+      <!-- Block 3: MCP (Phase 2.0) -->
+      <div class="qs-block">
+        <div class="eyebrow block-label">MCP integration (Phase 2.0)</div>
+        <pre class="qs-pre" set:html={`<code><span class="c"># gradatum.toml — MCP stub for Claude Code</span>
+[[mcpServers]]
+name    = &quot;gradatum&quot;
+command = &quot;gradatum-mcp-stub&quot;
+args    = [&quot;--server&quot;, &quot;http://localhost:19090&quot;]
+env     = &#123; GRADATUM_BEARER = &quot;your-bearer-token&quot; &#125;
+
+<span class="c"># Or via HTTP directly (API)</span>
+curl http://localhost:19090/health
+curl http://localhost:19090/api/v1/notes/search \\
+  -d '&#123;"query":"ULID","locus":"projecta/*"&#125;'</code>`}></pre>
+      </div>
+    </div>
+
+    <p class="qs-note">
+      One-liner installer (<code>curl -fsSL https://gradatum.org/install.sh | bash</code>)
+      and <code>.deb</code> packages are planned for Phase 4.
+    </p>
+  </div>
+</section>
+
+<style>
+  .qs {
+    background: var(--paper);
+  }
+
+  .qs-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .qs-h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 3.5vw, 2.875rem);
+    font-weight: 500;
+    margin-top: 1rem;
+    line-height: 1.1;
+  }
+
+  .qs-muted {
+    color: var(--muted);
+  }
+
+  .qs-blocks {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+  }
+
+  .qs-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .block-label {
+    letter-spacing: 0.15em;
+  }
+
+  .qs-pre {
+    flex: 1;
+    border-left: 3px solid var(--accent);
+    font-size: 0.8125rem;
+    overflow-x: auto;
+  }
+
+  .c {
+    color: var(--code-green);
+  }
+
+  .qs-note {
+    margin-top: 2rem;
+    font-size: 0.9375rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  @media (max-width: 1024px) {
+    .qs-blocks {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
