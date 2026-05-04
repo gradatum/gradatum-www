@@ -21,7 +21,7 @@ const rawRfcs = [
     ],
     summary:
       'Defines three trait stability tiers (stable / unstable / experimental) for gradatum-core public traits, with SemVer enforcement rules per tier.',
-    url: 'https://github.com/mymomot/gradatum/blob/main/docs/RFC/RFC-0001-versioning-gradatum-core.md',
+    url: 'https://github.com/gradatum/gradatum/blob/main/docs/RFC/RFC-0001-versioning-gradatum-core.md',
   },
   {
     rfc_number: '0002',
@@ -32,7 +32,7 @@ const rawRfcs = [
     affected_crates: ['gradatum-storage', 'gradatum-chat', 'gradatum-embed'],
     summary:
       'B-light tiered model: Linux x86_64 primary (full CI + runtime), Windows x86_64 secondary (mingw-w64 cross-compile, manual pre-release validation). 13 portability rules R1–R13.',
-    url: 'https://github.com/mymomot/gradatum/blob/main/docs/RFC/RFC-0002-cross-platform-support.md',
+    url: 'https://github.com/gradatum/gradatum/blob/main/docs/RFC/RFC-0002-cross-platform-support.md',
   },
   {
     rfc_number: '0003',
@@ -43,7 +43,7 @@ const rawRfcs = [
     affected_crates: ['gradatum-server', 'gradatum-mcp-stub'],
     summary:
       'Single-port :19090 path-prefix routing (/api/v1 /mcp /sse /health /admin). gradatum-mcp-stub as stdio → HTTP bridge for Claude Code, Claude Desktop, ZeroClaw.',
-    url: 'https://github.com/mymomot/gradatum/blob/main/docs/RFC/RFC-0003-http-api-surface-and-mcp-integration.md',
+    url: 'https://github.com/gradatum/gradatum/blob/main/docs/RFC/RFC-0003-http-api-surface-and-mcp-integration.md',
   },
 ] as const;
 

@@ -21,7 +21,7 @@ Voir `ARCHITECTURE.md` pour l'arbre complet.
 ## Repos
 
 - **Forgejo origin** : `http://localhost:3000/motreffs/gradatum-www`
-- **GitHub mirror PUBLIC** : `https://github.com/mymomot/gradatum-www`
+- **GitHub mirror PUBLIC** : `https://github.com/gradatum/gradatum-www`
 - **Branche deploy** : `gh-pages` (artifact CI, pas de push manuel)
 
 ## État actuel
@@ -41,7 +41,7 @@ Pour finaliser `gradatum.org` → GitHub Pages :
    - `185.199.109.153`
    - `185.199.110.153`
    - `185.199.111.153`
-2. Optionnel CNAME `www` → `mymomot.github.io`
+2. Optionnel CNAME `www` → `gradatum.github.io`
 3. GitHub : Settings → Pages → Custom domain = `gradatum.org` + Enable HTTPS
 4. Le fichier `public/CNAME` dans le repo contient déjà `gradatum.org`
 5. Propagation DNS : 5 min à 48h selon registrar
@@ -63,7 +63,7 @@ Pour finaliser `gradatum.org` → GitHub Pages :
 
 Le proto (2026-05-04 16:38 UTC) a des hardcodes à corriger :
 1. Phase 2 monolithique → décomposée P2.0/P2.1/P2.2 (voir docs/PHASES.md)
-2. GitHub URL `gradatum/gradatum` → `mymomot/gradatum`
+2. GitHub URL `mymomot/gradatum` (proto placeholder) → `gradatum/gradatum` (org canonical, cible D5 public)
 3. Install URL `gradatum.io` → `gradatum.org`
 4. RFC-0002 cross-platform + RFC-0003 HTTP/MCP → sections dédiées
 5. Status badge `v0.1.0-alpha LIVE` + `244 tests` + `22 crates`

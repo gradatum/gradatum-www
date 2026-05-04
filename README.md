@@ -1,6 +1,6 @@
 # gradatum-www
 
-Landing page for [Gradatum](https://github.com/mymomot/gradatum) — memory backbone for AI agents.
+Landing page for [Gradatum](https://github.com/gradatum/gradatum) — memory backbone for AI agents.
 
 Built with [Astro](https://astro.build) SSG. Deployed to [gradatum.org](https://gradatum.org) via GitHub Pages.
 
