@@ -37,7 +37,7 @@ const rawProperties = [
   {
     name: 'Markdown truth',
     description:
-      'Notes are Markdown files with YAML frontmatter. Readable by humans, by Obsidian, by cat. The database is an index, not the source of truth.',
+      'Notes are Markdown files with YAML frontmatter. Readable by humans and by cat. The database is an index, not the source of truth.',
   },
   {
     name: 'Hybrid search',
