@@ -16,7 +16,7 @@ Voir `ARCHITECTURE.md` pour l'arbre complet.
 
 - Zero-JS par défaut (Astro SSG)
 - Seul composant interactif : `TweaksPanel` (island `client:load`) — density/typeFamily/dark/diagramMode
-- Sources de contenu : `../gradatum/` (repo sibling, lecture CI uniquement)
+- Sources de contenu : TypeScript hardcodé inline (pas de loaders Astro cross-repo)
 
 ## Repos
 
@@ -27,9 +27,10 @@ Voir `ARCHITECTURE.md` pour l'arbre complet.
 ## État actuel
 
 - Version : 0.1.0
-- Statut : scaffolding → implémentation
+- Statut : DEPLOYED (DNS à propager — 4 A records gradatum.org)
 - Port : N/A (site statique)
 - Dernière MAJ : 2026-05-04
+- CI : run #966 SUCCESS, gh-pages LIVE
 
 ## DNS — Instructions Stéphane
 
