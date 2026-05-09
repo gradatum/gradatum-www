@@ -1,10 +1,12 @@
 ---
 // Roadmap — source: ../gradatum/docs/PHASES.md
-// Décomposition Phase 2 : P2.0 / P2.1 cleanup / P2.2 migration / P2.3 skill agent
+// Décomposition Phase 2 : P2.0 / P2.1 quality / P2.1.1 hardening / P2.1.2 soft archiving / P2.2 production hardening / P2.3 skill agent
 // Phase 1 = DONE (v0.1.0-alpha, 244 tests, 22 crates)
 // Phase 2.0 = DONE (v0.1.0-alpha.5 — service mode LIVE LXC 500, 2026-05-07)
-// Phase 2.1 = DONE (v0.1.0-alpha.7 — cleanup & quality, 2026-05-08)
-// Phase 2.2 = in flight (Migration data vault-mem → gradatum)
+// Phase 2.1 = DONE (v0.1.0-alpha.7 — quality & robustness, 2026-05-08)
+// Phase 2.1.1 = DONE (v0.1.0-alpha.8 — hardening + semantic search, 2026-05-09)
+// Phase 2.1.2 = DONE (v0.1.0-alpha.9-patch.1 — soft archiving + memory hygiene, 2026-05-09)
+// Phase 2.2 = next (Production hardening — quality before public release)
 // Phase 2.3 / 3 / 4 = planned
 
 interface Phase {
@@ -20,98 +22,125 @@ const phases: Phase[] = [
   {
     num: '1',
     title: 'Functional core',
-    subtitle: 'DONE · v0.1.0-alpha',
+    subtitle: 'DONE · v0.1.0-alpha · les fondations',
     state: 'done',
     tag: 'v0.1.0-alpha',
     deliverables: [
-      '22 crates — types, embed, index, vault, curator',
-      'SQLite + FTS5 + Tantivy + PageRank',
-      'OpenDAL multi-storage + NFS reject guard',
-      'BM25 drift detection — Phase A running',
-      '244 tests · 12 benches',
-      'RFC-0001 versioning · RFC-0002 cross-platform · RFC-0003 HTTP/MCP',
+      'Le moteur — 22 modules pour stocker, indexer et retrouver des notes',
+      'Stockage local fiable — base SQLite + recherche plein-texte (FTS5 + Tantivy)',
+      'Recherche par pertinence — algorithmes BM25 et PageRank pour trier les résultats',
+      'Multi-stockage flexible — disque local, NAS, futurs backends cloud',
+      '244 tests automatisés couvrant le code',
     ],
   },
   {
     num: '2.0',
     title: 'Service mode',
-    subtitle: 'DONE · v0.1.0-alpha.5 · LXC 500 LIVE',
+    subtitle: 'DONE · v0.1.0-alpha.5 · accessible en réseau · LXC 500 LIVE',
     state: 'done',
     tag: 'v0.1.0-alpha.5',
     deliverables: [
-      'gradatum-server — Axum + rmcp 0.17 SSE :19090',
-      'gradatum-worker — async queue consumer LLM curator',
-      'gradatum-admin — CLI init / vault ops / backup',
-      'gradatum-mcp-stub — stdio → HTTP proxy 13 tools (10 read + 3 write)',
-      'Auth Path 2 — argon2id API keys + JWT exchange (TTL 1h human / 24h service)',
-      'systemd UID 991 + sd_notify::Ready + scripts/install-lxc500.sh',
+      'Serveur HTTP — gradatum tourne en service, 13 outils exposés (lecture + écriture)',
+      'Compatible Claude Code & ZeroClaw via passerelle MCP',
+      'Authentification sécurisée — clés API + jetons JWT (1h humain, 24h service)',
+      'Travailleur de fond — classement automatique des notes par LLM',
+      'Outil admin — initialiser, sauvegarder, restaurer un vault',
+      'Installation automatisée — script install-lxc500.sh',
     ],
   },
   {
     num: '2.1',
-    title: 'Cleanup & quality',
-    subtitle: 'DONE · v0.1.0-alpha.7 · 2026-05-08',
+    title: 'Quality & robustness',
+    subtitle: 'DONE · v0.1.0-alpha.7 · finitions production · 2026-05-08',
     state: 'done',
     tag: 'v0.1.0-alpha.7',
     deliverables: [
-      'RT5 — GET /api/v1/jobs/<id> reflects real status (was stub T3 pending)',
-      'BM25 ranking — bm25(notes_fts) FTS5 native (was positional proxy)',
-      'last_error sanitization — opaque codes (info disclosure mitigation)',
-      'Index::get_note + search_fts_scored traits (P1 audit fix)',
-      'RT11 — vault_index_path canonical + serde(alias) backward-compat',
-      'POSTMORTEM caveats C1-C3 — UTF-8 ZWJ test, build_snippet pub(crate), EXPECTED_TOOL_NAMES',
+      'Suivi des opérations — l\'API renvoie le vrai statut (en cours, terminé, en erreur)',
+      'Recherche fidèle — tri par pertinence réelle BM25 (au lieu d\'un proxy approximatif)',
+      'Messages d\'erreur sûrs — pas de fuite d\'informations système',
+      'Configuration plus lisible — paramètres canoniques, ancien format toujours accepté',
+    ],
+  },
+  {
+    num: '2.1.1',
+    title: 'Hardening & semantic search',
+    subtitle: 'DONE · v0.1.0-alpha.8 · sécurité réseau + recherche sémantique · 2026-05-09',
+    state: 'done',
+    tag: 'v0.1.0-alpha.8',
+    deliverables: [
+      'Garde réseau gradatum-warden — limitation de débit + filtrage IP, protection anti-abus',
+      'Authentification optionnelle — flag pour exiger un jeton sur le suivi de jobs',
+      'Recherche sémantique automatique — chaque note reçoit son empreinte vectorielle (1024 dimensions) à la création',
+      'Outil de rattrapage — recalculer les empreintes sur la base existante en lots',
+      '591 tests automatisés (+45)',
+    ],
+  },
+  {
+    num: '2.1.2',
+    title: 'Soft archiving & memory hygiene',
+    subtitle: 'DONE · v0.1.0-alpha.9 + patch.1 · archivage doux · 2026-05-09',
+    state: 'done',
+    tag: 'v0.1.0-alpha.9-patch.1',
+    deliverables: [
+      'Archivage sans suppression (vault_downgrade) — marquer une note obsolète tout en conservant son contenu',
+      'Recherche par défaut propre — les notes archivées sont automatiquement exclues',
+      'Recherche élargie optionnelle — paramètre include_downgraded pour fouiller dans les archives, classées en bas par pénalité de score',
+      'Restauration — réactiver une note archivée par simple appel HTTP',
+      'Lien de remplacement — chaque note archivée peut pointer vers celle qui la remplace',
+      'Outil de migration — importer en bloc depuis une mémoire vault-mem externe',
+      'Sanitization recherche — caractères spéciaux (. \' -) dans les requêtes correctement échappés',
+      '698 tests automatisés (+107 cumulé Phase 2.1.x)',
     ],
   },
   {
     num: '2.2',
-    title: 'Migration data',
-    subtitle: 'vault-mem v1.6.2 → gradatum LIVE',
+    title: 'Production hardening',
+    subtitle: 'qualité avant ouverture publique',
     state: 'next',
     deliverables: [
-      'gradatum migrate-from-v0 CLI tool',
-      'ULID assignment + wikilink resolution',
-      'Validation post-migration (drift count zero)',
-      'Coexistence plan v1.6.2 ↔ gradatum (caveat A4)',
-      'D5 real-world usage counter starts (≥30 days → v0.1.0 public)',
+      'Tests étendus — couverture des cas Unicode, accents, requêtes complexes',
+      'Optimisations performance — préparation aux migrations de gros volumes',
+      'Audit trace — historique des opérations sensibles (archivage, restauration)',
+      'Documentation publique complète',
+      'Période d\'usage réel — ≥ 30 jours en production avant ouverture v0.1.0 public',
     ],
   },
   {
     num: '2.3',
     title: 'Skill agent',
-    subtitle: 'gradatum-usage for Claude Code / ZeroClaw',
+    subtitle: 'gradatum-usage pour Claude Code & ZeroClaw',
     state: 'next',
     deliverables: [
-      'SKILL.md gradatum-usage — 13 MCP methods mapped',
-      'Anti-rejet curator rules + 11 canonical sections',
-      'Triple sync: LXC 500 + libskills + Monarch',
-      'Council Art.19 obligatory + dogfooding D5',
+      'Mode d\'emploi pour les agents IA — comment écrire et chercher proprement',
+      '11 catégories canoniques — taxonomie unique pour toute la mémoire',
+      'Synchronisation tri-source — LXC 500 + libskills + Monarch',
+      'Validation par council et expérience terrain (≥ 30 jours)',
     ],
   },
   {
     num: '3',
     title: 'Index v2',
-    subtitle: 'Hybrid search quality leap',
+    subtitle: 'nouveau cap de qualité de recherche',
     state: 'todo',
     deliverables: [
-      'sqlite-vec ANN (HNSW embeddings)',
-      'Tantivy full-text (FTS5 → Tantivy migration)',
-      'RRF fusion k=60 + cross-encoder rerank',
-      'Circuit breaker + Heuristic auto-fallback',
-      '/metrics Prometheus · JSON tracing',
-      'Search recall +30% vs v1 (measured)',
+      'Recherche vectorielle accélérée (HNSW) sur les empreintes',
+      'Migration full-text vers Tantivy',
+      'Fusion intelligente des deux types de recherche + reclassement final',
+      'Métriques Prometheus + traces JSON',
+      'Objectif : +30% de pertinence mesurée vs v1',
     ],
   },
   {
     num: '4',
     title: 'Polish',
-    subtitle: 'Production quality + packaging',
+    subtitle: 'production-ready packaging',
     state: 'todo',
     deliverables: [
-      '.deb + Docker + offline bundle tar.gz',
-      'gradatum-admin backup/restore atomic',
-      'SIEM audit log JSONL + FIM groups',
-      'DEPLOYMENT-HA.md — Litestream + rsync patterns',
-      'OSS docs complete (CONTRIBUTING / SECURITY / CoC)',
+      'Paquet .deb + image Docker + bundle hors-ligne',
+      'Sauvegarde / restauration atomique',
+      'Logs d\'audit conformité (SIEM JSONL)',
+      'Patterns haute disponibilité (Litestream + rsync)',
+      'Documentation projet OSS complète (CONTRIBUTING / SECURITY / Code of Conduct)',
     ],
   },
 ];
@@ -125,10 +154,10 @@ const stateLabel: Record<Phase['state'], string> = {
 <section id="roadmap" class="roadmap section-pad section-gap" aria-labelledby="roadmap-title">
   <div class="roadmap-inner">
     <div class="eyebrow">VI · Status & Roadmap</div>
-    <h2 id="roadmap-title" class="roadmap-h2">Phases 1, 2.0 &amp; 2.1 shipped. Three to go.</h2>
+    <h2 id="roadmap-title" class="roadmap-h2">Five phases shipped. Three milestones ahead.</h2>
     <p class="roadmap-meta">
-      <code>v0.1.0-alpha.7</code> · 580+ tests · 25 crates · LIVE LXC 500 since 2026-05-07 ·
-      RT5 + BM25 real + RT11 backward-compat shipped 2026-05-08.
+      <code>v0.1.0-alpha.9-patch.1</code> · 698 tests · 27 crates · LIVE LXC 500 since 2026-05-07 ·
+      vault_downgrade &amp; full search hardening shipped 2026-05-09.
     </p>
 
     <div class="phases-list" role="list">
