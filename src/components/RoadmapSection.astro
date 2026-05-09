@@ -2,7 +2,7 @@
 // Roadmap — source: ../gradatum/docs/PHASES.md
 // Décomposition Phase 2 : P2.0 / P2.1 quality / P2.1.1 hardening / P2.1.2 soft archiving / P2.2 production hardening / P2.3 skill agent
 // Phase 1 = DONE (v0.1.0-alpha, 244 tests, 22 crates)
-// Phase 2.0 = DONE (v0.1.0-alpha.5 — service mode LIVE LXC 500, 2026-05-07)
+// Phase 2.0 = DONE (v0.1.0-alpha.5 — service mode shipped 2026-05-07)
 // Phase 2.1 = DONE (v0.1.0-alpha.7 — quality & robustness, 2026-05-08)
 // Phase 2.1.1 = DONE (v0.1.0-alpha.8 — hardening + semantic search, 2026-05-09)
 // Phase 2.1.2 = DONE (v0.1.0-alpha.9-patch.1 — soft archiving + memory hygiene, 2026-05-09)
@@ -36,7 +36,7 @@ const phases: Phase[] = [
   {
     num: '2.0',
     title: 'Service mode',
-    subtitle: 'DONE · v0.1.0-alpha.5 · accessible en réseau · LXC 500 LIVE',
+    subtitle: 'DONE · v0.1.0-alpha.5 · service mode shipped',
     state: 'done',
     tag: 'v0.1.0-alpha.5',
     deliverables: [
@@ -45,7 +45,7 @@ const phases: Phase[] = [
       'Authentification sécurisée — clés API + jetons JWT (1h humain, 24h service)',
       'Travailleur de fond — classement automatique des notes par LLM',
       'Outil admin — initialiser, sauvegarder, restaurer un vault',
-      'Installation automatisée — script install-lxc500.sh',
+      'Installation automatisée — script de déploiement reproductible',
     ],
   },
   {
@@ -113,7 +113,7 @@ const phases: Phase[] = [
     deliverables: [
       'Mode d\'emploi pour les agents IA — comment écrire et chercher proprement',
       '11 catégories canoniques — taxonomie unique pour toute la mémoire',
-      'Synchronisation tri-source — LXC 500 + libskills + Monarch',
+      'Synchronisation multi-source — agents + skill registries',
       'Validation par council et expérience terrain (≥ 30 jours)',
     ],
   },
@@ -157,7 +157,7 @@ const stateLabel: Record<Phase['state'], string> = {
     <h2 id="roadmap-title" class="roadmap-h2">Five phases shipped. Three milestones ahead.</h2>
     <p class="roadmap-meta">
       <code>v0.1.0-alpha.9-patch.1</code> · 698 tests · 27 crates · Rust 2021 edition · MSRV 1.75 ·
-      LIVE LXC 500 since 2026-05-07 · vault_downgrade &amp; full search hardening shipped 2026-05-09.
+      service mode shipped 2026-05-07 · vault_downgrade &amp; full search hardening shipped 2026-05-09.
     </p>
 
     <div class="phases-list" role="list">

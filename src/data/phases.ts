@@ -92,7 +92,7 @@ const rawPhases = [
     summary:
       'gradatum-usage skill for LLM/agent consumers — mapping of 12 MCP methods, note format, anti-rejection rules. Triple-mirror sync.',
     deliverables: [
-      'SKILL.md gradatum-usage (Claude Code + libskills + Monarch mirrors)',
+      'SKILL.md gradatum-usage (multi-agent registry mirrors)',
       'MCP method mapping + note format guide + anti-rejection curator rules',
       'Council Art.19 review (skill = structural document)',
       'Practical test: agent writes a note without curator rejection',
