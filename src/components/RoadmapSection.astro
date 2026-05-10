@@ -1,19 +1,23 @@
 ---
-// Roadmap — source: ../gradatum/docs/PHASES.md
-// Décomposition Phase 2 : P2.0 / P2.1 quality / P2.1.1 hardening / P2.1.2 soft archiving / P2.2 production hardening / P2.3 skill agent
-// Phase 1 = DONE (v0.1.0-alpha, 244 tests, 22 crates)
-// Phase 2.0 = DONE (v0.1.0-alpha.5 — service mode shipped 2026-05-07)
-// Phase 2.1 = DONE (v0.1.0-alpha.7 — quality & robustness, 2026-05-08)
-// Phase 2.1.1 = DONE (v0.1.0-alpha.8 — hardening + semantic search, 2026-05-09)
-// Phase 2.1.2 = DONE (v0.1.0-alpha.9-patch.1 — soft archiving + memory hygiene, 2026-05-09)
-// Phase 2.2 = next (Production hardening — quality before public release)
-// Phase 2.3 / 3 / 4 = planned
+// Roadmap — source: CHANGELOG.md + ARCHITECTURE.md + Forgejo tags (sync 2026-05-10).
+// Web phase ↔ real chunks mapping:
+//   Phase 1     = DONE (Phase 0 + 0bis + 0bis-bis + Phase 1 refactor → alpha)
+//   Phase 2.0   = DONE (Sprint X-1 + 2.0a/b/c + 2.0c-bis Auth Path 2 → alpha.5)
+//   Phase 2.1   = DONE (cleanup + 2.1.1 hardening + 2.1.2 soft-archiving + 2.x.1 search foundations → alpha.7→alpha.10)
+//   Phase 2.2   = DONE (Plan bumps PR-1 serde_yml → alpha.10-bumps.1)
+//   Phase 2.2.1 = IN PROGRESS (dual-write cohabitation acquired + CLI migrate-from-v0 to do)
+//   Phase 2.3   = DONE (PR-2/3/5/6 cumulative + 2.x.2 RRF + 2.x.3 Multi-Factor+Jina + 2.x.4 Endpoints → alpha.11→alpha.13 + alpha.12-bumps.1)
+//   Phase 2.4   = TODO (production reranker — main.rs wiring + golden set + recall + ort 2.x stable)
+//   Phase 2.5   = NEXT (End Double run — stop vault-mem secondary, gradatum single prod)
+//   Phase 2.6   = NEXT (Gradatum Skills — reminder vault_search + memorize vault_write)
+//   Phase 2.x   = NEXT (Polish — Phase 2.3 caveats backlog, alpha.14 target)
+//   Phase x     = TODO (OSS release — number TBD — note_history + .deb + Docker + SIEM + v0.1.0 public)
 
 interface Phase {
   num: string;
   title: string;
   subtitle: string;
-  state: 'done' | 'next' | 'todo';
+  state: 'done' | 'in-progress' | 'next' | 'todo';
   deliverables: string[];
   tag?: string;
 }
@@ -22,131 +26,163 @@ const phases: Phase[] = [
   {
     num: '1',
     title: 'Functional core',
-    subtitle: 'DONE · v0.1.0-alpha · les fondations',
+    subtitle: 'DONE · v0.1.0-alpha · foundations',
     state: 'done',
     tag: 'v0.1.0-alpha',
     deliverables: [
-      'Le moteur — 22 modules pour stocker, indexer et retrouver des notes',
-      'Stockage local fiable — base SQLite + recherche plein-texte (FTS5 + Tantivy)',
-      'Recherche par pertinence — algorithmes BM25 et PageRank pour trier les résultats',
-      'Multi-stockage flexible — disque local, NAS, futurs backends cloud',
-      '244 tests automatisés couvrant le code',
+      'Engine — 22 crates: store, index, retrieve',
+      'SQLite + FTS5 storage',
+      'BM25 + PageRank ranking',
+      'Multi-storage — local, NAS, cloud-ready',
+      '244 automated tests',
     ],
   },
   {
     num: '2.0',
     title: 'Service mode',
-    subtitle: 'DONE · v0.1.0-alpha.5 · service mode shipped',
+    subtitle: 'DONE · v0.1.0-alpha.5 · 2026-05-07',
     state: 'done',
     tag: 'v0.1.0-alpha.5',
     deliverables: [
-      'Serveur HTTP — gradatum tourne en service, 13 outils exposés (lecture + écriture)',
-      'Compatible Claude Code & ZeroClaw via passerelle MCP',
-      'Authentification sécurisée — clés API + jetons JWT (1h humain, 24h service)',
-      'Travailleur de fond — classement automatique des notes par LLM',
-      'Outil admin — initialiser, sauvegarder, restaurer un vault',
-      'Installation automatisée — script de déploiement reproductible',
+      'HTTP service — 12 MCP methods exposed',
+      'MCP stdio bridge — Claude Code & ZeroClaw compatible',
+      'Auth — API key + JWT (24 h auto-refresh)',
+      'Async worker — local LLM curator',
+      'Admin CLI — init / backup / restore',
+      'Reproducible installer scripts',
     ],
   },
   {
     num: '2.1',
-    title: 'Quality & robustness',
-    subtitle: 'DONE · v0.1.0-alpha.7 · finitions production · 2026-05-08',
+    title: 'Quality, hardening, soft archiving & search foundations',
+    subtitle: 'DONE · v0.1.0-alpha.7 → alpha.10',
     state: 'done',
-    tag: 'v0.1.0-alpha.7',
+    tag: 'v0.1.0-alpha.10',
     deliverables: [
-      'Suivi des opérations — l\'API renvoie le vrai statut (en cours, terminé, en erreur)',
-      'Recherche fidèle — tri par pertinence réelle BM25 (au lieu d\'un proxy approximatif)',
-      'Messages d\'erreur sûrs — pas de fuite d\'informations système',
-      'Configuration plus lisible — paramètres canoniques, ancien format toujours accepté',
-    ],
-  },
-  {
-    num: '2.1.1',
-    title: 'Hardening & semantic search',
-    subtitle: 'DONE · v0.1.0-alpha.8 · sécurité réseau + recherche sémantique · 2026-05-09',
-    state: 'done',
-    tag: 'v0.1.0-alpha.8',
-    deliverables: [
-      'Garde réseau gradatum-warden — limitation de débit + filtrage IP, protection anti-abus',
-      'Authentification optionnelle — flag pour exiger un jeton sur le suivi de jobs',
-      'Recherche sémantique automatique — chaque note reçoit son empreinte vectorielle (1024 dimensions) à la création',
-      'Outil de rattrapage — recalculer les empreintes sur la base existante en lots',
-      '591 tests automatisés (+45)',
-    ],
-  },
-  {
-    num: '2.1.2',
-    title: 'Soft archiving & memory hygiene',
-    subtitle: 'DONE · v0.1.0-alpha.9 + patch.1 · archivage doux · 2026-05-09',
-    state: 'done',
-    tag: 'v0.1.0-alpha.9-patch.1',
-    deliverables: [
-      'Archivage sans suppression (vault_downgrade) — marquer une note obsolète tout en conservant son contenu',
-      'Recherche par défaut propre — les notes archivées sont automatiquement exclues',
-      'Recherche élargie optionnelle — paramètre include_downgraded pour fouiller dans les archives, classées en bas par pénalité de score',
-      'Restauration — réactiver une note archivée par simple appel HTTP',
-      'Lien de remplacement — chaque note archivée peut pointer vers celle qui la remplace',
-      'Outil de migration — importer en bloc depuis une mémoire vault-mem externe',
-      'Sanitization recherche — caractères spéciaux (. \' -) dans les requêtes correctement échappés',
-      '698 tests automatisés (+107 cumulé Phase 2.1.x)',
+      'Faithful operation tracking — real BM25',
+      'gradatum-warden — rate limit + IP filter',
+      'Auto semantic embedding — 1024-dim at write',
+      'Soft archiving (vault_downgrade)',
+      'Restore + replacement link',
+      'Dual-write cohabitation vault-mem ↔ gradatum',
+      'Search foundations — real vault_status, ULID pagination, FTS5 snippet, H1 title',
+      '720 cumulative tests',
     ],
   },
   {
     num: '2.2',
-    title: 'Production hardening',
-    subtitle: 'qualité avant ouverture publique',
-    state: 'next',
+    title: 'Supply chain hardening — drop-in security',
+    subtitle: 'DONE · v0.1.0-alpha.10-bumps.1',
+    state: 'done',
+    tag: 'v0.1.0-alpha.10-bumps.1',
     deliverables: [
-      'Tests étendus — couverture des cas Unicode, accents, requêtes complexes',
-      'Optimisations performance — préparation aux migrations de gros volumes',
-      'Audit trace — historique des opérations sensibles (archivage, restauration)',
-      'Documentation publique complète',
-      'Période d\'usage réel — ≥ 30 jours en production avant ouverture v0.1.0 public',
+      'Upstream deprecation audit — serde_yaml flagged unmaintained',
+      'PR-1 drop-in migration — serde_yaml → serde_yml (maintained fork, API-compatible)',
+      'Workspace Cargo.toml + Cargo.lock updated',
+      'No breaking change — substitution-only diff',
+      'Post-merge TNR validated — 0 regression',
+      'Sets Phase 2.2 baseline — PR-2/3/5/6 cumulated in Phase 2.3',
+    ],
+  },
+  {
+    num: '2.2.1',
+    title: 'Double run — predecessor vault vs Gradatum LIVE',
+    subtitle: 'cohabitation acquired · bulk import in flight',
+    state: 'in-progress',
+    deliverables: [
+      'Dual-write cohabitation vault-mem ↔ gradatum',
+      'gradatum PRIMARY · vault-mem SECONDARY rollback',
+      'CLI migrate-from-v0 — bulk import vault-mem v1.6.2',
     ],
   },
   {
     num: '2.3',
-    title: 'Skill agent',
-    subtitle: 'gradatum-usage pour Claude Code & ZeroClaw',
+    title: 'Search Quality + cumulative supply chain',
+    subtitle: 'DONE · alpha.11-patch.1 → alpha.13 + alpha.12-bumps.1',
+    state: 'done',
+    tag: 'v0.1.0-alpha.13',
+    deliverables: [
+      'Semantic + RRF — in-process cosine, RRF k=60',
+      'Multi-factor + feature-gated Jina reranker',
+      'Endpoints completeness — wikilinks, title_lookup, text trace, token budget',
+      'Cumulative bumps — rmcp 1.x, axum 0.8, sha2 0.11, toml 1.x, MSRV 1.85',
+      '796 cumulative tests · 0 clippy · 0 fmt · cargo deny GREEN',
+      'Full write+search pipeline (see Lifecycle)',
+    ],
+  },
+  {
+    num: '2.4',
+    title: 'Production reranker',
+    subtitle: 'prod activation · measured recall · ort stable',
+    state: 'todo',
+    deliverables: [
+      'Pluggable Reranker trait + JinaOnnxReranker (already shipped α.12)',
+      'main.rs wiring — enable on RERANKER_ONNX_PATH',
+      'Install script fetches the Jina cross-encoder ONNX model (opt-in)',
+      'Manual golden set — 50 query/expected_id pairs',
+      'Target recall@5 ≥ 0.75',
+      'ort 2.0.0-rc.9 → 2.x stable migration',
+    ],
+  },
+  {
+    num: '2.5',
+    title: 'End Double run',
+    subtitle: 'stop predecessor vault · gradatum single Live Prod',
     state: 'next',
     deliverables: [
-      'Mode d\'emploi pour les agents IA — comment écrire et chercher proprement',
-      '11 catégories canoniques — taxonomie unique pour toute la mémoire',
-      'Synchronisation multi-source — agents + skill registries',
-      'Validation par council et expérience terrain (≥ 30 jours)',
+      'Stop vault-mem SECONDARY — read-only archive',
+      'gradatum = single Live Prod system',
+      'Post-migration validation — count, drift-zero, embeddings',
+      'PR-4 rusqlite 0.32 → 0.39 (post sqlx 0.9 stable)',
+      'D5 counter ≥ 30 days before v0.1.0 public',
     ],
   },
   {
-    num: '3',
-    title: 'Index v2',
-    subtitle: 'nouveau cap de qualité de recherche',
-    state: 'todo',
+    num: '2.6',
+    title: 'Gradatum Skills',
+    subtitle: 'ready-to-use skills · plug agents into the vault',
+    state: 'next',
     deliverables: [
-      'Recherche vectorielle accélérée (HNSW) sur les empreintes',
-      'Migration full-text vers Tantivy',
-      'Fusion intelligente des deux types de recherche + reclassement final',
-      'Métriques Prometheus + traces JSON',
-      'Objectif : +30% de pertinence mesurée vs v1',
+      'reminder — auto-recall skill (vault_search)',
+      'memorize — auto-memorize skill (vault_write)',
+      'Stateless wrappers on REST endpoints',
+      'Works with every major agent — Claude Code, Claude Desktop, Opencode, etc.',
     ],
   },
   {
-    num: '4',
+    num: '2.x',
     title: 'Polish',
-    subtitle: 'production-ready packaging',
+    subtitle: 'Phase 2.3 follow-ups · α.14 target',
+    state: 'next',
+    deliverables: [
+      'Title resolution hardened — safer against malformed user input',
+      'Backfill titles on legacy notes — currently 551 of 552 still empty',
+      'Trace lookups batched — single SQLite round-trip instead of N',
+      'Wikilink resolution parallelized — faster ingest at scale',
+      'Reranker tokenizes the query once instead of per pair — faster search',
+      'Drop the legacy snippet helper — fully replaced by native FTS5',
+    ],
+  },
+  {
+    num: 'x',
+    title: 'OSS Release (TBD)',
+    subtitle: 'production-ready packaging · v0.1.0 public',
     state: 'todo',
     deliverables: [
-      'Paquet .deb + image Docker + bundle hors-ligne',
-      'Sauvegarde / restauration atomique',
-      'Logs d\'audit conformité (SIEM JSONL)',
-      'Patterns haute disponibilité (Litestream + rsync)',
-      'Documentation projet OSS complète (CONTRIBUTING / SECURITY / Code of Conduct)',
+      'Stable wikilinks — survive renames and rewrites',
+      'Note history — see past versions and revert mistakes',
+      'Instant backlinks — no per-query scan',
+      'Drop-in install — .deb package, Docker image, offline bundle',
+      'Audit logs ingestable by any SIEM',
+      'High-availability blueprints — Litestream + rsync',
+      'Full open-source onboarding — CONTRIBUTING, SECURITY, Code of Conduct',
     ],
   },
 ];
 
 const stateLabel: Record<Phase['state'], string> = {
   done: '✓ shipped',
+  'in-progress': '⚡ IN PROGRESS',
   next: 'in flight',
   todo: 'planned',
 };
@@ -154,10 +190,9 @@ const stateLabel: Record<Phase['state'], string> = {
 <section id="roadmap" class="roadmap section-pad section-gap" aria-labelledby="roadmap-title">
   <div class="roadmap-inner">
     <div class="eyebrow">VI · Status & Roadmap</div>
-    <h2 id="roadmap-title" class="roadmap-h2">Five phases shipped. Three milestones ahead.</h2>
+    <h2 id="roadmap-title" class="roadmap-h2">Roadmap — phases shipped and in flight</h2>
     <p class="roadmap-meta">
-      <code>v0.1.0-alpha.9-patch.1</code> · 698 tests · 27 crates · Rust 2021 edition · MSRV 1.75 ·
-      service mode shipped 2026-05-07 · vault_downgrade &amp; full search hardening shipped 2026-05-09.
+      <code>v0.1.0-alpha.13</code> · 796 tests · 26 crates · Rust 2021 · MSRV 1.85
     </p>
 
     <div class="phases-list" role="list">
@@ -313,6 +348,20 @@ const stateLabel: Record<Phase['state'], string> = {
 
   .status-done {
     color: var(--accent);
+  }
+
+  .status-in-progress {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .state-in-progress .phase-num {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .state-in-progress .phase-title {
+    font-weight: 600;
   }
 
   @media (max-width: 768px) {

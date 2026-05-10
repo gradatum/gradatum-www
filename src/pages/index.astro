@@ -1,63 +1,124 @@
 ---
-// Data imports — Zod validation runs at build time (fail-fast on schema violation)
-// These imports are intentional even if not directly used in the template:
-// they trigger Zod .parse() calls in each data file at build time.
-import { phases } from '../data/phases';
-import { rfcs } from '../data/rfcs';
-import { properties } from '../data/properties';
-import { storageBackends } from '../data/storage';
-
-// Silence unused-variable warnings — data is imported for build-time validation
-void phases; void rfcs; void properties; void storageBackends;
-
 import Base from '../layouts/Base.astro';
-import Nav from '../components/Nav.astro';
-import Hero from '../components/Hero.astro';
-import WhySection from '../components/WhySection.astro';
-import PropertiesTable from '../components/PropertiesTable.astro';
-import ArchDiagram from '../components/ArchDiagram.astro';
-import Vocabulary from '../components/Vocabulary.astro';
-import MultiStorage from '../components/MultiStorage.astro';
-import RoadmapSection from '../components/RoadmapSection.astro';
-import RfcCards from '../components/RfcCards.astro';
-import QuickStart from '../components/QuickStart.astro';
+import NavUmbrella from '../components/NavUmbrella.astro';
 import Footer from '../components/Footer.astro';
-import TweaksPanel from '../components/TweaksPanel.astro';
 ---
 <Base
-  title="Gradatum — Memory backbone for AI agents"
-  description="Self-hosted, embedded memory backbone for multi-agent AI systems. Rust + SQLite + Tantivy. Zero external services. Cures memory rot in LLMs."
+  title="Gradatum — A place for your agents."
+  description="Modular self-hosted building blocks for multi-agent AI systems. Memory today. Compute, identity, coordination tomorrow."
 >
   <div class="site-wrap">
-    <Nav />
+    <NavUmbrella />
 
     <main id="main-content" tabindex="-1">
-      <Hero />
+      <!-- Hero umbrella — slogan principal -->
+      <section class="hero-umbrella section-pad" aria-labelledby="hero-title">
+        <div class="hero-inner">
+          <div class="eyebrow">Gradatum · self-hosted modular substrate for AI agents</div>
+
+          <h1 id="hero-title" class="hero-h1">
+            A place<br />
+            <em class="hero-accent">for</em><br />
+            your agents.
+          </h1>
+
+          <p class="hero-desc">
+            Gradatum is a family of self-hosted, embedded building blocks for multi-agent AI systems.
+            Each module solves one foundational need — memory, retrieval, identity, coordination —
+            with the same discipline: zero external services, Rust-first, MCP-native.
+          </p>
+
+          <div class="hero-meta">
+            <span class="meta-pill">Rust</span>
+            <span class="meta-sep">·</span>
+            <span class="meta-pill">embedded</span>
+            <span class="meta-sep">·</span>
+            <span class="meta-pill">self-hosted</span>
+            <span class="meta-sep">·</span>
+            <span class="meta-pill">MCP-native</span>
+          </div>
+        </div>
+      </section>
+
       <hr class="rule" />
-      <WhySection />
+
+      <!-- Section : Modules — umbrella des sous-éléments -->
+      <section class="modules section-pad" aria-labelledby="modules-title">
+        <div class="modules-inner">
+          <div class="eyebrow">The collection</div>
+          <h2 id="modules-title" class="modules-h2">Modules</h2>
+
+          <div class="module-grid">
+            <!-- Vault : LIVE -->
+            <a href="/vault" class="module-card module-live" aria-label="Vault — memory for your agents">
+              <div class="module-status">
+                <span class="status-dot status-live"></span>
+                <span class="status-label">live · v0.1.0-alpha.13</span>
+              </div>
+              <h3 class="module-name">
+                <em class="hero-accent">Memory</em> for your agents
+              </h3>
+              <p class="module-tag">Vault</p>
+              <p class="module-desc">
+                Embedded memory backbone. Cures memory rot in LLMs and lets Claude, Gemini, Codex
+                and your home-grown agents share what they know — across sessions, across machines, across runs.
+              </p>
+              <ul class="module-bullets">
+                <li>SQLite + FTS5 + bge-m3 1024d embeddings</li>
+                <li>BM25 + semantic + Jina cross-encoder reranker (RRF fusion)</li>
+                <li>Multi-facteur scoring (recency × pagerank backlinks)</li>
+                <li>MCP stdio + REST :19090 + auto-refresh JWT</li>
+              </ul>
+              <span class="module-cta">Explore Vault →</span>
+            </a>
+
+            <!-- Placeholders future modules -->
+            <div class="module-card module-soon" aria-label="Future module — coming soon">
+              <div class="module-status">
+                <span class="status-dot status-soon"></span>
+                <span class="status-label">research</span>
+              </div>
+              <h3 class="module-name module-name-soon">Coming next</h3>
+              <p class="module-tag">TBD</p>
+              <p class="module-desc">
+                More foundational modules in design. Same discipline: self-hosted, embedded, Rust-first,
+                MCP-native, zero external services.
+              </p>
+              <p class="module-bullets-soon">
+                Identity · Coordination · Compute · Time
+              </p>
+              <span class="module-cta-soon">Stay tuned</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <hr class="rule" />
-      <PropertiesTable />
-      <hr class="rule" />
-      <ArchDiagram />
-      <hr class="rule" />
-      <Vocabulary />
-      <hr class="rule" />
-      <MultiStorage />
-      <hr class="rule" />
-      <RoadmapSection />
-      <hr class="rule" />
-      <RfcCards />
-      <hr class="rule" />
-      <QuickStart />
+
+      <!-- Section vision -->
+      <section class="vision section-pad" aria-labelledby="vision-title">
+        <div class="vision-inner">
+          <div class="eyebrow">Why an umbrella</div>
+          <h2 id="vision-title" class="vision-h2">
+            One discipline.<br />
+            Many <em class="hero-accent">primitives</em>.
+          </h2>
+          <p class="vision-desc">
+            Modern agent stacks are stitched from a dozen vendor SaaS, each with its own auth,
+            its own latency, its own privacy story. Gradatum builds the opposite — a coherent
+            family of <strong>local-first primitives</strong>, each shippable on a single LXC,
+            each composable via the Model Context Protocol, each owned end-to-end.
+          </p>
+          <p class="vision-desc vision-desc-mono">
+            <code>cargo install</code> · <code>systemctl enable</code> · <code>your data stays here</code>
+          </p>
+        </div>
+      </section>
     </main>
 
     <Footer />
-
-    <!-- Tweaks panel — island (JS enabled) -->
-    <TweaksPanel />
   </div>
 
-  <!-- Skip to content link (accessibility) -->
   <a href="#main-content" class="skip-link">Skip to main content</a>
 </Base>
 
@@ -69,6 +130,246 @@ import TweaksPanel from '../components/TweaksPanel.astro';
     box-shadow: 0 0 0 1px var(--rule);
   }
 
+  /* ───── Hero umbrella ───── */
+  .hero-umbrella {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+
+  .hero-inner {
+    max-width: 880px;
+  }
+
+  .hero-h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 1.5rem 0 2rem;
+  }
+
+  .hero-accent {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .hero-desc {
+    font-size: 1.125rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 680px;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+  }
+
+  .meta-pill {
+    padding: 0.25rem 0.625rem;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+  }
+
+  .meta-sep {
+    opacity: 0.4;
+  }
+
+  /* ───── Modules grid ───── */
+  .modules-inner {
+    max-width: 1080px;
+  }
+
+  .modules-h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 500;
+    margin: 1rem 0 3rem;
+    letter-spacing: -0.01em;
+  }
+
+  .module-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .module-card {
+    display: block;
+    padding: 2.25rem;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--ink);
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .module-live {
+    border-color: var(--accent);
+  }
+
+  .module-live:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  .module-soon {
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  .module-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-soft);
+    margin-bottom: 1.25rem;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .status-live {
+    background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(195, 86, 28, 0.18);
+  }
+
+  .status-soon {
+    background: var(--ink-soft);
+    opacity: 0.4;
+  }
+
+  .module-name {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  .module-name-soon {
+    color: var(--ink-soft);
+  }
+
+  .module-tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-soft);
+    margin: 0.5rem 0 1.25rem;
+  }
+
+  .module-desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin-bottom: 1.25rem;
+  }
+
+  .module-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 1.25rem 0 1.5rem;
+    display: grid;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+  }
+
+  .module-bullets li {
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .module-bullets li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .module-bullets-soon {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    margin: 1.25rem 0 1.5rem;
+    letter-spacing: 0.04em;
+  }
+
+  .module-cta {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    font-weight: 500;
+  }
+
+  .module-cta-soon {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.06em;
+    opacity: 0.6;
+  }
+
+  /* ───── Vision section ───── */
+  .vision-inner {
+    max-width: 880px;
+  }
+
+  .vision-h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    margin: 1rem 0 2rem;
+  }
+
+  .vision-desc {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    max-width: 720px;
+    margin-bottom: 1.25rem;
+  }
+
+  .vision-desc-mono {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    margin-top: 1.75rem;
+  }
+
+  .vision-desc-mono code {
+    background: transparent;
+    color: var(--ink);
+    padding: 0;
+  }
+
+  /* ───── Skip link ───── */
   .skip-link {
     position: absolute;
     top: -100%;
