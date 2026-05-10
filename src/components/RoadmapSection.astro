@@ -5,7 +5,7 @@
 //   Phase 2.0   = DONE (Sprint X-1 + 2.0a/b/c + 2.0c-bis Auth Path 2 → alpha.5)
 //   Phase 2.1   = DONE (cleanup + 2.1.1 hardening + 2.1.2 soft-archiving + 2.x.1 search foundations → alpha.7→alpha.10)
 //   Phase 2.2   = DONE (Plan bumps PR-1 serde_yml → alpha.10-bumps.1)
-//   Phase 2.2.1 = IN PROGRESS (dual-write cohabitation acquired + CLI migrate-from-v0 to do)
+//   Phase 2.2.1 = IN PROGRESS (dual-write cohabitation acquired + notes organically migrated since 2026-05-09)
 //   Phase 2.3   = DONE (PR-2/3/5/6 cumulative + 2.x.2 RRF + 2.x.3 Multi-Factor+Jina + 2.x.4 Endpoints → alpha.11→alpha.13 + alpha.12-bumps.1)
 //   Phase 2.4   = TODO (production reranker — main.rs wiring + golden set + recall + ort 2.x stable)
 //   Phase 2.5   = NEXT (End Double run — stop vault-mem secondary, gradatum single prod)
@@ -87,12 +87,12 @@ const phases: Phase[] = [
   {
     num: '2.2.1',
     title: 'Double run — predecessor vault vs Gradatum LIVE',
-    subtitle: 'cohabitation acquired · bulk import in flight',
+    subtitle: 'cohabitation active · notes already migrated · vault-mem still SECONDARY',
     state: 'in-progress',
     deliverables: [
       'Dual-write cohabitation vault-mem ↔ gradatum',
       'gradatum PRIMARY · vault-mem SECONDARY rollback',
-      'CLI migrate-from-v0 — bulk import vault-mem v1.6.2',
+      'Notes already migrated — organic transfer through dual-write since 2026-05-09',
     ],
   },
   {
