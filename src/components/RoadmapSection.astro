@@ -113,12 +113,14 @@ const phases: Phase[] = [
   {
     num: '2.4',
     title: 'Production reranker',
-    subtitle: 'prod activation · measured recall · ort stable',
+    subtitle: 'prod activation · measured recall · OSS-friendly default',
     state: 'todo',
     deliverables: [
-      'Pluggable Reranker trait + JinaOnnxReranker (already shipped α.12)',
-      'main.rs wiring — enable on RERANKER_ONNX_PATH',
-      'Install script fetches the Jina cross-encoder ONNX model (opt-in)',
+      'Pluggable Reranker trait shipped α.12 — supports parallel implementations',
+      'Default model — BGE-reranker-v2-m3 (Apache 2.0, 90+ languages, 600M params)',
+      'Optional model — Jina v2 multilingual (smaller 278M, CC-BY-NC-4.0, opt-in only)',
+      'main.rs wiring — auto-enable when reranker model is present locally',
+      'Install script fetches the Apache-licensed BGE ONNX by default',
       'Manual golden set — 50 query/expected_id pairs',
       'Target recall@5 ≥ 0.75',
     ],
