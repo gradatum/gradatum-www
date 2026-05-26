@@ -1,0 +1,91 @@
+---
+// Data imports — Zod validation runs at build time (fail-fast on schema violation)
+// These imports are intentional even if not directly used in the template:
+// they trigger Zod .parse() calls in each data file at build time.
+import { phases } from '../data/phases';
+import { rfcs } from '../data/rfcs';
+import { properties } from '../data/properties';
+import { storageBackends } from '../data/storage';
+
+// Silence unused-variable warnings — data is imported for build-time validation
+void phases; void rfcs; void properties; void storageBackends;
+
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import WhySection from '../components/WhySection.astro';
+import PropertiesTable from '../components/PropertiesTable.astro';
+import ArchDiagram from '../components/ArchDiagram.astro';
+import PipelineLifecycle from '../components/PipelineLifecycle.astro';
+import Vocabulary from '../components/Vocabulary.astro';
+import MultiStorage from '../components/MultiStorage.astro';
+import RoadmapSection from '../components/RoadmapSection.astro';
+import RfcCards from '../components/RfcCards.astro';
+import QuickStart from '../components/QuickStart.astro';
+import Footer from '../components/Footer.astro';
+import TweaksPanel from '../components/TweaksPanel.astro';
+---
+<Base
+  title="Gradatum — Memory backbone for AI agents"
+  description="Self-hosted, embedded memory backbone for multi-agent AI systems. Rust + SQLite + Tantivy. Zero external services. Cures memory rot in LLMs."
+>
+  <div class="site-wrap">
+    <Nav />
+
+    <main id="main-content" tabindex="-1">
+      <Hero />
+      <hr class="rule" />
+      <WhySection />
+      <hr class="rule" />
+      <PropertiesTable />
+      <hr class="rule" />
+      <ArchDiagram />
+      <hr class="rule" />
+      <PipelineLifecycle />
+      <hr class="rule" />
+      <Vocabulary />
+      <hr class="rule" />
+      <MultiStorage />
+      <hr class="rule" />
+      <RoadmapSection />
+      <hr class="rule" />
+      <RfcCards />
+      <hr class="rule" />
+      <QuickStart />
+    </main>
+
+    <Footer />
+
+    <!-- Tweaks panel — island (JS enabled) -->
+    <TweaksPanel />
+  </div>
+
+  <!-- Skip to content link (accessibility) -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+</Base>
+
+<style>
+  .site-wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+    background: var(--paper);
+    box-shadow: 0 0 0 1px var(--rule);
+  }
+
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    background: var(--accent);
+    color: var(--paper);
+    padding: 0.75rem 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    z-index: 9999;
+    text-decoration: none;
+  }
+
+  .skip-link:focus {
+    top: 0.5rem;
+  }
+</style>

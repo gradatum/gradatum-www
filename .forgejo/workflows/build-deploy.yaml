@@ -1,0 +1,86 @@
+name: Build & Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: [self-hosted, linux, x64, lxc-500]
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Versions
+        run: |
+          node --version
+          pnpm --version
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+      - name: Verify build output
+        run: |
+          test -f dist/index.html && echo "OK: index.html present"
+          test -f dist/CNAME && echo "OK: CNAME present"
+          test -f dist/sitemap-index.xml && echo "OK: sitemap present"
+          echo "HTML size: $(wc -c < dist/index.html) bytes"
+          echo "CSS size: $(find dist/_assets -name '*.css' -exec wc -c {} + 2>/dev/null | tail -1 || echo '0') bytes"
+
+      - name: Deploy to gh-pages
+        env:
+          FORGEJO_TOKEN: ${{ secrets.FORGEJO_TOKEN }}
+        run: |
+          git config user.name "Forgejo CI"
+          git config user.email "ci@localhost"
+
+          COMMIT_SHA=$(git rev-parse --short HEAD)
+          COMMIT_MSG=$(git log -1 --pretty=%s)
+          DEPLOY_DIR=$(mktemp -d /tmp/gh-pages-XXXXXX)
+
+          # Use Forgejo Actions runtime variables (anti-leak Pilier 1, post Phase B filter-repo 2026-05-26)
+          REPO_URL="http://${{ gitea.repository_owner }}:${FORGEJO_TOKEN}@localhost:3000/${{ gitea.repository }}.git"
+
+          # Try to clone gh-pages branch; if it doesn't exist, init orphan
+          if git ls-remote --heads "${REPO_URL}" gh-pages | grep -q gh-pages; then
+            git clone --branch gh-pages --depth 1 "${REPO_URL}" "${DEPLOY_DIR}"
+          else
+            mkdir -p "${DEPLOY_DIR}"
+            cd "${DEPLOY_DIR}"
+            git init -b gh-pages
+            git remote add origin "${REPO_URL}"
+            cd -
+          fi
+
+          # Clear old content (keep .git)
+          find "${DEPLOY_DIR}" -mindepth 1 -maxdepth 1 -not -name '.git' -exec rm -rf {} +
+
+          # Copy fresh build
+          cp -r dist/. "${DEPLOY_DIR}/"
+
+          cd "${DEPLOY_DIR}"
+          git config user.name "Forgejo CI"
+          git config user.email "ci@localhost"
+          git add -A
+          git commit -m "deploy: ${COMMIT_SHA} — ${COMMIT_MSG}" --allow-empty
+          git push origin HEAD:gh-pages --force
+
+          cd -
+          rm -rf "${DEPLOY_DIR}"
+          echo "Deployed to gh-pages: ${COMMIT_SHA}"
+
+      - name: Summary
+        run: |
+          echo "## Deploy Summary" >> "$GITHUB_STEP_SUMMARY" || true
+          echo "- Branch: gh-pages" >> "$GITHUB_STEP_SUMMARY" || true
+          echo "- Domain: https://gradatum.org" >> "$GITHUB_STEP_SUMMARY" || true
+          echo "- Commit: $(git rev-parse --short HEAD)" >> "$GITHUB_STEP_SUMMARY" || true
+          echo "- HTML size: $(wc -c < dist/index.html) bytes" >> "$GITHUB_STEP_SUMMARY" || true

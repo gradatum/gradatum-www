@@ -1,0 +1,31 @@
+[[rows]]
+key = "Embedded"
+value = "One Rust binary. No PostgreSQL. No Redis. No external services. apt install and you're running."
+
+[[rows]]
+key = "Self-hosted"
+value = "Your memory, your machine. No telemetry. No vendor lock-in."
+
+[[rows]]
+key = "LLM-agnostic"
+value = "Plug any OpenAI-compatible backend (Ollama, vLLM, llama.cpp, OpenRouter, Anthropic) — or run heuristic-only with no LLM at all."
+
+[[rows]]
+key = "Multi-vault"
+value = "Separate main from staging and bench-* vaults for testing, migration, A/B prompts. Atomic swap when ready."
+
+[[rows]]
+key = "Hierarchical ACL"
+value = "Bearer-scoped access to memory loci. Configure from presets (flat, hierarchical, multi-project, team) or write your own."
+
+[[rows]]
+key = "Multi-storage"
+value = "OpenDAL abstraction — 8 backends: Local FS, S3/R2, Azure, GCS, WebDAV, SFTP, HDFS, IPFS. NFS explicitly rejected."
+
+[[rows]]
+key = "Markdown truth"
+value = "Notes are Markdown files with YAML frontmatter. Readable by humans and by cat. The database is an index, not the source of truth."
+
+[[rows]]
+key = "Hybrid search"
+value = "BM25 (Tantivy) + semantic ANN (sqlite-vec) + PageRank graph + cross-encoder rerank. Multi-signal fusion via RRF."

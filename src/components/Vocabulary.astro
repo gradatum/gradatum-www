@@ -1,0 +1,111 @@
+---
+const terms = [
+  {
+    term: 'Vault',
+    def: 'The technical backing store (SQLite + Tantivy + Markdown). Multi-vault first-class — main + staging + bench-*.',
+  },
+  {
+    term: 'Locus',
+    def: "A logical subdivision of a vault, isolated by ACL. From Cicero's ars memoriae — the mental location where an image is placed.",
+  },
+  {
+    term: 'Section',
+    def: 'One of 10 cognitive categories: decisions, architecture, debug, reasoning, feedback, lessons-learned, retrospectives, experiments, agent-issues, reference.',
+  },
+  {
+    term: 'Note',
+    def: 'Atomic Markdown file with YAML frontmatter. ULID identity. SHA-256 content hash for drift detection.',
+  },
+  {
+    term: 'Bearer',
+    def: 'An authenticated identity with read/write ACL patterns over loci. Configured via presets or custom bearer.toml.',
+  },
+  {
+    term: 'Preset',
+    def: 'A template configuration shipped in examples/presets/ — flat, hierarchical, multi-project, team.',
+  },
+];
+---
+<section id="vocab" class="vocab section-pad section-gap" aria-labelledby="vocab-title">
+  <div class="vocab-inner">
+    <div class="eyebrow">IV · Vocabulary</div>
+    <h2 id="vocab-title" class="vocab-h2">Six levels, named with care.</h2>
+    <p class="vocab-desc">
+      Borrowed from Cicero's <em>ars memoriae</em>: agents place their memories in
+      <em>loci</em>, mental locations of an imagined palace.
+      Agents don't share rooms — they share places of memory.
+    </p>
+
+    <dl class="vocab-grid">
+      {terms.map(({ term, def }) => (
+        <div class="vocab-item">
+          <dt class="vocab-term">{term}</dt>
+          <dd class="vocab-def">{def}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<style>
+  .vocab {
+    background: var(--paper);
+  }
+
+  .vocab-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .vocab-h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 3.5vw, 2.875rem);
+    font-weight: 500;
+    margin-top: 1rem;
+  }
+
+  .vocab-desc {
+    margin-top: 1.25rem;
+    font-size: 1.0625rem;
+    color: var(--ink-soft);
+    max-width: 45rem;
+    line-height: 1.6;
+  }
+
+  .vocab-desc em {
+    font-style: italic;
+    color: var(--ink);
+  }
+
+  .vocab-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem 4rem;
+    margin-top: 3rem;
+  }
+
+  .vocab-item {
+    /* dl items don't need extra wrapper styling */
+  }
+
+  .vocab-term {
+    font-family: var(--font-serif);
+    font-size: 1.875rem;
+    font-style: italic;
+    color: var(--ink);
+    font-weight: 400;
+  }
+
+  .vocab-def {
+    margin-top: 0.625rem;
+    font-size: 1rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
+    .vocab-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

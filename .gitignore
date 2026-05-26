@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.log
+.DS_Store
+*.swp
+*.swo
+.cache/
+.gradatum-meta

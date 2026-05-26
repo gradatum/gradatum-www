@@ -1,0 +1,73 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title = 'Gradatum — Memory backbone for AI agents',
+  description = 'Self-hosted, embedded memory backbone for multi-agent AI systems. Rust + SQLite + Tantivy. Zero external services. Cures memory rot in LLMs.',
+  ogImage = '/og-image.png',
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+---
+<!DOCTYPE html>
+<html lang="en" data-dark="true" data-density="comfortable" data-type="sans">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Pre-public soft-launch — search engines block until D5 reveal. Remove these 2 lines to open public. -->
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
+    <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+    <meta property="og:site_name" content="Gradatum" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(ogImage, Astro.site)} />
+
+    <!-- Fonts — preconnect first, then stylesheet -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+
+    <!-- Theme init script (before render — prevents FOUC) -->
+    <script is:inline>
+      (function() {
+        const dark = localStorage.getItem('grd-dark');
+        const density = localStorage.getItem('grd-density') || 'comfortable';
+        const type = localStorage.getItem('grd-type') || 'sans';
+        const h = document.documentElement;
+        if (dark === 'false') h.setAttribute('data-dark', 'false');
+        else h.setAttribute('data-dark', 'true'); // default dark
+        h.setAttribute('data-density', density);
+        h.setAttribute('data-type', type);
+      })();
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+

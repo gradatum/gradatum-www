@@ -1,0 +1,257 @@
+---
+// Architecture diagram — SVG swimlanes (5 planes)
+// Source of truth: ../gradatum/ARCHITECTURE.md (4 planes + clients)
+// Controlled by data-diagram attribute on <html>: "svg" (default) | "ascii"
+---
+<section id="arch" class="arch section-pad section-gap" aria-labelledby="arch-title">
+  <div class="arch-inner">
+    <div class="eyebrow">III · Architecture</div>
+    <h2 id="arch-title" class="arch-h2">One binary. Four planes. Markdown on disk.</h2>
+    <p class="arch-desc">
+      A stateless façade speaks HTTP and MCP to your agents. A worker drains a SQLite-backed
+      queue. One vault per instance is the default — staging and bench-* vaults
+      are first-class for migration and A/B testing.
+    </p>
+
+    <!-- SVG diagram (default) -->
+    <div class="diagram-svg" aria-label="Architecture diagram" role="img">
+      <svg
+        viewBox="0 0 900 560"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        focusable="false"
+        class="arch-svg"
+      >
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="var(--ink-soft)" />
+          </marker>
+        </defs>
+
+        <!-- Row 0: Agents (top) -->
+        <rect x="10" y="10" width="880" height="64" rx="0"
+              fill="none" stroke="var(--rule)" stroke-width="1"/>
+        <text x="24" y="28" class="svg-label-mono">AGENTS</text>
+        <text x="24" y="52" class="svg-label-sm">AI agents · coding assistants (Claude Code, ZeroClaw, Gemini) · orchestrators</text>
+        <!-- protocol labels -->
+        <text x="680" y="45" class="svg-label-proto">MCP / HTTP / CLI</text>
+
+        <!-- Arrow agents → server -->
+        <line x1="450" y1="74" x2="450" y2="106"
+              stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+        <!-- Row 1: Control plane -->
+        <rect x="10" y="110" width="880" height="118" rx="0"
+              fill="color-mix(in srgb, var(--rule) 18%, transparent)"
+              stroke="var(--rule)" stroke-width="1"/>
+        <text x="24" y="128" class="svg-label-mono">CONTROL PLANE</text>
+
+        <!-- gradatum-server -->
+        <rect x="30" y="138" width="260" height="40" rx="0"
+              fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+        <text x="44" y="162" class="svg-box-main">gradatum-server</text>
+        <text x="44" y="178" class="svg-box-sub">:19090  /api/v1  /mcp  /sse  /health  /admin</text>
+
+        <!-- gradatum-worker -->
+        <rect x="320" y="138" width="220" height="40" rx="0"
+              fill="none" stroke="var(--rule)" stroke-width="1.5"/>
+        <text x="334" y="162" class="svg-box-main">gradatum-worker</text>
+        <text x="334" y="178" class="svg-box-sub">curator + maintenance</text>
+
+        <!-- gradatum-admin -->
+        <rect x="570" y="138" width="200" height="40" rx="0"
+              fill="none" stroke="var(--rule)" stroke-width="1.5"/>
+        <text x="584" y="162" class="svg-box-main">gradatum-admin</text>
+        <text x="584" y="178" class="svg-box-sub">init / vault ops / backup</text>
+
+        <!-- RFC-0003 badge -->
+        <text x="800" y="128" class="svg-label-proto">RFC-0003</text>
+
+        <!-- Arrow control → data -->
+        <line x1="450" y1="228" x2="450" y2="260"
+              stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <!-- async queue label -->
+        <text x="458" y="248" class="svg-label-sm">async queue (SQLite lease)</text>
+
+        <!-- Row 2: Data plane (15 crates) -->
+        <rect x="10" y="264" width="880" height="162" rx="0"
+              fill="color-mix(in srgb, var(--rule) 10%, transparent)"
+              stroke="var(--rule)" stroke-width="1"/>
+        <text x="24" y="282" class="svg-label-mono">DATA PLANE  ·  15 crates</text>
+
+        <!-- Crate grid 3 cols × 4 rows approx -->
+        <!-- Row A -->
+        <text x="30" y="304" class="svg-crate">gradatum-core</text>
+        <text x="230" y="304" class="svg-crate">gradatum-markdown</text>
+        <text x="470" y="304" class="svg-crate">gradatum-vault</text>
+        <text x="670" y="304" class="svg-crate">gradatum-storage</text>
+        <!-- Row B -->
+        <text x="30" y="326" class="svg-crate">gradatum-index</text>
+        <text x="230" y="326" class="svg-crate">gradatum-search</text>
+        <text x="470" y="326" class="svg-crate">gradatum-queue</text>
+        <text x="670" y="326" class="svg-crate">gradatum-cache</text>
+        <!-- Row C -->
+        <text x="30" y="348" class="svg-crate">gradatum-chat</text>
+        <text x="230" y="348" class="svg-crate">gradatum-curator</text>
+        <text x="470" y="348" class="svg-crate">gradatum-embed</text>
+        <text x="670" y="348" class="svg-crate">gradatum-engine</text>
+        <!-- Row D -->
+        <text x="30" y="370" class="svg-crate">gradatum-acl-policy</text>
+        <text x="230" y="370" class="svg-crate">gradatum-acl-auth</text>
+        <text x="470" y="370" class="svg-crate">gradatum-auth</text>
+
+        <!-- single writer note -->
+        <text x="670" y="408" class="svg-label-proto">single writer · WAL readers</text>
+
+        <!-- Arrow data → clients -->
+        <line x1="160" y1="426" x2="160" y2="460"
+              stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+        <!-- Row 3: Clients -->
+        <rect x="10" y="464" width="880" height="84" rx="0"
+              fill="none" stroke="var(--rule)" stroke-width="1"/>
+        <text x="24" y="482" class="svg-label-mono">CLIENTS</text>
+
+        <rect x="30" y="492" width="200" height="40" rx="0"
+              fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+        <text x="44" y="516" class="svg-box-main">gradatum-mcp-stub</text>
+
+        <rect x="260" y="492" width="180" height="40" rx="0"
+              fill="none" stroke="var(--rule)" stroke-width="1"/>
+        <text x="274" y="516" class="svg-box-main">gradatum (CLI)</text>
+
+        <rect x="470" y="492" width="200" height="40" rx="0"
+              fill="none" stroke="var(--rule)" stroke-width="1"/>
+        <text x="484" y="516" class="svg-box-main">gradatum-sdk-rs</text>
+
+        <!-- mcp-stub label -->
+        <text x="44" y="548" class="svg-label-sm">stdio → HTTP proxy · Claude Code / ZeroClaw</text>
+      </svg>
+    </div>
+
+    <!-- ASCII fallback (shown when data-diagram="ascii") -->
+    <pre class="diagram-ascii" aria-label="ASCII architecture diagram">
+        AI agents · coding assistants · orchestrators
+              ↓  MCP / HTTP / CLI  (RFC-0003: :19090)
+        ┌─────────────────────────────────────────┐
+        │  gradatum-server                        │  stateless façade
+        │  /api/v1  /mcp  /sse  /health  /admin  │
+        └────────────────┬────────────────────────┘
+                         ↓  async queue (SQLite, lease 5min)
+        ┌─────────────────────────────────────────┐
+        │  gradatum-worker                        │  curator + maintenance
+        └────────────────┬────────────────────────┘
+                         ↓  DATA PLANE (15 crates)
+        ┌─────────────────────────────────────────┐
+        │  core  markdown  vault  storage  index  │
+        │  search  queue  cache  chat  curator     │
+        │  embed  engine  acl-policy  acl-auth     │
+        │  auth                                   │
+        └────────────────┬────────────────────────┘
+                         ↓  CLIENTS
+        ┌─────────────────────────────────────────┐
+        │  gradatum-mcp-stub  (stdio→HTTP proxy)  │
+        │  gradatum CLI                           │
+        │  gradatum-sdk-rs                        │
+        └─────────────────────────────────────────┘</pre>
+  </div>
+</section>
+
+<style>
+  .arch {
+    background: var(--paper);
+  }
+
+  .arch-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .arch-h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 3.5vw, 2.875rem);
+    font-weight: 500;
+    margin-top: 1rem;
+  }
+
+  .arch-desc {
+    margin-top: 1.5rem;
+    font-size: 1.0625rem;
+    color: var(--ink-soft);
+    max-width: 48rem;
+    line-height: 1.6;
+  }
+
+  /* SVG diagram */
+  .arch-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .diagram-svg {
+    margin-top: 2.5rem;
+    border: 1px solid var(--rule);
+    background: var(--bg);
+    padding: 1.5rem;
+    overflow-x: auto;
+  }
+
+  /* SVG text styles (CSS classes referenced in SVG) */
+  .svg-label-mono {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .svg-label-sm {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--ink-soft);
+  }
+
+  .svg-label-proto {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--accent);
+    letter-spacing: 0.05em;
+  }
+
+  .svg-box-main {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--ink);
+    font-weight: 500;
+  }
+
+  .svg-box-sub {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    fill: var(--ink-soft);
+  }
+
+  .svg-crate {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    fill: var(--ink-soft);
+  }
+
+  /* ASCII diagram */
+  .diagram-ascii {
+    display: none; /* hidden by default; shown when data-diagram="ascii" */
+    margin-top: 2.5rem;
+    border-left: 3px solid var(--accent);
+  }
+
+  /* Show/hide based on data-diagram attr on html */
+  html[data-diagram="ascii"] .diagram-svg { display: none; }
+  html[data-diagram="ascii"] .diagram-ascii { display: block; }
+
+  @media (max-width: 768px) {
+    .diagram-svg {
+      padding: 0.5rem;
+    }
+  }
+</style>

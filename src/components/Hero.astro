@@ -1,0 +1,154 @@
+---
+const GITHUB_URL = 'https://github.com/gradatum/gradatum';
+const ARCH_URL = `${GITHUB_URL}/blob/main/ARCHITECTURE.md`;
+---
+<section class="hero section-pad" aria-labelledby="hero-title">
+  <div class="hero-inner">
+    <div class="eyebrow">Memoria · cognitive memory backbone for AI agents</div>
+
+    <h1 id="hero-title" class="hero-h1">
+      A place of<br />
+      <em class="hero-accent">memory</em> for<br />
+      your agents.
+    </h1>
+
+    <p class="hero-desc">
+      Gradatum is a self-hosted, embedded memory backbone for multi-agent AI systems.
+      It cures <em>memory rot</em> in LLMs and lets Claude, Gemini, Codex
+      and your home-grown agents share what they know —
+      across sessions, across machines, across runs.
+    </p>
+
+    <div class="hero-cta" role="group" aria-label="Primary actions">
+      <a href={GITHUB_URL} class="btn-primary" target="_blank" rel="noopener noreferrer">
+        Star on GitHub →
+      </a>
+      <a href={ARCH_URL} class="btn-text" target="_blank" rel="noopener noreferrer">
+        Read the architecture
+      </a>
+    </div>
+
+    <blockquote class="cicero-quote" aria-label="Cicero, de Oratore II">
+      <p>« Loci sunt, in quibus imagines collocantur. »</p>
+      <footer>
+        <span class="eyebrow">
+          Cicero · de Oratore II — the loci are the places where images are set down.
+        </span>
+      </footer>
+    </blockquote>
+  </div>
+</section>
+
+<style>
+  .hero {
+    background: var(--paper);
+    padding-top: 5rem;
+    padding-bottom: 4rem;
+  }
+
+  .hero-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .hero-h1 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(3.5rem, 8vw, 6.75rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-top: 1.75rem;
+  }
+
+  .hero-accent {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-desc {
+    margin-top: 2.25rem;
+    font-size: clamp(1.1rem, 2vw, 1.4375rem);
+    line-height: 1.5;
+    max-width: 45rem;
+    color: var(--ink-soft);
+  }
+
+  .hero-desc em {
+    color: var(--ink);
+    font-style: italic;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 1rem 1.75rem;
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: opacity 0.15s ease;
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .btn-primary:hover {
+    opacity: 0.85;
+  }
+
+  .btn-text {
+    color: var(--ink);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 0.25rem;
+    transition: color 0.15s ease, border-color 0.15s ease;
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .btn-text:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .cicero-quote {
+    margin-top: 4rem;
+    padding-left: 1.5rem;
+    border-left: 2px solid var(--accent);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.1875rem;
+    color: var(--ink-soft);
+    max-width: 38rem;
+  }
+
+  .cicero-quote p {
+    margin: 0;
+  }
+
+  .cicero-quote footer {
+    font-style: normal;
+    margin-top: 0.625rem;
+  }
+
+  @media (max-width: 768px) {
+    .hero-cta {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>
