@@ -1,194 +1,123 @@
 ---
-// Roadmap — source: CHANGELOG.md + ARCHITECTURE.md + Forgejo tags (sync 2026-05-10).
-// Web phase ↔ real chunks mapping:
-//   Phase 1     = DONE (Phase 0 + 0bis + 0bis-bis + Phase 1 refactor → alpha)
-//   Phase 2.0   = DONE (Sprint X-1 + 2.0a/b/c + 2.0c-bis Auth Path 2 → alpha.5)
-//   Phase 2.1   = DONE (cleanup + 2.1.1 hardening + 2.1.2 soft-archiving + 2.x.1 search foundations → alpha.7→alpha.10)
-//   Phase 2.2   = DONE (Plan bumps PR-1 serde_yml → alpha.10-bumps.1)
-//   Phase 2.2.1 = DONE (dual-write cohabitation + organic migration → vault-mem decommissioned 2026-05-25)
-//   Phase 2.3   = DONE (PR-2/3/5/6 cumulative + 2.x.2 RRF + 2.x.3 Multi-Factor+Jina + 2.x.4 Endpoints → alpha.11→alpha.13 + alpha.12-bumps.1)
-//   Phase 2.4   = TODO (production reranker — main.rs wiring + golden set + recall + ort 2.x stable)
-//   Phase 2.5   = DONE (End Double run LIVRÉ 2026-05-25 — vault-mem decommissioned, gradatum = single Live Prod, council Art.15bis 4/4 GO-CAVEATS)
-//   Phase 2.6   = IN PROGRESS (gradatum-skills v0.1.0 LIVRÉ 2026-05-25 — Phase 1 reminder + vault-search shipped, Phase 2 memorize pending)
-//   Phase 2.x   = NEXT (Polish — Phase 2.3 caveats backlog, alpha.15 target — alpha.14 = security hardening Knox P1 JWT validate_nbf)
-//   Phase x     = TODO (OSS release — number TBD — note_history + .deb + Docker + SIEM + v0.1.0 public)
+// Roadmap — règle de numérotation validée Stéphane 2026-05-28 :
+//   Numéro de phase = 2 chiffres = v{X.Y}
+//   Toutes les versions v{X.Y}.<patch>-alpha.<N> / -bumps.<N> / -patch.<N>
+//   appartiennent à la même phase X.Y.
+//
+// Mapping historique → milestones Phase 0.1 :
+//   Phase 1, 2.0, 2.1, 2.2, 2.2.1, 2.3, 2.4, 2.5, 2.6, 2.x
+//   → milestones chronologiques sous Phase 0.1 (v0.1.x alpha series)
 
-interface Phase {
-  num: string;
+interface Milestone {
+  status: 'done' | 'in-progress' | 'next' | 'planned';
   title: string;
-  subtitle: string;
-  state: 'done' | 'in-progress' | 'next' | 'todo';
-  deliverables: string[];
-  tag?: string;
+  version: string;
+  date?: string;
 }
 
-const phases: Phase[] = [
+interface MacroPhase {
+  num: string;
+  versionPrefix: string;
+  versionSuffix: string;
+  state: 'in-progress' | 'planned';
+  description: string;
+  milestones?: Milestone[];
+  scopeTeaser?: string;
+}
+
+const macroPhases: MacroPhase[] = [
   {
-    num: '1',
-    title: 'Functional core',
-    subtitle: 'DONE · v0.1.0-alpha · foundations',
-    state: 'done',
-    tag: 'v0.1.0-alpha',
-    deliverables: [
-      'Engine — 22 crates: store, index, retrieve',
-      'SQLite + FTS5 storage',
-      'BM25 + PageRank ranking',
-      'Multi-storage — local, NAS, cloud-ready',
-      '244 automated tests',
-    ],
-  },
-  {
-    num: '2.0',
-    title: 'Service mode',
-    subtitle: 'DONE · v0.1.0-alpha.5 · 2026-05-07',
-    state: 'done',
-    tag: 'v0.1.0-alpha.5',
-    deliverables: [
-      'HTTP service — 12 MCP methods exposed',
-      'MCP stdio bridge — Claude Code & ZeroClaw compatible',
-      'Auth — API key + JWT (24 h auto-refresh)',
-      'Async worker — local LLM curator',
-      'Admin CLI — init / backup / restore',
-      'Reproducible installer scripts',
-    ],
-  },
-  {
-    num: '2.1',
-    title: 'Quality, hardening, soft archiving & search foundations',
-    subtitle: 'DONE · v0.1.0-alpha.7 → alpha.10',
-    state: 'done',
-    tag: 'v0.1.0-alpha.10',
-    deliverables: [
-      'Faithful operation tracking — real BM25',
-      'gradatum-warden — rate limit + IP filter',
-      'Auto semantic embedding — 1024-dim at write',
-      'Soft archiving (vault_downgrade)',
-      'Restore + replacement link',
-      'Dual-write cohabitation vault-mem ↔ gradatum',
-      'Search foundations — real vault_status, ULID pagination, FTS5 snippet, H1 title',
-      '720 cumulative tests',
-    ],
-  },
-  {
-    num: '2.2',
-    title: 'Supply chain hardening — drop-in security',
-    subtitle: 'DONE · v0.1.0-alpha.10-bumps.1',
-    state: 'done',
-    tag: 'v0.1.0-alpha.10-bumps.1',
-    deliverables: [
-      'Upstream deprecation audit — serde_yaml flagged unmaintained',
-      'PR-1 drop-in migration — serde_yaml → serde_yml (maintained fork, API-compatible)',
-      'Workspace Cargo.toml + Cargo.lock updated',
-      'No breaking change — substitution-only diff',
-      'Post-merge TNR validated — 0 regression',
-      'Sets Phase 2.2 baseline — PR-2/3/5/6 cumulated in Phase 2.3',
-    ],
-  },
-  {
-    num: '2.2.1',
-    title: 'Double run — predecessor vault vs Gradatum LIVE',
-    subtitle: 'DONE · vault-mem decommissioned 2026-05-25',
-    state: 'done',
-    deliverables: [
-      'Dual-write cohabitation vault-mem ↔ gradatum',
-      'gradatum PRIMARY · vault-mem SECONDARY rollback',
-      'Notes already migrated — organic transfer through dual-write since 2026-05-09',
-      'vault-mem Phase 2 arrêt complet 2026-05-25 — read-only LTS puis full stop',
-    ],
-  },
-  {
-    num: '2.3',
-    title: 'Search Quality + cumulative supply chain',
-    subtitle: 'DONE · alpha.11-patch.1 → alpha.13 + alpha.12-bumps.1',
-    state: 'done',
-    tag: 'v0.1.0-alpha.13',
-    deliverables: [
-      'Semantic + RRF — in-process cosine, RRF k=60',
-      'Multi-factor + feature-gated Jina reranker',
-      'Endpoints completeness — wikilinks, title_lookup, text trace, token budget',
-      'Cumulative bumps — rmcp 1.x, axum 0.8, sha2 0.11, toml 1.x, MSRV 1.85',
-      '796 cumulative tests · 0 clippy · 0 fmt · cargo deny GREEN',
-      'Full write+search pipeline (see Lifecycle)',
-    ],
-  },
-  {
-    num: '2.4',
-    title: 'Production reranker',
-    subtitle: 'prod activation · measured recall · OSS-friendly default',
-    state: 'todo',
-    deliverables: [
-      'Pluggable Reranker trait shipped α.12 — supports parallel implementations',
-      'Default model — BGE-reranker-v2-m3 (Apache 2.0, 90+ languages, 600M params)',
-      'Optional model — Jina v2 multilingual (smaller 278M, CC-BY-NC-4.0, opt-in only)',
-      'main.rs wiring — auto-enable when reranker model is present locally',
-      'Install script fetches the Apache-licensed BGE ONNX by default',
-      'Manual golden set — 50 query/expected_id pairs',
-      'Target recall@5 ≥ 0.75',
-    ],
-  },
-  {
-    num: '2.5',
-    title: 'End Double run',
-    subtitle: 'DONE 2026-05-25 · council Art.15bis 4/4 GO-CAVEATS · gradatum single Live Prod',
-    state: 'done',
-    deliverables: [
-      'vault-mem SECONDARY stopped — full decommission 2026-05-25',
-      'gradatum = single Live Prod system',
-      'Post-migration validation — count, drift-zero, embeddings',
-      'PR-4 rusqlite 0.32 → 0.39 (post sqlx 0.9 stable)',
-    ],
-  },
-  {
-    num: '2.6',
-    title: 'Gradatum Skills',
-    subtitle: 'Phase 1 LIVRÉ 2026-05-25 (v0.1.0) · Phase 2 memorize pending',
+    num: '0.1',
+    versionPrefix: 'v0.1.x',
+    versionSuffix: 'alpha series',
     state: 'in-progress',
-    tag: 'gradatum-skills v0.1.0',
-    deliverables: [
-      'reminder — auto-recall skill (vault_search) — ✓ shipped',
-      'memorize — auto-memorize skill (vault_write) — planned',
-      'Stateless wrappers on REST endpoints',
-      'Works with every major agent — Claude Code, Claude Desktop, Opencode, etc.',
+    description: 'Embedded memory backbone for AI agents (alpha series)',
+    milestones: [
+      {
+        status: 'done',
+        title: 'Functional core',
+        version: 'v0.1.0-alpha.0→5',
+        date: '2026-04',
+      },
+      {
+        status: 'done',
+        title: 'Service mode (HTTP + MCP)',
+        version: 'v0.1.0-alpha.5',
+        date: '2026-05-07',
+      },
+      {
+        status: 'done',
+        title: 'Hardening + search foundations',
+        version: 'v0.1.0-alpha.7→10',
+        date: '2026-05',
+      },
+      {
+        status: 'done',
+        title: 'Supply chain bumps',
+        version: 'v0.1.0-alpha.10-bumps.1',
+        date: '2026-05',
+      },
+      {
+        status: 'done',
+        title: 'Search quality (RRF + reranker)',
+        version: 'v0.1.0-alpha.11→13',
+        date: '2026-05',
+      },
+      {
+        status: 'done',
+        title: 'Double run + decommission predecessor',
+        version: 'memory backend migrated',
+        date: '2026-05-25',
+      },
+      {
+        status: 'done',
+        title: 'Security hardening (Knox P1)',
+        version: 'v0.1.0-alpha.14',
+        date: '2026-05-28',
+      },
+      {
+        status: 'in-progress',
+        title: 'Gradatum Skills Phase 1',
+        version: 'gradatum-skills v0.1.0',
+      },
+      {
+        status: 'next',
+        title: 'Polish — title resolution, batched lookups, parallel wikilinks',
+        version: 'v0.1.0-alpha.15 target',
+      },
+      {
+        status: 'planned',
+        title: 'Production reranker (BGE-v2-m3)',
+        version: 'planned',
+      },
     ],
   },
   {
-    num: '2.x',
-    title: 'Polish',
-    subtitle: 'Phase 2.3 follow-ups · α.15 target',
-    state: 'next',
-    deliverables: [
-      'Title resolution hardened — safer against malformed user input',
-      'Backfill titles on legacy notes — currently 551 of 552 still empty',
-      'Trace lookups batched — single SQLite round-trip instead of N',
-      'Wikilink resolution parallelized — faster ingest at scale',
-      'Reranker tokenizes the query once instead of per pair — faster search',
-      'Drop the legacy snippet helper — fully replaced by native FTS5',
-    ],
+    num: '0.2',
+    versionPrefix: 'v0.2.x',
+    versionSuffix: 'beta candidate',
+    state: 'planned',
+    description: 'Stabilisation + feedback OSS',
+    scopeTeaser: 'TBD scope — defined after alpha series completion',
   },
   {
-    num: 'x',
-    title: 'OSS Release (TBD)',
-    subtitle: 'production-ready packaging · v0.1.0 public',
-    state: 'todo',
-    deliverables: [
-      'Stable wikilinks — survive renames and rewrites',
-      'Note history — see past versions and revert mistakes',
-      'Instant backlinks — no per-query scan',
-      'Drop-in install — .deb package, Docker image, offline bundle',
-      'Audit logs ingestable by any SIEM',
-      'High-availability blueprints — Litestream + rsync',
-      'Full open-source onboarding — CONTRIBUTING, SECURITY, Code of Conduct',
-    ],
+    num: '1.0',
+    versionPrefix: 'v1.0.x',
+    versionSuffix: 'OSS public release',
+    state: 'planned',
+    description: 'Production-ready packaging',
+    scopeTeaser: '.deb package, Docker image, offline bundle, audit logs SIEM-ingestable, high-availability blueprints, full OSS onboarding (CONTRIBUTING, SECURITY, Code of Conduct)',
   },
 ];
 
-const stateLabel: Record<Phase['state'], string> = {
-  done: '✓ shipped',
-  'in-progress': '⚡ IN PROGRESS',
-  next: 'in flight',
-  todo: 'planned',
+const milestoneIcon: Record<Milestone['status'], string> = {
+  done: '✓',
+  'in-progress': '⚡',
+  next: '·',
+  planned: '·',
 };
 ---
+
 <section id="roadmap" class="roadmap section-pad section-gap" aria-labelledby="roadmap-title">
   <div class="roadmap-inner">
     <div class="eyebrow">VI · Status & Roadmap</div>
@@ -197,35 +126,48 @@ const stateLabel: Record<Phase['state'], string> = {
       <code>v0.1.0-alpha.14</code> · 796 tests · 26 crates · Rust 2021 · MSRV 1.85
     </p>
 
-    <div class="phases-list" role="list">
-      {phases.map((p) => (
-        <div class={`phase-row state-${p.state}`} role="listitem">
-          <div class="phase-num" aria-hidden="true">
-            {p.num}
-          </div>
-
-          <div class="phase-body">
-            <div class="phase-header">
-              <div>
-                <div class="phase-title">{p.title}</div>
-                <div class="phase-subtitle">{p.subtitle}</div>
-              </div>
-              {p.tag && (
-                <span class="phase-tag">{p.tag}</span>
-              )}
+    <div class="macro-phases" role="list">
+      {macroPhases.map((phase) => (
+        <article class={`macro-phase state-${phase.state}`} role="listitem">
+          <header class="macro-header">
+            <div class="version-prefix eyebrow">
+              {phase.versionPrefix} — {phase.versionSuffix}
             </div>
+            <div class="macro-title-row">
+              <span class="phase-num" aria-hidden="true">Phase {phase.num}</span>
+              <span
+                class={`phase-state-badge badge-${phase.state}`}
+                aria-label={`Status: ${phase.state === 'in-progress' ? 'in progress' : 'planned'}`}
+              >
+                {phase.state === 'in-progress' ? '⚡ IN PROGRESS' : 'planned'}
+              </span>
+            </div>
+            <p class="macro-description">{phase.description}</p>
+          </header>
 
-            <ul class="phase-deliverables" role="list">
-              {p.deliverables.map((d) => (
-                <li>{d}</li>
+          {phase.milestones && (
+            <ol class="milestones-list" aria-label={`Milestones Phase ${phase.num}`}>
+              {phase.milestones.map((m) => (
+                <li class={`milestone milestone-${m.status}`}>
+                  <span class="milestone-icon" aria-hidden="true">
+                    {milestoneIcon[m.status]}
+                  </span>
+                  <span class="milestone-title">{m.title}</span>
+                  <span class="milestone-version">{m.version}</span>
+                  {m.date && (
+                    <span class="milestone-date" aria-label={`date: ${m.date}`}>
+                      {m.date}
+                    </span>
+                  )}
+                </li>
               ))}
-            </ul>
-          </div>
+            </ol>
+          )}
 
-          <div class={`phase-status status-${p.state}`} aria-label={`Status: ${stateLabel[p.state]}`}>
-            {stateLabel[p.state]}
-          </div>
-        </div>
+          {phase.scopeTeaser && (
+            <p class="scope-teaser">{phase.scopeTeaser}</p>
+          )}
+        </article>
       ))}
     </div>
   </div>
@@ -255,127 +197,243 @@ const stateLabel: Record<Phase['state'], string> = {
     color: var(--muted);
   }
 
-  /* Phase rows */
-  .phases-list {
+  /* ── Macro phases ─────────────────────────────────────── */
+
+  .macro-phases {
     margin-top: 3.5rem;
     display: flex;
     flex-direction: column;
   }
 
-  .phase-row {
-    display: grid;
-    grid-template-columns: 7rem 1fr 8rem;
-    gap: 2rem;
-    padding: 1.75rem 0;
+  .macro-phase {
+    padding: 2.5rem 0;
     border-top: 1px solid var(--rule);
+  }
+
+  .macro-phase:last-child {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* Planned phases: slightly muted but NOT faded */
+  .macro-phase.state-planned {
+    opacity: 0.72;
+  }
+
+  /* ── Macro header ─────────────────────────────────────── */
+
+  .macro-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto auto;
+    row-gap: 0.5rem;
+    column-gap: 1.5rem;
     align-items: start;
   }
 
-  /* Large italic phase number */
+  /* eyebrow spans full width */
+  .macro-header .version-prefix {
+    grid-column: 1 / -1;
+    margin-bottom: 0.25rem;
+  }
+
+  .macro-title-row {
+    grid-column: 1;
+    display: flex;
+    align-items: baseline;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  /* Phase num — grande italic, sérigraphique */
   .phase-num {
     font-family: var(--font-serif);
     font-style: italic;
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    line-height: 0.9;
-    color: var(--muted);
-  }
-
-  .state-done .phase-num {
-    color: var(--accent);
-  }
-
-  .phase-title {
-    font-family: var(--font-serif);
-    font-size: 1.75rem;
+    font-size: clamp(2rem, 4vw, 3.25rem);
     font-weight: 500;
-    color: var(--ink);
-    line-height: 1.1;
-  }
-
-  .phase-subtitle {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-    margin-top: 0.375rem;
-  }
-
-  .phase-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .phase-tag {
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    letter-spacing: 0.1em;
+    line-height: 0.95;
     color: var(--accent);
-    border: 1px solid var(--accent);
-    padding: 0.2em 0.6em;
-    white-space: nowrap;
-    flex-shrink: 0;
   }
 
-  .phase-deliverables {
-    list-style: none;
-    margin-top: 0.875rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
+  .state-planned .phase-num {
+    color: var(--muted);
   }
 
-  .phase-deliverables li {
-    font-size: 0.9375rem;
-    color: var(--ink-soft);
-    line-height: 1.5;
-  }
-
-  .phase-deliverables li::before {
-    content: '— ';
-    color: var(--rule);
-  }
-
-  /* Status badge */
-  .phase-status {
+  /* Badge état */
+  .phase-state-badge {
     font-family: var(--font-mono);
     font-size: 0.6875rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    text-align: right;
+    align-self: center;
+  }
+
+  .badge-in-progress {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .badge-planned {
     color: var(--muted);
-    padding-top: 0.5rem;
   }
 
-  .status-done {
+  /* Description */
+  .macro-description {
+    grid-column: 1 / -1;
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.4;
+  }
+
+  /* ── Milestones list ──────────────────────────────────── */
+
+  .milestones-list {
+    list-style: none;
+    margin-top: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-left: 1px solid var(--rule);
+    padding-left: 1.5rem;
+  }
+
+  .milestone {
+    display: grid;
+    grid-template-columns: 1.25rem 1fr auto auto;
+    align-items: baseline;
+    gap: 0.5rem 0.875rem;
+    padding: 0.45rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--rule) 40%, transparent);
+  }
+
+  .milestone:last-child {
+    border-bottom: none;
+  }
+
+  /* Icon column */
+  .milestone-icon {
+    font-size: 0.875rem;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .milestone-done .milestone-icon {
     color: var(--accent);
   }
 
-  .status-in-progress {
+  .milestone-in-progress .milestone-icon {
     color: var(--accent);
-    font-weight: 700;
   }
 
-  .state-in-progress .phase-num {
-    color: var(--accent);
-    font-weight: 700;
+  .milestone-next .milestone-icon {
+    color: var(--muted);
   }
 
-  .state-in-progress .phase-title {
-    font-weight: 600;
+  .milestone-planned .milestone-icon {
+    color: var(--rule);
   }
+
+  /* Title */
+  .milestone-title {
+    font-size: 0.9375rem;
+    line-height: 1.45;
+  }
+
+  .milestone-done .milestone-title {
+    color: var(--ink-soft);
+  }
+
+  .milestone-in-progress .milestone-title {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .milestone-next .milestone-title {
+    color: var(--ink-soft);
+  }
+
+  .milestone-planned .milestone-title {
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* Version chip */
+  .milestone-version {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .milestone-in-progress .milestone-version {
+    color: var(--accent);
+    border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+    padding: 0.1em 0.45em;
+  }
+
+  /* Date */
+  .milestone-date {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.08em;
+    color: var(--rule);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ── Scope teaser (planned phases) ───────────────────── */
+
+  .scope-teaser {
+    margin-top: 1.25rem;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.0625rem;
+    color: var(--muted);
+    line-height: 1.55;
+    max-width: 56ch;
+  }
+
+  /* ── Responsive ───────────────────────────────────────── */
 
   @media (max-width: 768px) {
-    .phase-row {
-      grid-template-columns: 4rem 1fr;
-      grid-template-rows: auto auto;
+    .macro-header {
+      grid-template-columns: 1fr;
     }
 
-    .phase-status {
+    .macro-header .version-prefix {
+      grid-column: 1;
+    }
+
+    .phase-state-badge {
+      /* inline after phase-num on mobile */
+    }
+
+    .milestone {
+      grid-template-columns: 1.25rem 1fr;
+      grid-template-rows: auto auto;
+      row-gap: 0.2rem;
+    }
+
+    .milestone-version {
       grid-column: 2;
-      text-align: left;
-      padding-top: 0.5rem;
+      grid-row: 2;
+    }
+
+    .milestone-date {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .milestones-list {
+      padding-left: 1rem;
+    }
+
+    .phase-num {
+      font-size: 2rem;
     }
   }
 </style>
