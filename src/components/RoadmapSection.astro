@@ -5,12 +5,12 @@
 //   Phase 2.0   = DONE (Sprint X-1 + 2.0a/b/c + 2.0c-bis Auth Path 2 → alpha.5)
 //   Phase 2.1   = DONE (cleanup + 2.1.1 hardening + 2.1.2 soft-archiving + 2.x.1 search foundations → alpha.7→alpha.10)
 //   Phase 2.2   = DONE (Plan bumps PR-1 serde_yml → alpha.10-bumps.1)
-//   Phase 2.2.1 = IN PROGRESS (dual-write cohabitation acquired + notes organically migrated since 2026-05-09)
+//   Phase 2.2.1 = DONE (dual-write cohabitation + organic migration → vault-mem decommissioned 2026-05-25)
 //   Phase 2.3   = DONE (PR-2/3/5/6 cumulative + 2.x.2 RRF + 2.x.3 Multi-Factor+Jina + 2.x.4 Endpoints → alpha.11→alpha.13 + alpha.12-bumps.1)
 //   Phase 2.4   = TODO (production reranker — main.rs wiring + golden set + recall + ort 2.x stable)
-//   Phase 2.5   = NEXT (End Double run — stop vault-mem secondary, gradatum single prod)
-//   Phase 2.6   = NEXT (Gradatum Skills — reminder vault_search + memorize vault_write)
-//   Phase 2.x   = NEXT (Polish — Phase 2.3 caveats backlog, alpha.14 target)
+//   Phase 2.5   = DONE (End Double run LIVRÉ 2026-05-25 — vault-mem decommissioned, gradatum = single Live Prod, council Art.15bis 4/4 GO-CAVEATS)
+//   Phase 2.6   = IN PROGRESS (gradatum-skills v0.1.0 LIVRÉ 2026-05-25 — Phase 1 reminder + vault-search shipped, Phase 2 memorize pending)
+//   Phase 2.x   = NEXT (Polish — Phase 2.3 caveats backlog, alpha.15 target — alpha.14 = security hardening Knox P1 JWT validate_nbf)
 //   Phase x     = TODO (OSS release — number TBD — note_history + .deb + Docker + SIEM + v0.1.0 public)
 
 interface Phase {
@@ -87,12 +87,13 @@ const phases: Phase[] = [
   {
     num: '2.2.1',
     title: 'Double run — predecessor vault vs Gradatum LIVE',
-    subtitle: 'cohabitation active · notes already migrated · vault-mem still SECONDARY',
-    state: 'in-progress',
+    subtitle: 'DONE · vault-mem decommissioned 2026-05-25',
+    state: 'done',
     deliverables: [
       'Dual-write cohabitation vault-mem ↔ gradatum',
       'gradatum PRIMARY · vault-mem SECONDARY rollback',
       'Notes already migrated — organic transfer through dual-write since 2026-05-09',
+      'vault-mem Phase 2 arrêt complet 2026-05-25 — read-only LTS puis full stop',
     ],
   },
   {
@@ -128,24 +129,24 @@ const phases: Phase[] = [
   {
     num: '2.5',
     title: 'End Double run',
-    subtitle: 'stop predecessor vault · gradatum single Live Prod',
-    state: 'next',
+    subtitle: 'DONE 2026-05-25 · council Art.15bis 4/4 GO-CAVEATS · gradatum single Live Prod',
+    state: 'done',
     deliverables: [
-      'Stop vault-mem SECONDARY — read-only archive',
+      'vault-mem SECONDARY stopped — full decommission 2026-05-25',
       'gradatum = single Live Prod system',
       'Post-migration validation — count, drift-zero, embeddings',
       'PR-4 rusqlite 0.32 → 0.39 (post sqlx 0.9 stable)',
-      'D5 counter ≥ 30 days before v0.1.0 public',
     ],
   },
   {
     num: '2.6',
     title: 'Gradatum Skills',
-    subtitle: 'ready-to-use skills · plug agents into the vault',
-    state: 'next',
+    subtitle: 'Phase 1 LIVRÉ 2026-05-25 (v0.1.0) · Phase 2 memorize pending',
+    state: 'in-progress',
+    tag: 'gradatum-skills v0.1.0',
     deliverables: [
-      'reminder — auto-recall skill (vault_search)',
-      'memorize — auto-memorize skill (vault_write)',
+      'reminder — auto-recall skill (vault_search) — ✓ shipped',
+      'memorize — auto-memorize skill (vault_write) — planned',
       'Stateless wrappers on REST endpoints',
       'Works with every major agent — Claude Code, Claude Desktop, Opencode, etc.',
     ],
@@ -153,7 +154,7 @@ const phases: Phase[] = [
   {
     num: '2.x',
     title: 'Polish',
-    subtitle: 'Phase 2.3 follow-ups · α.14 target',
+    subtitle: 'Phase 2.3 follow-ups · α.15 target',
     state: 'next',
     deliverables: [
       'Title resolution hardened — safer against malformed user input',
@@ -193,7 +194,7 @@ const stateLabel: Record<Phase['state'], string> = {
     <div class="eyebrow">VI · Status & Roadmap</div>
     <h2 id="roadmap-title" class="roadmap-h2">Roadmap — phases shipped and in flight</h2>
     <p class="roadmap-meta">
-      <code>v0.1.0-alpha.13</code> · 796 tests · 26 crates · Rust 2021 · MSRV 1.85
+      <code>v0.1.0-alpha.14</code> · 796 tests · 26 crates · Rust 2021 · MSRV 1.85
     </p>
 
     <div class="phases-list" role="list">

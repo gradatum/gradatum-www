@@ -2,13 +2,12 @@
 // Data imports — Zod validation runs at build time (fail-fast on schema violation)
 // These imports are intentional even if not directly used in the template:
 // they trigger Zod .parse() calls in each data file at build time.
-import { phases } from '../data/phases';
 import { rfcs } from '../data/rfcs';
 import { properties } from '../data/properties';
 import { storageBackends } from '../data/storage';
 
 // Silence unused-variable warnings — data is imported for build-time validation
-void phases; void rfcs; void properties; void storageBackends;
+void rfcs; void properties; void storageBackends;
 
 import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
