@@ -46,8 +46,13 @@ jobs:
           COMMIT_MSG=$(git log -1 --pretty=%s)
           DEPLOY_DIR=$(mktemp -d /tmp/gh-pages-XXXXXX)
 
-          # Use Forgejo Actions runtime variables (anti-leak Pilier 1, post Phase B filter-repo 2026-05-26)
-          REPO_URL="http://${{ gitea.repository_owner }}:${FORGEJO_TOKEN}@localhost:3000/${{ gitea.repository }}.git"
+          # Forgejo Actions runtime variables — `github.*` namespace is the standard (compat GitHub Actions API).
+          # Despite the literal word "github", this is the documented Forgejo convention since v12.x —
+          # the alternative `gitea.*` was deprecated and triggers schema validation errors.
+          # Anti-leak Pilier 1 (Phase B OSS flip readiness 2026-05-26) is preserved because the file
+          # path `.forgejo/workflows/` already discloses the hosting platform — the variable name
+          # is not an additional leak vector.
+          REPO_URL="http://${{ github.repository_owner }}:${FORGEJO_TOKEN}@localhost:3000/${{ github.repository }}.git"
 
           # Try to clone gh-pages branch; if it doesn't exist, init orphan
           if git ls-remote --heads "${REPO_URL}" gh-pages | grep -q gh-pages; then
