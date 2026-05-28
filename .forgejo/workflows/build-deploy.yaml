@@ -5,6 +5,15 @@ on:
     branches:
       - main
 
+# Serialize gh-pages deploys + cancel in-flight obsolete runs.
+# Without this, runner-queued runs can finish in non-monotonic order and
+# the older run's force-push to gh-pages silently reverts the newer state.
+# Observed silent revert incidents 2026-05-28 (commits cf9722c→84b2af3 +
+# d23e1c5→7cee725) traced to this race. Workaround was manual force-repush.
+concurrency:
+  group: gh-pages-deploy
+  cancel-in-progress: true
+
 jobs:
   build-and-deploy:
     runs-on: [self-hosted, linux, x64, lxc-500]
