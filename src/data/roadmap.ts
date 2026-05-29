@@ -84,12 +84,39 @@ const versions: VersionPhase[] = [
   },
   {
     version: 'v0.2.0',
-    status: 'planned',
+    grade: 'Bronze',
+    status: 'in-progress',
     theme: 'Job Infrastructure + Observability',
     description:
       "Lays the foundation for gradatum's background job system and makes it fully observable. This release introduces the job queue layer built on Apalis (https://github.com/geofmureithi/apalis) — a type-safe, SQLite-backed Rust job framework — including the Job enum, JobRecord lifecycle tracking, and per-class worker configuration. On top of that foundation, it ships a Dead-Letter Queue (DLQ) for failed background jobs with configurable retry policies, timeout enforcement, and panic isolation, so jobs that fail definitively are captured rather than silently dropped. A /api/v1/jobs introspection endpoint surfaces job state over HTTP, with a Server-Sent Events (SSE) stream for real-time push updates and Prometheus metrics per job kind, giving operators full visibility into what the system is running and why without polling.",
     scopeTeaserItems: ['Apalis job foundation', 'Dead-letter queue', 'Jobs introspection API + SSE'],
     featureRefs: ['F-15', 'F-16'],
+    showFeaturesLink: true,
+    milestones: [
+      {
+        status: 'done',
+        title: 'F-14 partial: Apalis foundation + types v81 forward-compat',
+        version: 'v0.2.0',
+        date: '2026-05-29',
+      },
+      {
+        status: 'done',
+        title: 'F-15: DLQ + Apalis Monitor multi-worker + Prometheus exporter',
+        version: 'v0.2.0',
+        date: '2026-05-29',
+      },
+      {
+        status: 'done',
+        title: 'F-16: /api/v1/jobs API + SSE + Idempotency-Key + admin CLI',
+        version: 'v0.2.0',
+        date: '2026-05-29',
+      },
+      {
+        status: 'next',
+        title: 'Tag v0.2.0 — Bronze 2nd milestone OSS public',
+        version: 'v0.2.0',
+      },
+    ],
   },
   {
     version: 'v0.3.0',
