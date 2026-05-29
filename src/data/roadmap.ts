@@ -112,8 +112,14 @@ const versions: VersionPhase[] = [
         date: '2026-05-29',
       },
       {
-        status: 'next',
+        status: 'done',
         title: 'Tag v0.2.0 — Bronze 2nd milestone OSS public',
+        version: 'v0.2.0',
+        date: '2026-05-29',
+      },
+      {
+        status: 'next',
+        title: 'Runtime backend Apalis complete — bridge handler→store fix',
         version: 'v0.2.0',
       },
     ],
