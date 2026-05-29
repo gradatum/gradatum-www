@@ -2,12 +2,11 @@
 // Data imports — Zod validation runs at build time (fail-fast on schema violation)
 // These imports are intentional even if not directly used in the template:
 // they trigger Zod .parse() calls in each data file at build time.
-import { rfcs } from '../data/rfcs';
 import { properties } from '../data/properties';
 import { storageBackends } from '../data/storage';
 
 // Silence unused-variable warnings — data is imported for build-time validation
-void rfcs; void properties; void storageBackends;
+void properties; void storageBackends;
 
 import Base from '../layouts/Base.astro';
 import Nav from '../components/Nav.astro';
@@ -19,7 +18,6 @@ import PipelineLifecycle from '../components/PipelineLifecycle.astro';
 import Vocabulary from '../components/Vocabulary.astro';
 import MultiStorage from '../components/MultiStorage.astro';
 import RoadmapSection from '../components/RoadmapSection.astro';
-import RfcCards from '../components/RfcCards.astro';
 import QuickStart from '../components/QuickStart.astro';
 import Footer from '../components/Footer.astro';
 import TweaksPanel from '../components/TweaksPanel.astro';
@@ -47,8 +45,6 @@ import TweaksPanel from '../components/TweaksPanel.astro';
       <MultiStorage />
       <hr class="rule" />
       <RoadmapSection />
-      <hr class="rule" />
-      <RfcCards />
       <hr class="rule" />
       <QuickStart />
     </main>

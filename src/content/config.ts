@@ -10,24 +10,8 @@
  */
 import { z } from 'astro/zod';
 
-export const RFC_STATUSES = ['accepted', 'postponed', 'rejected'] as const;
 export const PHASE_STATUSES = ['pending', 'in-progress', 'done', 'live'] as const;
 export const STORAGE_TIERS = ['primary', 'secondary', 'experimental'] as const;
-
-// ── RFC schema ────────────────────────────────────────────────────────────────
-
-export const rfcSchema = z.object({
-  rfc_number: z
-    .string()
-    .regex(/^\d{4}$/, 'rfc_number must be 4-digit string e.g. "0003"'),
-  title: z.string().min(1),
-  status: z.enum(RFC_STATUSES),
-  started: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'ISO date YYYY-MM-DD'),
-  resolved: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'ISO date YYYY-MM-DD'),
-  affected_crates: z.array(z.string().min(1)).min(1),
-});
-
-export type RfcEntry = z.infer<typeof rfcSchema>;
 
 // ── Phase schema ──────────────────────────────────────────────────────────────
 
