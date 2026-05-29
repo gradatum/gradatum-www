@@ -1,5 +1,5 @@
 ---
-// Roadmap — règle de numérotation validée Stéphane 2026-05-28 :
+// Roadmap — numbering convention (validated 2026-05-28) :
 //   Numéro de phase = 2 chiffres = v{X.Y}
 //   Toutes les versions v{X.Y}.<patch>-alpha.<N> / -bumps.<N> / -patch.<N>
 //   appartiennent à la même phase X.Y.
@@ -145,6 +145,11 @@ const milestoneIcon: Record<Milestone['status'], string> = {
               </span>
             </div>
             <p class="macro-description">{phase.description}</p>
+            {phase.num === '0.1' && (
+              <a href="/features" class="features-link eyebrow">
+                explore shipped features →
+              </a>
+            )}
           </header>
 
           {phase.milestones && (
@@ -384,6 +389,21 @@ const milestoneIcon: Record<Milestone['status'], string> = {
     color: var(--rule);
     white-space: nowrap;
     flex-shrink: 0;
+  }
+
+  /* ── Features link (Phase 0.1 only) ──────────────────── */
+
+  .features-link {
+    display: inline-block;
+    margin-top: 0.75rem;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: 0.14em;
+  }
+
+  .features-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   /* ── Scope teaser (planned phases) ───────────────────── */

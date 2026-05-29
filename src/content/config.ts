@@ -63,5 +63,30 @@ export const storageBackendSchema = z.object({
 
 export type StorageBackend = z.infer<typeof storageBackendSchema>;
 
+// ── Feature schema ────────────────────────────────────────────────────────────
+
+export const featureSchema = z.object({
+  id: z.string().regex(/^f-\d{2}$/),
+  refLabel: z.string().regex(/^F-\d{2}$/),
+  name: z.string().min(10),
+  positioning: z.string().min(20).max(200),
+  howItWorks: z.array(z.string()).min(1).max(4),
+  whoItsFor: z.string().min(20).max(200),
+  status: z.enum(['released', 'planned', 'roadmap']),
+  version: z.string().regex(/^v\d+\.\d+\.\d+$/),
+});
+
+export const featureGroupSchema = z.object({
+  grade: z.enum(['Bronze', 'Silver', 'Gold', 'Platinum']),
+  versionPrefix: z.string(),
+  description: z.string(),
+  features: z.array(featureSchema),
+});
+
+export const featureGroupArraySchema = z.array(featureGroupSchema);
+
+export type Feature = z.infer<typeof featureSchema>;
+export type FeatureGroup = z.infer<typeof featureGroupSchema>;
+
 // Required by Astro — no file-based collections used
 export const collections = {};

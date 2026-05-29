@@ -1,0 +1,57 @@
+---
+// Data import triggers Zod .parse() at build time (fail-fast validation)
+import { featureGroups } from '../data/features';
+
+// Silence unused-variable warning — imported for build-time Zod validation
+void featureGroups;
+
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import FeaturesSection from '../components/FeaturesSection.astro';
+import Footer from '../components/Footer.astro';
+import TweaksPanel from '../components/TweaksPanel.astro';
+---
+<Base
+  title="Features — Gradatum v0.1.x"
+  description="Detailed feature descriptions for gradatum's first public release (v0.1.x, Bronze grade)."
+>
+  <div class="site-wrap">
+    <Nav />
+
+    <main id="main-content" tabindex="-1">
+      <FeaturesSection />
+    </main>
+
+    <Footer />
+
+    <TweaksPanel />
+  </div>
+
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+</Base>
+
+<style>
+  .site-wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+    background: var(--paper);
+    box-shadow: 0 0 0 1px var(--rule);
+  }
+
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    background: var(--accent);
+    color: var(--paper);
+    padding: 0.75rem 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    z-index: 9999;
+    text-decoration: none;
+  }
+
+  .skip-link:focus {
+    top: 0.5rem;
+  }
+</style>
