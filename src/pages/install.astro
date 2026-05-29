@@ -1,0 +1,57 @@
+---
+// Data import triggers Zod .parse() at build time (fail-fast validation)
+import { installModes } from '../data/install';
+
+// Silence unused-variable warning — imported for build-time Zod validation
+void installModes;
+
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import InstallSection from '../components/InstallSection.astro';
+import Footer from '../components/Footer.astro';
+import TweaksPanel from '../components/TweaksPanel.astro';
+---
+<Base
+  title="Installation — Gradatum"
+  description="Seven installation profiles for gradatum: Nano, Solo, Full, Gold, Remote, Custom, Docker."
+>
+  <div class="site-wrap">
+    <Nav />
+
+    <main id="main-content" tabindex="-1">
+      <InstallSection />
+    </main>
+
+    <Footer />
+
+    <TweaksPanel />
+  </div>
+
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+</Base>
+
+<style>
+  .site-wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+    background: var(--paper);
+    box-shadow: 0 0 0 1px var(--rule);
+  }
+
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    background: var(--accent);
+    color: var(--paper);
+    padding: 0.75rem 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    z-index: 9999;
+    text-decoration: none;
+  }
+
+  .skip-link:focus {
+    top: 0.5rem;
+  }
+</style>

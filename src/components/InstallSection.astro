@@ -1,0 +1,488 @@
+---
+import { installModes } from '../data/install';
+
+const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
+---
+
+<section class="install section-pad" aria-labelledby="install-title">
+  <div class="install-inner">
+    <div class="eyebrow">Installation</div>
+    <h1 id="install-title" class="install-h1">Pick your deployment profile.</h1>
+    <p class="install-lead">
+      Solo is the recommended default. All modes share the same vault and MCP stub —
+      they differ in services started, LLM provider, and access pattern.
+    </p>
+
+    <!-- One-liner -->
+    <div class="install-oneliner">
+      <div class="eyebrow block-label">One-liner installer</div>
+      <pre class="install-pre"><code>curl -fsSL https://get.gradatum.dev | sh</code></pre>
+      <p class="install-meta">
+        Runs the interactive wizard (Solo mode by default). Detects Ollama automatically
+        and offers it as the first provider option if running.
+      </p>
+    </div>
+
+    <!-- CSS-only tabs (radio + :has selector, zero JS) -->
+    <fieldset class="mode-tabs" aria-label="Installation modes">
+      <legend class="sr-only">Select an installation mode</legend>
+
+      {installModes.map((mode) => (
+        <input
+          type="radio"
+          id={`tab-${mode.id}`}
+          name="install-mode"
+          value={mode.id}
+          checked={mode.id === defaultMode.id}
+          class="tab-radio"
+        />
+      ))}
+
+      <div class="tab-rail" role="tablist">
+        {installModes.map((mode) => (
+          <label for={`tab-${mode.id}`} class="tab-label" role="tab" tabindex="0">
+            <span class="tab-name">{mode.name}{mode.isDefault ? ' ★' : ''}</span>
+            <span class="tab-level">{mode.level}</span>
+          </label>
+        ))}
+      </div>
+
+      <div class="tab-panels">
+        {installModes.map((mode) => (
+          <div
+            id={`panel-${mode.id}`}
+            class={`tab-panel panel-${mode.id}`}
+            role="tabpanel"
+            aria-labelledby={`tab-${mode.id}`}
+          >
+            <div class="panel-header">
+              <h3 class="panel-name">
+                {mode.name}{mode.isDefault ? ' ★' : ''}
+                <span class="panel-level">{mode.level}</span>
+              </h3>
+              {mode.status === 'planned-v1.0' && (
+                <span class="status-badge status-planned" aria-label="Planned for v1.0.0">
+                  planned for v1.0.0
+                </span>
+              )}
+            </div>
+
+            <p class="panel-tagline">{mode.tagline}</p>
+            <p class="panel-usecase"><strong>Use case</strong> — {mode.useCase}</p>
+
+            <pre class="install-pre panel-command"><code>{mode.command}</code></pre>
+
+            <dl class="panel-specs">
+              <dt>Services</dt>
+              <dd>{mode.services.join(' · ')}</dd>
+              <dt>LLM</dt>
+              <dd>{mode.llm}</dd>
+              <dt>MCP access</dt>
+              <dd>
+                {mode.mcpAccess === 'both'
+                  ? 'stub + Remote OAuth'
+                  : mode.mcpAccess === 'remote-oauth'
+                    ? 'Remote OAuth'
+                    : 'stub'}
+              </dd>
+            </dl>
+          </div>
+        ))}
+      </div>
+    </fieldset>
+
+    <!-- Supported providers table -->
+    <div class="install-providers">
+      <div class="eyebrow block-label">Supported LLM providers</div>
+      <table class="providers-table">
+        <thead>
+          <tr>
+            <th scope="col">Provider</th>
+            <th scope="col">Flag</th>
+            <th scope="col">Requirement</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Ollama (local)</td>
+            <td><code>--provider ollama</code></td>
+            <td>Ollama installed and running</td>
+          </tr>
+          <tr>
+            <td>llama.cpp server</td>
+            <td><code>--provider llamacpp --llm-url URL</code></td>
+            <td>llama.cpp server accessible</td>
+          </tr>
+          <tr>
+            <td>OpenRouter</td>
+            <td><code>--provider openrouter --api-key KEY</code></td>
+            <td>OpenRouter API key</td>
+          </tr>
+          <tr>
+            <td>Anthropic</td>
+            <td><code>--provider anthropic --api-key KEY</code></td>
+            <td>Anthropic API key</td>
+          </tr>
+          <tr>
+            <td>OpenAI</td>
+            <td><code>--provider openai --api-key KEY</code></td>
+            <td>OpenAI API key</td>
+          </tr>
+          <tr>
+            <td>Custom OpenAI-compatible</td>
+            <td><code>--provider custom --llm-url URL</code></td>
+            <td>Accessible endpoint</td>
+          </tr>
+          <tr>
+            <td>None (Nano mode)</td>
+            <td><code>--level nano</code></td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Post-install commands -->
+    <div class="install-postinstall">
+      <div class="eyebrow block-label">Post-install commands</div>
+      <pre class="install-pre"><code>gradatum-admin status        # health checks
+gradatum-admin doctor        # full diagnostics
+gradatum-admin upgrade       # update to latest
+gradatum-admin uninstall     # clean uninstall (data preserved)
+
+gradatum-admin key create --name claude-code --scope read,write
+gradatum-admin vault list
+gradatum-admin distill status
+gradatum-admin backup</code></pre>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Screen-reader only utility */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .install {
+    background: var(--paper);
+  }
+
+  .install-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .install-h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 500;
+    margin-top: 1rem;
+    line-height: 1.05;
+  }
+
+  .install-lead {
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-top: 1.5rem;
+    max-width: 720px;
+    line-height: 1.6;
+  }
+
+  /* One-liner block */
+  .install-oneliner {
+    margin-top: 3rem;
+  }
+
+  .block-label {
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+
+  /* Code blocks — inherits global pre style + override for inline use */
+  .install-pre {
+    border-left: 3px solid var(--accent);
+    font-size: 0.8125rem;
+    overflow-x: auto;
+    max-width: 100%;
+  }
+
+  .install-meta {
+    font-size: 0.875rem;
+    color: var(--muted);
+    margin-top: 0.875rem;
+    font-style: italic;
+  }
+
+  /* ── CSS-only tabs ────────────────────────────────────────────────────────── */
+
+  .mode-tabs {
+    border: none;
+    padding: 0;
+    margin: 3.5rem 0 0;
+  }
+
+  /* Hide radio inputs — keyboard-accessible via label */
+  .tab-radio {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 1px;
+    height: 1px;
+  }
+
+  .tab-rail {
+    display: flex;
+    gap: 0;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .tab-label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    padding: 0.875rem 1.125rem;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    color: var(--muted);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    min-height: 44px; /* touch target */
+    min-width: 44px;
+    transition: color 0.12s ease;
+    text-transform: uppercase;
+    user-select: none;
+    margin-bottom: -1px; /* overlap the rail border */
+  }
+
+  .tab-label:hover {
+    color: var(--ink);
+  }
+
+  .tab-label:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .tab-level {
+    font-size: 0.625rem;
+    opacity: 0.65;
+    letter-spacing: 0.08em;
+  }
+
+  /* Active tab — :has() selector (Chrome 105+, Firefox 121+, Safari 15.4+) */
+  .mode-tabs:has(#tab-nano:checked)   .tab-rail label[for="tab-nano"],
+  .mode-tabs:has(#tab-solo:checked)   .tab-rail label[for="tab-solo"],
+  .mode-tabs:has(#tab-full:checked)   .tab-rail label[for="tab-full"],
+  .mode-tabs:has(#tab-gold:checked)   .tab-rail label[for="tab-gold"],
+  .mode-tabs:has(#tab-remote:checked) .tab-rail label[for="tab-remote"],
+  .mode-tabs:has(#tab-custom:checked) .tab-rail label[for="tab-custom"],
+  .mode-tabs:has(#tab-docker:checked) .tab-rail label[for="tab-docker"] {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* Panels: hide all by default */
+  .tab-panels {
+    padding-top: 2.5rem;
+  }
+
+  .tab-panel {
+    display: none;
+  }
+
+  /* Show only matching panel — fallback: solo stays visible if :has unsupported */
+  .panel-solo {
+    display: block; /* fallback for browsers without :has */
+  }
+
+  .mode-tabs:has(#tab-nano:checked)   .tab-panels .panel-nano,
+  .mode-tabs:has(#tab-solo:checked)   .tab-panels .panel-solo,
+  .mode-tabs:has(#tab-full:checked)   .tab-panels .panel-full,
+  .mode-tabs:has(#tab-gold:checked)   .tab-panels .panel-gold,
+  .mode-tabs:has(#tab-remote:checked) .tab-panels .panel-remote,
+  .mode-tabs:has(#tab-custom:checked) .tab-panels .panel-custom,
+  .mode-tabs:has(#tab-docker:checked) .tab-panels .panel-docker {
+    display: block;
+  }
+
+  /* Hide solo fallback when another tab is active */
+  .mode-tabs:has(#tab-nano:checked)   .tab-panels .panel-solo,
+  .mode-tabs:has(#tab-full:checked)   .tab-panels .panel-solo,
+  .mode-tabs:has(#tab-gold:checked)   .tab-panels .panel-solo,
+  .mode-tabs:has(#tab-remote:checked) .tab-panels .panel-solo,
+  .mode-tabs:has(#tab-custom:checked) .tab-panels .panel-solo,
+  .mode-tabs:has(#tab-docker:checked) .tab-panels .panel-solo {
+    display: none;
+  }
+
+  /* Panel content */
+  .panel-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .panel-name {
+    font-family: var(--font-serif);
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.1;
+  }
+
+  .panel-level {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--muted);
+    letter-spacing: 0.14em;
+    margin-left: 0.5rem;
+  }
+
+  .status-badge {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+  }
+
+  .status-planned {
+    color: var(--muted);
+    background: color-mix(in srgb, var(--muted) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--muted) 25%, transparent);
+  }
+
+  .panel-tagline {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(1rem, 2vw, 1.125rem);
+    color: var(--ink-soft);
+    margin-top: 1.25rem;
+    line-height: 1.55;
+  }
+
+  .panel-usecase {
+    font-size: 0.9375rem;
+    margin-top: 1rem;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+
+  .panel-command {
+    margin-top: 1.5rem;
+  }
+
+  .panel-specs {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.625rem 2rem;
+    margin-top: 1.75rem;
+    font-size: 0.875rem;
+  }
+
+  .panel-specs dt {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-top: 0.125rem;
+  }
+
+  .panel-specs dd {
+    margin: 0;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+
+  /* Providers table */
+  .install-providers {
+    margin-top: 4.5rem;
+  }
+
+  .providers-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    font-size: 0.875rem;
+  }
+
+  .providers-table th,
+  .providers-table td {
+    padding: 0.75rem 0.875rem;
+    text-align: left;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .providers-table th {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--ink-soft);
+  }
+
+  .providers-table tbody tr:hover {
+    background: color-mix(in srgb, var(--rule) 30%, transparent);
+  }
+
+  /* Post-install */
+  .install-postinstall {
+    margin-top: 4.5rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .tab-rail {
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      scrollbar-width: none;
+    }
+
+    .tab-rail::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab-label {
+      white-space: nowrap;
+      padding: 0.75rem 0.875rem;
+    }
+
+    .panel-specs {
+      grid-template-columns: 1fr;
+      gap: 0.375rem 0;
+    }
+
+    .panel-specs dt {
+      margin-top: 0.75rem;
+    }
+
+    .panel-specs dt:first-child {
+      margin-top: 0;
+    }
+
+    .providers-table {
+      font-size: 0.8125rem;
+    }
+
+    .providers-table th,
+    .providers-table td {
+      padding: 0.625rem 0.5rem;
+    }
+  }
+</style>

@@ -9,6 +9,11 @@ const GITHUB_URL = 'https://github.com/gradatum/gradatum';
       <span class="qs-muted">apt install with Phase 4.</span>
     </h2>
 
+    <div class="qs-teaser-cta">
+      <a href="/install" class="cta-link eyebrow">View all install modes (7 profiles)</a>
+      <a href="/use-cases" class="cta-link eyebrow">See use cases (Without / With)</a>
+    </div>
+
     <div class="qs-blocks">
       <!-- Block 1: Clone & build -->
       <div class="qs-block">
@@ -120,5 +125,30 @@ curl http://localhost:19090/api/v1/notes/search \\
     font-size: 0.9375rem;
     color: var(--muted);
     font-style: italic;
+  }
+
+  .qs-teaser-cta {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1.75rem;
+    flex-wrap: wrap;
+  }
+
+  .cta-link {
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: 0.18em;
+    transition: opacity 0.12s ease;
+  }
+
+  .cta-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .cta-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 </style>

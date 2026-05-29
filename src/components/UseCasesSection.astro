@@ -1,0 +1,208 @@
+---
+import { useCases } from '../data/usecases';
+---
+
+<section class="usecases section-pad" aria-labelledby="usecases-title">
+  <div class="usecases-inner">
+    <div class="eyebrow">Use cases</div>
+    <h1 id="usecases-title" class="usecases-h1">What changes when agents remember.</h1>
+    <p class="usecases-lead">
+      Eight concrete scenarios where persistent memory changes how operators and agents
+      work together. Each item lists the feature reference and the version it ships in.
+    </p>
+
+    <ol class="usecases-list" role="list">
+      {useCases.map((uc) => (
+        <li id={uc.id} class="usecase-item" data-grade={uc.grade.toLowerCase()}>
+          <header class="usecase-header">
+            <h3 class="usecase-title">{uc.title}</h3>
+            <div class="usecase-meta">
+              {uc.featureRef && (
+                <span class="usecase-feature" aria-label={`Feature reference ${uc.featureRef}`}>
+                  {uc.featureRef}
+                </span>
+              )}
+              <span class={`usecase-status status-${uc.grade.toLowerCase()}`}>
+                {uc.isPlanned
+                  ? `planned · ${uc.sinceVersion} · ${uc.grade}`
+                  : `available · ${uc.sinceVersion} · ${uc.grade}`}
+              </span>
+            </div>
+          </header>
+
+          <div class="usecase-compare">
+            <div class="compare-without">
+              <div class="compare-label eyebrow" aria-hidden="true">Without gradatum</div>
+              <p>{uc.withoutGradatum}</p>
+            </div>
+            <div class="compare-with">
+              <div class="compare-label eyebrow" aria-hidden="true">With gradatum</div>
+              <p>{uc.withGradatum}</p>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .usecases {
+    background: var(--paper);
+  }
+
+  .usecases-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .usecases-h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 500;
+    margin-top: 1rem;
+    line-height: 1.05;
+  }
+
+  .usecases-lead {
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-top: 1.5rem;
+    max-width: 720px;
+    line-height: 1.6;
+  }
+
+  /* List */
+  .usecases-list {
+    list-style: none;
+    padding: 0;
+    margin: 3.5rem 0 0;
+  }
+
+  .usecase-item {
+    padding: 2.75rem 0;
+    border-top: 1px solid var(--rule);
+    scroll-margin-top: 5rem;
+  }
+
+  .usecase-item:last-child {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* Header row */
+  .usecase-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .usecase-title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.125rem, 2.5vw, 1.625rem);
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.15;
+  }
+
+  .usecase-meta {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+  }
+
+  .usecase-feature {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .usecase-status {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .usecase-status.status-bronze {
+    color: var(--grade-bronze);
+    background: color-mix(in srgb, var(--grade-bronze) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--grade-bronze) 22%, transparent);
+  }
+
+  .usecase-status.status-silver {
+    color: var(--grade-silver);
+    background: color-mix(in srgb, var(--grade-silver) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--grade-silver) 22%, transparent);
+  }
+
+  .usecase-status.status-gold {
+    color: var(--grade-gold);
+    background: color-mix(in srgb, var(--grade-gold) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--grade-gold) 22%, transparent);
+  }
+
+  .usecase-status.status-platinum {
+    color: var(--grade-platinum);
+    background: color-mix(in srgb, var(--grade-platinum) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--grade-platinum) 22%, transparent);
+  }
+
+  /* Without / With grid */
+  .usecase-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    margin-top: 1.75rem;
+  }
+
+  .compare-label {
+    margin-bottom: 0.625rem;
+    display: block;
+  }
+
+  .compare-without p,
+  .compare-with p {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  /* Without: muted to emphasize the contrast */
+  .compare-without {
+    color: var(--muted);
+  }
+
+  /* With: full ink weight */
+  .compare-with {
+    color: var(--ink);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .usecase-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .usecase-compare {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .compare-without {
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--rule);
+    }
+  }
+</style>

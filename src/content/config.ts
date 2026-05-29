@@ -101,5 +101,44 @@ export const featureGroupArraySchema = z.array(featureGroupSchema);
 export type Feature = z.infer<typeof featureSchema>;
 export type FeatureGroup = z.infer<typeof featureGroupSchema>;
 
+// ── Install mode schema ──────────────────────────────────────────────────────
+
+export const INSTALL_LEVELS = ['L0', 'L1', 'L1+', 'L2', 'L3'] as const;
+export const MCP_ACCESS_TYPES = ['stub', 'remote-oauth', 'both'] as const;
+export const INSTALL_STATUSES = ['available', 'planned-v1.0'] as const;
+
+export const installModeSchema = z.object({
+  id: z.string().regex(/^[a-z-]+$/),
+  name: z.string().min(1),
+  level: z.enum(INSTALL_LEVELS),
+  isDefault: z.boolean().default(false),
+  tagline: z.string().min(20).max(180),
+  useCase: z.string().min(20).max(200),
+  command: z.string().min(5),
+  services: z.array(z.string().min(1)).min(1),
+  llm: z.string().min(1),
+  mcpAccess: z.enum(MCP_ACCESS_TYPES),
+  status: z.enum(INSTALL_STATUSES),
+});
+
+export const installModeArraySchema = z.array(installModeSchema);
+export type InstallMode = z.infer<typeof installModeSchema>;
+
+// ── Use case schema ──────────────────────────────────────────────────────────
+
+export const useCaseSchema = z.object({
+  id: z.string().regex(/^uc-\d{2}$/),
+  title: z.string().min(8).max(80),
+  withoutGradatum: z.string().min(20).max(300),
+  withGradatum: z.string().min(20).max(300),
+  featureRef: z.string().regex(/^F-\d{2}( · D-\d{2,3})?$/).optional(),
+  sinceVersion: z.string().regex(/^v\d+\.\d+\.\d+$/),
+  grade: z.enum(VERSION_GRADES),
+  isPlanned: z.boolean().default(false),
+});
+
+export const useCaseArraySchema = z.array(useCaseSchema);
+export type UseCase = z.infer<typeof useCaseSchema>;
+
 // Required by Astro — no file-based collections used
 export const collections = {};
