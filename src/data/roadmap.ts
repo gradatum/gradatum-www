@@ -85,10 +85,10 @@ const versions: VersionPhase[] = [
   {
     version: 'v0.2.0',
     status: 'planned',
-    theme: 'OpenDAL + Job Infrastructure',
+    theme: 'Job Infrastructure + Observability',
     description:
-      'Adds production-grade job infrastructure — a dead-letter queue for failed ingest tasks, a job monitor backed by Apalis, and an introspection API with server-sent events and Prometheus metrics, giving operators full visibility into what the system is processing and why.',
-    scopeTeaserItems: ['Dead-letter queue', 'Apalis job monitor', 'Jobs API + SSE + Prometheus'],
+      "Lays the foundation for gradatum's background job system and makes it fully observable. This release introduces the job queue layer built on Apalis (https://github.com/geofmureithi/apalis) — a type-safe, SQLite-backed Rust job framework — including the Job enum, JobRecord lifecycle tracking, and per-class worker configuration. On top of that foundation, it ships a Dead-Letter Queue (DLQ) for failed background jobs with configurable retry policies, timeout enforcement, and panic isolation, so jobs that fail definitively are captured rather than silently dropped. A /api/v1/jobs introspection endpoint surfaces job state over HTTP, with a Server-Sent Events (SSE) stream for real-time push updates and Prometheus metrics per job kind, giving operators full visibility into what the system is running and why without polling.",
+    scopeTeaserItems: ['Apalis job foundation', 'Dead-letter queue', 'Jobs introspection API + SSE'],
     featureRefs: ['F-15', 'F-16'],
   },
   {
