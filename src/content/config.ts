@@ -63,6 +63,35 @@ export const storageBackendSchema = z.object({
 
 export type StorageBackend = z.infer<typeof storageBackendSchema>;
 
+// ── Roadmap schemas ───────────────────────────────────────────────────────────
+
+export const MILESTONE_STATUSES = ['done', 'in-progress', 'next', 'planned'] as const;
+export const VERSION_STATUSES = ['in-progress', 'planned'] as const;
+export const VERSION_GRADES = ['Bronze', 'Silver', 'Gold', 'Platinum'] as const;
+
+const milestoneSchema = z.object({
+  status: z.enum(MILESTONE_STATUSES),
+  title: z.string().min(1),
+  version: z.string().min(1),
+  date: z.string().optional(),
+});
+
+const versionPhaseSchema = z.object({
+  version: z.string().regex(/^v\d+\.\d+\.\d+$/),
+  grade: z.enum(VERSION_GRADES).optional(),
+  status: z.enum(VERSION_STATUSES),
+  theme: z.string().min(5),
+  description: z.string().min(20),
+  milestones: z.array(milestoneSchema).optional(),
+  scopeTeaserItems: z.array(z.string().min(1)).optional(),
+  featureRefs: z.array(z.string().regex(/^F-\d{2}$/)).optional(),
+  showFeaturesLink: z.boolean().default(false),
+});
+
+export const versionPhaseArraySchema = z.array(versionPhaseSchema);
+export type Milestone = z.infer<typeof milestoneSchema>;
+export type VersionPhase = z.infer<typeof versionPhaseSchema>;
+
 // ── Feature schema ────────────────────────────────────────────────────────────
 
 export const featureSchema = z.object({

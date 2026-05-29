@@ -19,6 +19,12 @@
   --code-fg:    #e9dbb6;
   --code-green: #7a9d6a;
 
+  /* Grade palette — light mode (WCAG AA verified) */
+  --grade-bronze:   #7c4a1e;
+  --grade-silver:   #5e6e7a;
+  --grade-gold:     #7a5c10;
+  --grade-platinum: #4a5c68;
+
   --font-serif: 'Cormorant Garamond', 'EB Garamond', Georgia, serif;
   --font-sans:  'Inter', -apple-system, sans-serif;
   --font-mono:  'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
@@ -45,6 +51,12 @@ html[data-dark="true"] {
   --muted:      #8a7e5e;
   --code-bg:    #0a0907;
   --code-fg:    #cfc398;
+
+  /* Grade palette — dark mode */
+  --grade-bronze:   #c89b3c;
+  --grade-silver:   #7ea8c4;
+  --grade-gold:     #d4a844;
+  --grade-platinum: #a0b4c0;
 }
 
 /* --- Density variants --- */

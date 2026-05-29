@@ -1,116 +1,6 @@
 ---
-// Roadmap — numbering convention (validated 2026-05-28) :
-//   Numéro de phase = 2 chiffres = v{X.Y}
-//   Toutes les versions v{X.Y}.<patch>-alpha.<N> / -bumps.<N> / -patch.<N>
-//   appartiennent à la même phase X.Y.
-//
-// Mapping historique → milestones Phase 0.1 :
-//   Phase 1, 2.0, 2.1, 2.2, 2.2.1, 2.3, 2.4, 2.5, 2.6, 2.x
-//   → milestones chronologiques sous Phase 0.1 (v0.1.x alpha series)
-
-interface Milestone {
-  status: 'done' | 'in-progress' | 'next' | 'planned';
-  title: string;
-  version: string;
-  date?: string;
-}
-
-interface MacroPhase {
-  num: string;
-  versionPrefix: string;
-  versionSuffix: string;
-  state: 'in-progress' | 'planned';
-  description: string;
-  milestones?: Milestone[];
-  scopeTeaser?: string;
-}
-
-const macroPhases: MacroPhase[] = [
-  {
-    num: '0.1',
-    versionPrefix: 'v0.1.x',
-    versionSuffix: 'alpha series',
-    state: 'in-progress',
-    description: 'Embedded memory backbone for AI agents (alpha series)',
-    milestones: [
-      {
-        status: 'done',
-        title: 'Functional core',
-        version: 'v0.1.0-alpha.0→5',
-        date: '2026-04',
-      },
-      {
-        status: 'done',
-        title: 'Service mode (HTTP + MCP)',
-        version: 'v0.1.0-alpha.5',
-        date: '2026-05-07',
-      },
-      {
-        status: 'done',
-        title: 'Hardening + search foundations',
-        version: 'v0.1.0-alpha.7→10',
-        date: '2026-05',
-      },
-      {
-        status: 'done',
-        title: 'Supply chain bumps',
-        version: 'v0.1.0-alpha.10-bumps.1',
-        date: '2026-05',
-      },
-      {
-        status: 'done',
-        title: 'Search quality (RRF + reranker)',
-        version: 'v0.1.0-alpha.11→13',
-        date: '2026-05',
-      },
-      {
-        status: 'done',
-        title: 'Double run + decommission predecessor',
-        version: 'memory backend migrated',
-        date: '2026-05-25',
-      },
-      {
-        status: 'done',
-        title: 'Security hardening — JWT validate_nbf',
-        version: 'v0.1.0-alpha.14',
-        date: '2026-05-28',
-      },
-      {
-        status: 'done',
-        title: 'Gradatum Skills (reminder + vault-search)',
-        version: 'gradatum-skills v0.1.0',
-        date: '2026-05-25',
-      },
-      {
-        status: 'done',
-        title: 'Polish — title resolution, batched lookups, parallel wikilinks',
-        version: 'v0.1.0-alpha.15',
-        date: '2026-05-28',
-      },
-      {
-        status: 'next',
-        title: 'Stabilisation — alpha series wrap-up, OSS feedback integration',
-        version: 'v0.1.x closing',
-      },
-    ],
-  },
-  {
-    num: '0.2',
-    versionPrefix: 'v0.2.x',
-    versionSuffix: 'beta candidate',
-    state: 'planned',
-    description: 'Stabilisation + feedback OSS',
-    scopeTeaser: 'TBD scope — defined after alpha series completion',
-  },
-  {
-    num: '1.0',
-    versionPrefix: 'v1.0.x',
-    versionSuffix: 'OSS public release',
-    state: 'planned',
-    description: 'Production-ready packaging',
-    scopeTeaser: '.deb package, Docker image, offline bundle, audit logs SIEM-ingestable, high-availability blueprints, full OSS onboarding (CONTRIBUTING, SECURITY, Code of Conduct)',
-  },
-];
+import { versionPhases } from '../data/roadmap';
+import type { Milestone } from '../content/config';
 
 const milestoneIcon: Record<Milestone['status'], string> = {
   done: '✓',
@@ -118,67 +8,108 @@ const milestoneIcon: Record<Milestone['status'], string> = {
   next: '·',
   planned: '·',
 };
+
+const isExpandedByDefault = (v: string) =>
+  v === 'v0.1.0' || v === 'v1.0.0' || v === 'v2.0.0';
+
+const slugifyVersion = (v: string) => v.replace(/\./g, '-'); // v0.1.0 → v0-1-0
 ---
 
 <section id="roadmap" class="roadmap section-pad section-gap" aria-labelledby="roadmap-title">
   <div class="roadmap-inner">
-    <div class="eyebrow">VI · Status & Roadmap</div>
-    <h2 id="roadmap-title" class="roadmap-h2">Roadmap — phases shipped and in flight</h2>
+    <div class="eyebrow">VI · Status &amp; Roadmap</div>
+    <h2 id="roadmap-title" class="roadmap-h2">Roadmap — eight versions, four milestones</h2>
     <p class="roadmap-meta">
       <code>v0.1.0-alpha.15</code> · 826 tests · 26 crates · Rust 2021 · MSRV 1.85
     </p>
 
-    <div class="macro-phases" role="list">
-      {macroPhases.map((phase) => (
-        <article class={`macro-phase state-${phase.state}`} role="listitem">
-          <header class="macro-header">
-            <div class="version-prefix eyebrow">
-              {phase.versionPrefix} — {phase.versionSuffix}
-            </div>
-            <div class="macro-title-row">
-              <span class="phase-num" aria-hidden="true">Phase {phase.num}</span>
-              <span
-                class={`phase-state-badge badge-${phase.state}`}
-                aria-label={`Status: ${phase.state === 'in-progress' ? 'in progress' : 'planned'}`}
-              >
-                {phase.state === 'in-progress' ? '⚡ IN PROGRESS' : 'planned'}
-              </span>
-            </div>
-            <p class="macro-description">{phase.description}</p>
-            {phase.num === '0.1' && (
-              <a href="/features" class="features-link eyebrow">
-                explore shipped features →
-              </a>
-            )}
-          </header>
-
-          {phase.milestones && (
-            <ol class="milestones-list" aria-label={`Milestones Phase ${phase.num}`}>
-              {phase.milestones.map((m) => (
-                <li class={`milestone milestone-${m.status}`}>
-                  <span class="milestone-icon" aria-hidden="true">
-                    {milestoneIcon[m.status]}
-                  </span>
-                  <span class="milestone-title">{m.title}</span>
-                  <span class="milestone-version">{m.version}</span>
-                  {m.date && (
-                    <span class="milestone-date" aria-label={`date: ${m.date}`}>
-                      {m.date}
+    <div class="version-phases" role="list">
+      {versionPhases.map((phase) => {
+        const slug = slugifyVersion(phase.version);
+        const expanded = isExpandedByDefault(phase.version);
+        return (
+          <details
+            id={`v-${slug}`}
+            class={`version-phase state-${phase.status}${phase.grade ? ` grade-${phase.grade.toLowerCase()}` : ''}`}
+            role="listitem"
+            open={expanded}
+          >
+            <summary class="version-summary">
+              <div class="version-summary-inner">
+                <span class="version-eyebrow eyebrow">{phase.version} · {phase.theme.toLowerCase()}</span>
+                <h3 class="version-title">
+                  {phase.grade && (
+                    <span
+                      class={`grade-badge grade-${phase.grade.toLowerCase()}`}
+                      aria-label={`${phase.grade} grade milestone`}
+                    >
+                      {phase.grade.toUpperCase()}
                     </span>
                   )}
-                </li>
-              ))}
-            </ol>
-          )}
+                  {phase.theme}
+                </h3>
+                <span
+                  class={`phase-state-badge badge-${phase.status}`}
+                  aria-label={`Status: ${phase.status === 'in-progress' ? 'in progress' : 'planned'}`}
+                >
+                  {phase.status === 'in-progress' ? '⚡ IN PROGRESS' : 'planned'}
+                </span>
+              </div>
+            </summary>
 
-          {phase.scopeTeaser && (
-            <p class="scope-teaser">{phase.scopeTeaser}</p>
-          )}
-        </article>
-      ))}
+            <div class="version-content">
+              <p class="version-description">{phase.description}</p>
+
+              {phase.showFeaturesLink && (
+                <a href="/features" class="features-link eyebrow">
+                  explore shipped features →
+                </a>
+              )}
+
+              {phase.milestones && (
+                <ol class="milestones-list" aria-label={`Milestones ${phase.version}`}>
+                  {phase.milestones.map((m) => (
+                    <li class={`milestone milestone-${m.status}`}>
+                      <span class="milestone-icon" aria-hidden="true">{milestoneIcon[m.status]}</span>
+                      <span class="milestone-title">{m.title}</span>
+                      <span class="milestone-version">{m.version}</span>
+                      {m.date && (
+                        <span class="milestone-date" aria-label={`date: ${m.date}`}>{m.date}</span>
+                      )}
+                    </li>
+                  ))}
+                </ol>
+              )}
+
+              {phase.scopeTeaserItems && phase.scopeTeaserItems.length > 0 && (
+                <p class="scope-teaser">
+                  {phase.scopeTeaserItems.join(' · ')}
+                </p>
+              )}
+            </div>
+          </details>
+        );
+      })}
     </div>
   </div>
 </section>
+
+<script is:inline>
+  /* Auto-open <details> targeted by location.hash (deep links #v-0-5-0) */
+  (function() {
+    function openTargeted() {
+      var hash = window.location.hash;
+      if (!hash || hash.indexOf('#v-') !== 0) return;
+      var target = document.querySelector(hash);
+      if (target && target.tagName === 'DETAILS') {
+        target.open = true;
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+    openTargeted();
+    window.addEventListener('hashchange', openTargeted);
+  })();
+</script>
 
 <style>
   .roadmap {
@@ -204,74 +135,119 @@ const milestoneIcon: Record<Milestone['status'], string> = {
     color: var(--muted);
   }
 
-  /* ── Macro phases ─────────────────────────────────────── */
+  /* ── Version phases ───────────────────────────────────── */
 
-  .macro-phases {
+  .version-phases {
     margin-top: 3.5rem;
     display: flex;
     flex-direction: column;
   }
 
-  .macro-phase {
+  .version-phase {
     padding: 2.5rem 0;
     border-top: 1px solid var(--rule);
+    scroll-margin-top: 5rem;
   }
 
-  .macro-phase:last-child {
+  .version-phase:last-child {
     border-bottom: 1px solid var(--rule);
   }
 
-  /* Planned phases: slightly muted but NOT faded */
-  .macro-phase.state-planned {
+  .version-phase.state-planned {
     opacity: 0.72;
   }
 
-  /* ── Macro header ─────────────────────────────────────── */
+  /* ── Summary / toggle ────────────────────────────────── */
 
-  .macro-header {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto auto auto;
-    row-gap: 0.5rem;
-    column-gap: 1.5rem;
-    align-items: start;
+  .version-summary {
+    cursor: pointer;
+    list-style: none;
+    min-height: 44px; /* touch target */
   }
 
-  /* eyebrow spans full width */
-  .macro-header .version-prefix {
+  .version-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .version-summary::marker {
+    content: '';
+  }
+
+  .version-summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .version-summary-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    row-gap: 0.5rem;
+    column-gap: 1.5rem;
+    align-items: baseline;
+  }
+
+  .version-eyebrow {
     grid-column: 1 / -1;
     margin-bottom: 0.25rem;
   }
 
-  .macro-title-row {
+  .version-title {
     grid-column: 1;
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 500;
+    line-height: 1.05;
+    margin: 0;
     display: flex;
     align-items: baseline;
-    gap: 1.25rem;
+    gap: 0.75rem;
     flex-wrap: wrap;
   }
 
-  /* Phase num — grande italic, sérigraphique */
-  .phase-num {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: clamp(2rem, 4vw, 3.25rem);
-    font-weight: 500;
-    line-height: 0.95;
-    color: var(--accent);
+  /* ── Grade badges ─────────────────────────────────────── */
+
+  .grade-badge {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    padding: 0.25rem 0.625rem;
+    border-radius: 999px;
+    line-height: 1;
+    flex-shrink: 0;
   }
 
-  .state-planned .phase-num {
-    color: var(--muted);
+  .grade-badge.grade-bronze {
+    color: var(--grade-bronze);
+    background: color-mix(in srgb, var(--grade-bronze) 14%, transparent);
   }
 
-  /* Badge état */
+  .grade-badge.grade-silver {
+    color: var(--grade-silver);
+    background: color-mix(in srgb, var(--grade-silver) 14%, transparent);
+  }
+
+  .grade-badge.grade-gold {
+    color: var(--grade-gold);
+    background: color-mix(in srgb, var(--grade-gold) 14%, transparent);
+  }
+
+  .grade-badge.grade-platinum {
+    color: var(--grade-platinum);
+    background: color-mix(in srgb, var(--grade-platinum) 14%, transparent);
+  }
+
+  /* ── Phase state badge ────────────────────────────────── */
+
   .phase-state-badge {
     font-family: var(--font-mono);
     font-size: 0.6875rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     align-self: center;
+    grid-column: 2;
+    grid-row: 2;
   }
 
   .badge-in-progress {
@@ -283,14 +259,35 @@ const milestoneIcon: Record<Milestone['status'], string> = {
     color: var(--muted);
   }
 
-  /* Description */
-  .macro-description {
-    grid-column: 1 / -1;
+  /* ── Version content ──────────────────────────────────── */
+
+  .version-content {
+    margin-top: 1.5rem;
+  }
+
+  .version-description {
     font-family: var(--font-serif);
-    font-size: 1.25rem;
     font-style: italic;
+    font-size: 1.0625rem;
+    line-height: 1.6;
     color: var(--ink-soft);
-    line-height: 1.4;
+    margin: 0;
+    max-width: 72ch;
+  }
+
+  /* ── Features link ────────────────────────────────────── */
+
+  .features-link {
+    display: inline-block;
+    margin-top: 0.875rem;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: 0.14em;
+  }
+
+  .features-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   /* ── Milestones list ──────────────────────────────────── */
@@ -325,21 +322,10 @@ const milestoneIcon: Record<Milestone['status'], string> = {
     flex-shrink: 0;
   }
 
-  .milestone-done .milestone-icon {
-    color: var(--accent);
-  }
-
-  .milestone-in-progress .milestone-icon {
-    color: var(--accent);
-  }
-
-  .milestone-next .milestone-icon {
-    color: var(--muted);
-  }
-
-  .milestone-planned .milestone-icon {
-    color: var(--rule);
-  }
+  .milestone-done .milestone-icon    { color: var(--accent); }
+  .milestone-in-progress .milestone-icon { color: var(--accent); }
+  .milestone-next .milestone-icon    { color: var(--muted); }
+  .milestone-planned .milestone-icon { color: var(--rule); }
 
   /* Title */
   .milestone-title {
@@ -347,23 +333,10 @@ const milestoneIcon: Record<Milestone['status'], string> = {
     line-height: 1.45;
   }
 
-  .milestone-done .milestone-title {
-    color: var(--ink-soft);
-  }
-
-  .milestone-in-progress .milestone-title {
-    color: var(--ink);
-    font-weight: 500;
-  }
-
-  .milestone-next .milestone-title {
-    color: var(--ink-soft);
-  }
-
-  .milestone-planned .milestone-title {
-    color: var(--muted);
-    font-style: italic;
-  }
+  .milestone-done .milestone-title        { color: var(--ink-soft); }
+  .milestone-in-progress .milestone-title { color: var(--ink); font-weight: 500; }
+  .milestone-next .milestone-title        { color: var(--ink-soft); }
+  .milestone-planned .milestone-title     { color: var(--muted); font-style: italic; }
 
   /* Version chip */
   .milestone-version {
@@ -391,46 +364,26 @@ const milestoneIcon: Record<Milestone['status'], string> = {
     flex-shrink: 0;
   }
 
-  /* ── Features link (Phase 0.1 only) ──────────────────── */
-
-  .features-link {
-    display: inline-block;
-    margin-top: 0.75rem;
-    color: var(--accent);
-    text-decoration: none;
-    letter-spacing: 0.14em;
-  }
-
-  .features-link:hover {
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  /* ── Scope teaser (planned phases) ───────────────────── */
+  /* ── Scope teaser ─────────────────────────────────────── */
 
   .scope-teaser {
     margin-top: 1.25rem;
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 1.0625rem;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
     color: var(--muted);
-    line-height: 1.55;
-    max-width: 56ch;
+    line-height: 1.5;
   }
 
   /* ── Responsive ───────────────────────────────────────── */
 
   @media (max-width: 768px) {
-    .macro-header {
+    .version-summary-inner {
       grid-template-columns: 1fr;
     }
 
-    .macro-header .version-prefix {
-      grid-column: 1;
-    }
-
     .phase-state-badge {
-      /* inline after phase-num on mobile */
+      grid-column: 1;
+      grid-row: auto;
     }
 
     .milestone {
@@ -454,8 +407,8 @@ const milestoneIcon: Record<Milestone['status'], string> = {
       padding-left: 1rem;
     }
 
-    .phase-num {
-      font-size: 2rem;
+    .version-title {
+      font-size: 1.5rem;
     }
   }
 </style>
