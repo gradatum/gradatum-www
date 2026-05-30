@@ -126,7 +126,7 @@ const versions: VersionPhase[] = [
   },
   {
     version: 'v0.3.0',
-    status: 'planned',
+    status: 'in-progress',
     theme: 'Gateway + Curator confidence',
     description:
       'Introduces an integrated LLM gateway for local and remote model routing, a first-generation reranker for search relevance, multi-vault support, and a Curator Confidence Ladder so the system can score, route, and store notes with traceable quality signals.',
