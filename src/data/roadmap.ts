@@ -15,7 +15,7 @@ const versions: VersionPhase[] = [
   {
     version: 'v0.1.0',
     grade: 'Bronze',
-    status: 'in-progress',
+    status: 'done',
     theme: 'Architecture Foundation',
     description:
       'Establishes the public architecture foundation — four persistence traits, a warden layer for note integrity, an install wizard for first-time setup, and smoke-test coverage so that early adopters can deploy a working knowledge store with confidence from the first release.',
@@ -76,16 +76,17 @@ const versions: VersionPhase[] = [
         date: '2026-05-28',
       },
       {
-        status: 'next',
+        status: 'done',
         title: 'Stabilisation — alpha series wrap-up, OSS feedback integration',
         version: 'v0.1.x closing',
+        date: '2026-05-29',
       },
     ],
   },
   {
     version: 'v0.2.0',
     grade: 'Bronze',
-    status: 'in-progress',
+    status: 'done',
     theme: 'Job Infrastructure + Observability',
     description:
       "Lays the foundation for gradatum's background job system and makes it fully observable. This release introduces the job queue layer built on Apalis (https://github.com/geofmureithi/apalis) — a type-safe, SQLite-backed Rust job framework — including the Job enum, JobRecord lifecycle tracking, and per-class worker configuration. On top of that foundation, it ships a Dead-Letter Queue (DLQ) for failed background jobs with configurable retry policies, timeout enforcement, and panic isolation, so jobs that fail definitively are captured rather than silently dropped. A /api/v1/jobs introspection endpoint surfaces job state over HTTP, with a Server-Sent Events (SSE) stream for real-time push updates and Prometheus metrics per job kind, giving operators full visibility into what the system is running and why without polling.",
@@ -117,11 +118,6 @@ const versions: VersionPhase[] = [
         version: 'v0.2.0',
         date: '2026-05-29',
       },
-      {
-        status: 'next',
-        title: 'Runtime backend Apalis complete — bridge handler→store fix',
-        version: 'v0.2.0',
-      },
     ],
   },
   {
@@ -132,6 +128,24 @@ const versions: VersionPhase[] = [
       'Introduces an integrated LLM gateway for local and remote model routing, a first-generation reranker for search relevance, multi-vault support, and a Curator Confidence Ladder so the system can score, route, and store notes with traceable quality signals.',
     scopeTeaserItems: ['LLM gateway', 'Reranker v1', 'Multi-vault', 'Curator Confidence Ladder'],
     featureRefs: ['F-02', 'F-08', 'F-13', 'F-14', 'F-18', 'F-19', 'F-42'],
+    milestones: [
+      {
+        status: 'done',
+        title: 'Phase 1: gradatum-gateway portage (LLM gateway + reranker v1 + multi-provider)',
+        version: 'main (unreleased)',
+        date: '2026-06-01',
+      },
+      {
+        status: 'next',
+        title: 'Runtime backend Apalis complete — bridge handler→store fix',
+        version: 'v0.3.0',
+      },
+      {
+        status: 'next',
+        title: 'Curator Confidence Ladder + multi-vault',
+        version: 'v0.3.0',
+      },
+    ],
   },
   {
     version: 'v0.4.0',

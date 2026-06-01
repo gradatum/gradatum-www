@@ -10,7 +10,7 @@ const milestoneIcon: Record<Milestone['status'], string> = {
 };
 
 const isExpandedByDefault = (v: string) =>
-  v === 'v0.1.0' || v === 'v1.0.0' || v === 'v2.0.0';
+  v === 'v0.2.0' || v === 'v0.3.0' || v === 'v1.0.0' || v === 'v2.0.0';
 
 const slugifyVersion = (v: string) => v.replace(/\./g, '-'); // v0.1.0 → v0-1-0
 ---
@@ -20,7 +20,7 @@ const slugifyVersion = (v: string) => v.replace(/\./g, '-'); // v0.1.0 → v0-1-
     <div class="eyebrow">VI · Status &amp; Roadmap</div>
     <h2 id="roadmap-title" class="roadmap-h2">Roadmap — eight versions, four milestones</h2>
     <p class="roadmap-meta">
-      <code>v0.1.0-alpha.15</code> · 826 tests · 26 crates · Rust 2021 · MSRV 1.85
+      <code>v0.2.0</code> · 896 tests · 27 crates · Rust 2021 · MSRV 1.85
     </p>
 
     <div class="version-phases" role="list">
@@ -50,9 +50,9 @@ const slugifyVersion = (v: string) => v.replace(/\./g, '-'); // v0.1.0 → v0-1-
                 </h3>
                 <span
                   class={`phase-state-badge badge-${phase.status}`}
-                  aria-label={`Status: ${phase.status === 'in-progress' ? 'in progress' : 'planned'}`}
+                  aria-label={`Status: ${phase.status === 'in-progress' ? 'in progress' : phase.status === 'done' ? 'shipped' : 'planned'}`}
                 >
-                  {phase.status === 'in-progress' ? '⚡ IN PROGRESS' : 'planned'}
+                  {phase.status === 'in-progress' ? '⚡ IN PROGRESS' : phase.status === 'done' ? '✓ SHIPPED' : 'planned'}
                 </span>
               </div>
             </summary>
@@ -257,6 +257,14 @@ const slugifyVersion = (v: string) => v.replace(/\./g, '-'); // v0.1.0 → v0-1-
 
   .badge-planned {
     color: var(--muted);
+  }
+
+  .badge-done {
+    color: var(--muted);
+  }
+
+  .version-phase.state-done {
+    opacity: 0.82;
   }
 
   /* ── Version content ──────────────────────────────────── */

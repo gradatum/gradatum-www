@@ -50,7 +50,7 @@ export type StorageBackend = z.infer<typeof storageBackendSchema>;
 // ── Roadmap schemas ───────────────────────────────────────────────────────────
 
 export const MILESTONE_STATUSES = ['done', 'in-progress', 'next', 'planned'] as const;
-export const VERSION_STATUSES = ['in-progress', 'planned'] as const;
+export const VERSION_STATUSES = ['in-progress', 'planned', 'done'] as const;
 export const VERSION_GRADES = ['Bronze', 'Silver', 'Gold', 'Platinum'] as const;
 
 const milestoneSchema = z.object({
