@@ -13,13 +13,15 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
       they differ in services started, LLM provider, and access pattern.
     </p>
 
-    <!-- One-liner -->
-    <div class="install-oneliner">
-      <div class="eyebrow block-label">One-liner installer</div>
-      <pre class="install-pre"><code>curl -fsSL https://get.gradatum.dev | sh</code></pre>
-      <p class="install-meta">
-        Runs the interactive wizard (Solo mode by default). Detects Ollama automatically
-        and offers it as the first provider option if running.
+    <!-- One-liner — coming soon -->
+    <div class="install-oneliner install-oneliner-soon">
+      <div class="eyebrow block-label">Installation</div>
+      <p class="install-soon-notice">
+        Installation packages (one-liner, <code>.deb</code>, Docker image) will be available
+        at the first OSS release — coming soon.
+        <br />
+        Until then, build from source using the Quick Start on the
+        <a href="/vault#install">Vault page</a>.
       </p>
     </div>
 
@@ -60,6 +62,16 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
                 {mode.name}{mode.isDefault ? ' ★' : ''}
                 <span class="panel-level">{mode.level}</span>
               </h3>
+              {mode.status === 'planned-v0.5' && (
+                <span class="status-badge status-planned" aria-label="Planned for v0.5.0">
+                  planned for v0.5
+                </span>
+              )}
+              {mode.status === 'planned-v0.5.1' && (
+                <span class="status-badge status-planned" aria-label="Planned for v0.5.1">
+                  planned for v0.5.1
+                </span>
+              )}
               {mode.status === 'planned-v1.0' && (
                 <span class="status-badge status-planned" aria-label="Planned for v1.0.0">
                   planned for v1.0.0
@@ -200,6 +212,30 @@ gradatum-admin backup</code></pre>
   /* One-liner block */
   .install-oneliner {
     margin-top: 3rem;
+  }
+
+  .install-oneliner-soon {
+    background: color-mix(in srgb, var(--rule) 18%, transparent);
+    border: 1px solid var(--rule);
+    padding: 1.5rem;
+    border-left: 3px solid var(--accent);
+  }
+
+  .install-soon-notice {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    margin-top: 0.75rem;
+  }
+
+  .install-soon-notice a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .install-soon-notice a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .block-label {

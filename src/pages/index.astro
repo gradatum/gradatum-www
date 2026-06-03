@@ -14,18 +14,18 @@ import Footer from '../components/Footer.astro';
       <!-- Hero umbrella — slogan principal -->
       <section class="hero-umbrella section-pad" aria-labelledby="hero-title">
         <div class="hero-inner">
-          <div class="eyebrow">Gradatum · self-hosted modular substrate for AI agents</div>
+          <div class="eyebrow">Gradatum · sovereign memory for AI agents</div>
 
           <h1 id="hero-title" class="hero-h1">
-            A place<br />
-            <em class="hero-accent">for</em><br />
-            your agents.
+            A place of<br />
+            <em class="hero-accent">memory</em><br />
+            for your agents.
           </h1>
 
           <p class="hero-desc">
-            Gradatum is a family of self-hosted, embedded building blocks for multi-agent AI systems.
-            Each module solves one foundational need — memory, retrieval, identity, coordination —
-            with the same discipline: zero external services, Rust-first, MCP-native.
+            Gradatum is a self-hosted, embedded memory backbone for multi-agent AI systems.
+            Today: Vault — sovereign memory, queryable via MCP.
+            Tomorrow: identity, coordination, compute.
           </p>
 
           <div class="hero-meta">
@@ -64,30 +64,32 @@ import Footer from '../components/Footer.astro';
                 and your home-grown agents share what they know — across sessions, across machines, across runs.
               </p>
               <ul class="module-bullets">
-                <li>SQLite + FTS5 + bge-m3 1024d embeddings</li>
-                <li>BM25 + semantic + Jina cross-encoder reranker (RRF fusion)</li>
-                <li>Multi-facteur scoring (recency × pagerank backlinks)</li>
+                <li>SQLite FTS5 (BM25) + bge-m3 1024d embeddings</li>
+                <li>BM25 + cosine + cross-encoder reranker (ONNX) — RRF (Reciprocal Rank Fusion)</li>
+                <li>Multi-signal scoring (recency × pagerank backlinks)</li>
                 <li>MCP stdio + REST :19090 + auto-refresh JWT</li>
               </ul>
               <span class="module-cta">Explore Vault →</span>
             </a>
 
             <!-- Placeholders future modules -->
-            <div class="module-card module-soon" aria-label="Future module — coming soon">
+            <div class="module-card module-soon" aria-label="Agents Context layer — v0.6.0+, planned">
               <div class="module-status">
                 <span class="status-dot status-soon"></span>
-                <span class="status-label">research</span>
+                <span class="status-label">roadmap · v0.6.0+</span>
               </div>
-              <h3 class="module-name module-name-soon">Coming next</h3>
-              <p class="module-tag">TBD</p>
+              <h3 class="module-name module-name-soon">Agents Context layer</h3>
+              <p class="module-tag">Coming with v0.6</p>
               <p class="module-desc">
-                More foundational modules in design. Same discipline: self-hosted, embedded, Rust-first,
-                MCP-native, zero external services.
+                The layer that consumes the memory store autonomously — context assembly,
+                sliding-window continuity, proactive recall, skill selection.
+                Same discipline: self-hosted, embedded, Rust-first, MCP-native.
               </p>
-              <p class="module-bullets-soon">
-                Identity · Coordination · Compute · Time
+              <p class="module-chapter-teaser">
+                <span class="chapter-label">Memory layer</span> (today→v0.5) ·
+                <span class="chapter-label">Agents Context</span> (v0.6+)
               </p>
-              <span class="module-cta-soon">Stay tuned</span>
+              <span class="module-cta-soon">See roadmap →</span>
             </div>
           </div>
         </div>
@@ -105,9 +107,9 @@ import Footer from '../components/Footer.astro';
           </h2>
           <p class="vision-desc">
             Modern agent stacks are stitched from a dozen vendor SaaS, each with its own auth,
-            its own latency, its own privacy story. Gradatum builds the opposite — a coherent
-            family of <strong>local-first primitives</strong>, each shippable on a single LXC,
-            each composable via the Model Context Protocol, each owned end-to-end.
+            its own latency, its own privacy story. Gradatum builds the opposite — starting with
+            <strong>sovereign memory</strong>: self-hosted, embedded, MCP-native, owned end-to-end.
+            Identity, coordination, and compute follow on the roadmap.
           </p>
           <p class="vision-desc vision-desc-mono">
             <code>cargo install</code> · <code>systemctl enable</code> · <code>your data stays here</code>
@@ -333,6 +335,20 @@ import Footer from '../components/Footer.astro';
     color: var(--ink-soft);
     letter-spacing: 0.06em;
     opacity: 0.6;
+  }
+
+  .module-chapter-teaser {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin: 1rem 0 1.25rem;
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+  }
+
+  .chapter-label {
+    color: var(--ink-soft);
+    font-weight: 500;
   }
 
   /* ───── Vision section ───── */

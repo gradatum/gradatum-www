@@ -1,26 +1,9 @@
 ---
-const GITHUB_URL = 'https://github.com/gradatum/gradatum';
 const YEAR = new Date().getFullYear();
-
-const docLinks = [
-  { label: 'README', href: `${GITHUB_URL}#readme` },
-  { label: 'ARCHITECTURE.md', href: `${GITHUB_URL}/blob/main/ARCHITECTURE.md` },
-  { label: 'docs/PHASES.md', href: `${GITHUB_URL}/blob/main/docs/PHASES.md` },
-  { label: 'docs/BENCH.md', href: `${GITHUB_URL}/blob/main/docs/BENCH.md` },
-];
-
-const projectLinks = [
-  { label: 'GitHub', href: GITHUB_URL },
-  { label: 'Issues', href: `${GITHUB_URL}/issues` },
-  { label: 'Releases', href: `${GITHUB_URL}/releases` },
-  { label: 'License', href: `${GITHUB_URL}/blob/main/LICENSE` },
-  { label: 'CONTRIBUTING.md', href: `${GITHUB_URL}/blob/main/CONTRIBUTING.md` },
-];
 
 const stackLinks = [
   { label: 'Apache OpenDAL', href: 'https://opendal.apache.org' },
-  { label: 'SQLite', href: 'https://sqlite.org' },
-  { label: 'Tantivy', href: 'https://github.com/quickwit-oss/tantivy' },
+  { label: 'SQLite FTS5', href: 'https://sqlite.org/fts5.html' },
   { label: 'rmcp', href: 'https://github.com/modelcontextprotocol/rust-sdk' },
 ];
 ---
@@ -32,21 +15,20 @@ const stackLinks = [
         <div class="brand-name">Gradatum</div>
         <div class="eyebrow brand-tagline">memoria · gradatim · per gradus</div>
         <p class="brand-desc">
-          Apache-2.0. Built openly. Alpha — under construction.
-          Built on lessons from a private predecessor.
-          PRs welcome.
+          Apache-2.0 · Alpha — under construction.
+          Migrated off the predecessor backend — gradatum now primary.
+          Source release coming soon (OSS release pending).
         </p>
       </div>
 
-      <!-- Docs column -->
+      <!-- Pages column -->
       <div class="footer-col">
-        <div class="eyebrow col-head">Docs</div>
+        <div class="eyebrow col-head">Pages</div>
         <ul role="list">
-          {docLinks.map(({ label, href }) => (
-            <li>
-              <a href={href} target="_blank" rel="noopener noreferrer">{label}</a>
-            </li>
-          ))}
+          <li><a href="/vault">Vault</a></li>
+          <li><a href="/features">Features</a></li>
+          <li><a href="/install">Install</a></li>
+          <li><a href="/use-cases">Use cases</a></li>
         </ul>
       </div>
 
@@ -54,11 +36,8 @@ const stackLinks = [
       <div class="footer-col">
         <div class="eyebrow col-head">Project</div>
         <ul role="list">
-          {projectLinks.map(({ label, href }) => (
-            <li>
-              <a href={href} target="_blank" rel="noopener noreferrer">{label}</a>
-            </li>
-          ))}
+          <li><span class="footer-text-muted">GitHub — coming soon</span></li>
+          <li><span class="footer-text-muted">License — Apache-2.0</span></li>
         </ul>
       </div>
 
@@ -77,7 +56,7 @@ const stackLinks = [
 
     <div class="footer-bottom">
       <span>© {YEAR} Gradatum maintainers · Apache-2.0</span>
-      <span>built on lessons from a private predecessor · <a href="https://gradatum.org">gradatum.org</a></span>
+      <span>gradatum now primary · <a href="https://gradatum.org">gradatum.org</a></span>
     </div>
   </div>
 </footer>
@@ -99,6 +78,13 @@ const stackLinks = [
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr;
     gap: 3rem;
+  }
+
+  .footer-text-muted {
+    font-size: 0.875rem;
+    color: var(--muted);
+    cursor: default;
+    font-style: italic;
   }
 
   .brand-name {

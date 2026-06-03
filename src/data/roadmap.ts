@@ -53,8 +53,8 @@ const versions: VersionPhase[] = [
       },
       {
         status: 'done',
-        title: 'Double run + decommission predecessor',
-        version: 'memory backend migrated',
+        title: 'Migrated off the predecessor backend — gradatum now primary',
+        version: 'v0.1.0-alpha.13',
         date: '2026-05-25',
       },
       {
@@ -126,7 +126,7 @@ const versions: VersionPhase[] = [
     status: 'done',
     theme: 'Storage Traits + Event-Log + Secrets DI',
     description:
-      'Decomposes the monolithic storage trait into three granular, pluggable interfaces (DocumentStore, IndexStore, VectorStore), ships an append-only event-log table for LLM cost-attribution telemetry, adds an autonomous LLM gateway crate (proxy + reranker), introduces deterministic cognitive-kind tagging for notes (CoALA episodic/semantic/procedural/reflective), and fixes a critical JWT signing-key persistence bug that caused every server restart to invalidate all live tokens. Patch releases v0.3.1–0.3.3 harden the multi-worker job queue.',
+      'Decomposes the monolithic storage trait into three granular, pluggable interfaces (DocumentStore, IndexStore, VectorStore), ships an append-only event-log table for LLM cost-attribution telemetry, adds an autonomous LLM gateway crate (proxy + reranker), introduces deterministic cognitive-kind tagging for notes (CoALA — Cognitive Architectures for Language Agents — episodic/semantic/procedural/reflective), and fixes a critical JWT signing-key persistence bug that caused every server restart to invalidate all live tokens. Patch releases v0.3.1–0.3.3 harden the multi-worker job queue.',
     scopeTeaserItems: ['Storage trait carve', 'Event-log sink', 'LLM gateway', 'Cognitive kind (F-42)', 'Secrets DI'],
     featureRefs: ['F-02', 'F-08', 'F-13', 'F-42'],
     showFeaturesLink: true,

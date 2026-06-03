@@ -74,11 +74,11 @@ const groups: FeatureGroup[] = [
       {
         id: 'f-33',
         refLabel: 'F-33',
-        name: 'SKILL.md Mode 2: Session Discipline for LLM Agents',
+        name: 'Session Memory Discipline for LLM Agents',
         positioning:
-          'Provides a set of documented conventions (delivered as a SKILL.md file) that help an LLM agent maintain consistent working discipline across long sessions.',
+          'Opt-in conventions (a SKILL.md file) that prompt an LLM agent to record decisions and retrieve prior context before acting — preventing behavioral drift across long or resumed sessions.',
         howItWorks: [
-          'Four mechanisms are covered — trace-session (structured log of decisions made during the session), vault-discipline (write rules for the vault to prevent duplicate entries), context-sliding-window (context compaction protocol before the context window saturates), skill-crystallization (process for promoting an ad-hoc pattern into a reusable, named skill).',
+          'Four mechanisms are covered — session trace (structured log of decisions made during the session), vault discipline (write rules to prevent duplicate entries), context sliding window (compaction protocol before the context window saturates), and skill crystallization (process for promoting an ad-hoc pattern into a reusable named skill). Internally referenced as SKILL.md Mode 2.',
           "These conventions ship as Markdown files injected directly into the agent's context.",
         ],
         whoItsFor:
@@ -213,8 +213,8 @@ const groups: FeatureGroup[] = [
         positioning:
           'Makes search results reflect how fresh and still-valid each note is — older or expired content scores lower without being deleted.',
         howItWorks: [
-          'Each note carries a ValidityState (Valid, Temporal, or Expired) and a DocumentKind (Static, Versioned, or Event), which together determine its decay profile.',
-          'A recency_score computed relative to the current date is blended with the semantic score using a configurable temporal_weight (default 0.40).',
+          'Each note carries a validity state (valid, temporal, or expired) and a document kind (static, versioned, or event), which together determine its decay profile.',
+          'A recency score computed relative to the current date is blended with the semantic score using a configurable temporal weight (default 0.40).',
           'Event notes use a raw cosine relevance gate before decay is applied, preventing stale event records from surfacing on unrelated queries.',
         ],
         whoItsFor:
@@ -417,13 +417,13 @@ const groups: FeatureGroup[] = [
       {
         id: 'f-43',
         refLabel: 'F-43',
-        name: 'Memory Validation Loop: Self-Healing Before Storage',
+        name: 'Memory Validation: Self-Healing Before Storage',
         positioning:
           'Intercepts distilled notes before they enter long-term memory, corrects detectable errors automatically, and discards notes that cannot be repaired.',
         howItWorks: [
-          'Job::Validate computes a composite quality_score; notes exceeding a configurable quality threshold are accepted directly, notes with specific error patterns are routed to a healing strategy.',
-          'Three healing strategies are applied: ContradictionPatch (corrects numeric contradictions against source notes), EntityScrub (removes hallucinated entity claims), GroundingRewrite (reconstructs under-anchored text from derived-from sources).',
-          'Healed notes are stored with a HEALED_ACCEPT flag and a change log; notes where healing fails are discarded with a DISCARD routing decision, never silently stored.',
+          'A background validation job computes a composite quality score; notes above a configurable threshold are accepted, notes with specific error patterns are routed to a repair strategy.',
+          'Three repair strategies: contradiction patch (corrects numeric contradictions against source notes), entity scrub (removes hallucinated entity claims), and grounding rewrite (reconstructs under-anchored text from source material). Internally: ContradictionPatch, EntityScrub, GroundingRewrite.',
+          'Repaired notes are stored with an audit flag (HEALED_ACCEPT) and a change log; notes that cannot be repaired are discarded cleanly — never silently stored.',
         ],
         whoItsFor:
           'Teams where distillation quality is critical — RAG pipelines, shared knowledge bases, long-running agents — who cannot afford hallucinated or contradictory notes accumulating in the vault.',
@@ -489,13 +489,13 @@ const groups: FeatureGroup[] = [
       {
         id: 'f-35',
         refLabel: 'F-35',
-        name: 'gradatum-context: Context Assembly Library',
+        name: 'Context Assembly Library',
         positioning:
           'A Rust library that assembles the context injected into an LLM agent — identity, capabilities, sliding window, and proactive recalls — from vault content.',
         howItWorks: [
-          'ContextBuilder composes four injection zones: Zone A (identity and capabilities via IdentityRenderer and with_capabilities()), Zone B (sliding-window memory), Zone C (pinned slots via SlotPinner for high-priority notes), and Zone D (proactive recalls triggered by relevance).',
+          'A ContextBuilder composes four injection zones: identity and capabilities (Zone A), sliding-window memory (Zone B), pinned high-priority notes (Zone C), and proactive recalls triggered by relevance (Zone D).',
           'The library is consumed by gradatum-server, gradatum-worker, and the agent runtime — not a standalone service, no port, no network dependency.',
-          'with_capabilities() injects the JSON Schema of available vault tools so the agent can discover and call them without hardcoded tool lists.',
+          'The capabilities zone injects the JSON Schema of available vault tools so the agent can discover and call them without hardcoded tool lists.',
         ],
         whoItsFor:
           'Developers building agent runtimes or custom tool integrations who need programmatic control over what vault content enters the LLM context and in what order.',
@@ -579,11 +579,11 @@ const groups: FeatureGroup[] = [
         refLabel: 'F-49',
         name: 'Memory Consolidation: Long-Horizon Mental Models',
         positioning:
-          'Periodically distills the full knowledge/ locus into thematic mental models — structured summaries of how the operator reasons, not just what they know.',
+          'Periodically distills the full knowledge store into thematic mental models — structured summaries of how the operator reasons, not just what they know.',
         howItWorks: [
-          'Job::Consolidate runs monthly or quarterly (configurable); it requires a corpus of at least 90 days of matured notes before it produces meaningful output.',
+          'A consolidation job runs monthly or quarterly (configurable); it requires a corpus of at least 90 days of matured notes before it produces meaningful output.',
           'Output is written to knowledge/consolidated/ as named mental-model notes that describe recurring reasoning patterns, not just topic summaries.',
-          'Consolidated models are injected into Zone A at a high priority slot, allowing the agent to reason from first principles rather than searching hundreds of individual notes.',
+          'Consolidated models are injected at a high-priority slot in the agent context, allowing the agent to reason from first principles rather than scanning hundreds of individual notes.',
         ],
         whoItsFor:
           'Long-term gradatum users — six months or more of active knowledge accumulation — who want their agent to reason from a compressed model of their thinking rather than raw notes.',
@@ -625,9 +625,9 @@ const groups: FeatureGroup[] = [
       {
         id: 'f-27',
         refLabel: 'F-27',
-        name: 'BYOC L4: Bring Your Own Compute for Cloud Scale',
+        name: 'Bring Your Own Compute (BYOC) — L4 Cloud Scale',
         positioning:
-          'Extends gradatum to a full L4 bring-your-own-compute deployment model — multi-region inference, cloud-managed load balancing, and enterprise-scale multi-tenancy.',
+          'Extends gradatum to a full L4 bring-your-own-compute (BYOC) deployment model — multi-region inference, cloud-managed load balancing, and enterprise-scale multi-tenancy.',
         howItWorks: [
           'L4 BYOC builds on the existing deployment levels (L0 local through L3 managed); at L4, the user provides their own cloud compute (VMs, containers, or serverless) and storage.',
           'Cloud provider load balancing (ALB, CloudFront, or equivalent) replaces the built-in reverse proxy; mTLS is recommended for inter-service communication at this scale.',

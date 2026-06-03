@@ -1,12 +1,11 @@
 ---
-const GITHUB_URL = 'https://github.com/gradatum/gradatum';
 ---
 <section id="install" class="qs section-pad section-gap" aria-labelledby="qs-title">
   <div class="qs-inner">
     <div class="eyebrow">VIII · Quick start</div>
     <h2 id="qs-title" class="qs-h2">
-      Build from source today.
-      <span class="qs-muted">apt install with Phase 4.</span>
+      Source &amp; packages at first OSS release.
+      <span class="qs-muted">coming soon.</span>
     </h2>
 
     <div class="qs-teaser-cta">
@@ -17,9 +16,9 @@ const GITHUB_URL = 'https://github.com/gradatum/gradatum';
     <div class="qs-blocks">
       <!-- Block 1: Clone & build -->
       <div class="qs-block">
-        <div class="eyebrow block-label">Clone & build</div>
-        <pre class="qs-pre"><code><span class="c"># clone & build</span>
-git clone {GITHUB_URL}
+        <div class="eyebrow block-label">Clone & build (source release pending)</div>
+        <pre class="qs-pre"><code><span class="c"># source available at first OSS release — coming soon</span>
+<span class="c"># git clone https://github.com/gradatum/gradatum</span>
 cd gradatum && cargo build --release --workspace
 
 <span class="c"># initialize a vault with the hierarchical preset</span>
@@ -57,14 +56,15 @@ env     = &#123; GRADATUM_BEARER = &quot;your-bearer-token&quot; &#125;
 
 <span class="c"># Or via HTTP directly (API)</span>
 curl http://localhost:19090/health
-curl http://localhost:19090/api/v1/notes/search \\
+curl http://localhost:19090/api/v1/vault_search \\
   -d '&#123;"query":"ULID","locus":"projecta/*"&#125;'</code>`}></pre>
       </div>
     </div>
 
     <p class="qs-note">
-      One-liner installer (<code>curl -fsSL https://gradatum.org/install.sh | bash</code>)
-      and <code>.deb</code> packages are planned for Phase 4.
+      Installation packages (one-liner, <code>.deb</code>, Docker image) will be available
+      at the first OSS release — coming soon. See the
+      <a href="/install" class="qs-note-link">Install page</a> for all deployment profiles.
     </p>
   </div>
 </section>
@@ -125,6 +125,16 @@ curl http://localhost:19090/api/v1/notes/search \\
     font-size: 0.9375rem;
     color: var(--muted);
     font-style: italic;
+  }
+
+  .qs-note-link {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .qs-note-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .qs-teaser-cta {

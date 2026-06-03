@@ -13,6 +13,10 @@ const isExpandedByDefault = (v: string) =>
   v === 'v0.2.0' || v === 'v0.3.0' || v === 'v0.5.0' || v === 'v1.0.0' || v === 'v2.0.0';
 
 const slugifyVersion = (v: string) => v.replace(/\./g, '-'); // v0.1.0 → v0-1-0
+
+// 2-chapter markers: inject narrative dividers before v0.4.0 and v0.6.0
+const CHAPTER_MEMORY_START = 'v0.4.0';     // Memory layer begins
+const CHAPTER_AGENTS_START = 'v0.6.0';    // Agents Context layer begins
 ---
 
 <section id="roadmap" class="roadmap section-pad section-gap" aria-labelledby="roadmap-title">
@@ -20,7 +24,7 @@ const slugifyVersion = (v: string) => v.replace(/\./g, '-'); // v0.1.0 → v0-1-
     <div class="eyebrow">VI · Status &amp; Roadmap</div>
     <h2 id="roadmap-title" class="roadmap-h2">Roadmap — nine versions, four milestones</h2>
     <p class="roadmap-meta">
-      <code>v0.3.3</code> · 1093 tests · 28 crates · Rust 2021 · MSRV 1.85
+      <code>v0.3.3</code> · 1093 tests · 28 crates · Rust 2021 · MSRV (min. supported Rust version) 1.85
     </p>
 
     <div class="version-phases" role="list">
@@ -28,66 +32,92 @@ const slugifyVersion = (v: string) => v.replace(/\./g, '-'); // v0.1.0 → v0-1-
         const slug = slugifyVersion(phase.version);
         const expanded = isExpandedByDefault(phase.version);
         return (
-          <details
-            id={`v-${slug}`}
-            class={`version-phase state-${phase.status}${phase.grade ? ` grade-${phase.grade.toLowerCase()}` : ''}`}
-            role="listitem"
-            open={expanded}
-          >
-            <summary class="version-summary">
-              <div class="version-summary-inner">
-                <span class="version-eyebrow eyebrow">{phase.version} · {phase.theme.toLowerCase()}</span>
-                <h3 class="version-title">
-                  {phase.grade && (
-                    <span
-                      class={`grade-badge grade-${phase.grade.toLowerCase()}`}
-                      aria-label={`${phase.grade} grade milestone`}
-                    >
-                      {phase.grade.toUpperCase()}
-                    </span>
-                  )}
-                  {phase.theme}
-                </h3>
-                <span
-                  class={`phase-state-badge badge-${phase.status}`}
-                  aria-label={`Status: ${phase.status === 'in-progress' ? 'in progress' : phase.status === 'done' ? 'shipped' : 'planned'}`}
-                >
-                  {phase.status === 'in-progress' ? '⚡ IN PROGRESS' : phase.status === 'done' ? '✓ SHIPPED' : 'planned'}
-                </span>
-              </div>
-            </summary>
-
-            <div class="version-content">
-              <p class="version-description">{phase.description}</p>
-
-              {phase.showFeaturesLink && (
-                <a href="/features" class="features-link eyebrow">
-                  explore shipped features →
-                </a>
-              )}
-
-              {phase.milestones && (
-                <ol class="milestones-list" aria-label={`Milestones ${phase.version}`}>
-                  {phase.milestones.map((m) => (
-                    <li class={`milestone milestone-${m.status}`}>
-                      <span class="milestone-icon" aria-hidden="true">{milestoneIcon[m.status]}</span>
-                      <span class="milestone-title">{m.title}</span>
-                      <span class="milestone-version">{m.version}</span>
-                      {m.date && (
-                        <span class="milestone-date" aria-label={`date: ${m.date}`}>{m.date}</span>
-                      )}
-                    </li>
-                  ))}
-                </ol>
-              )}
-
-              {phase.scopeTeaserItems && phase.scopeTeaserItems.length > 0 && (
-                <p class="scope-teaser">
-                  {phase.scopeTeaserItems.join(' · ')}
+          <>
+            {phase.version === CHAPTER_MEMORY_START && (
+              <div class="chapter-divider" id="chapter-memory" aria-label="Chapter: Memory layer">
+                <span class="chapter-eyebrow eyebrow">Chapter I</span>
+                <h3 class="chapter-title">Memory layer</h3>
+                <p class="chapter-desc">
+                  v0.4.0 → v0.5.1 — Completes the durable memory store: structured ingest,
+                  note history, temporal decay, distillation, MCP-native querying, multi-user
+                  isolation, and OAuth-based remote access. The queryable, sovereign memory
+                  store that other systems — and eventually gradatum itself — will build on.
                 </p>
-              )}
-            </div>
-          </details>
+              </div>
+            )}
+            {phase.version === CHAPTER_AGENTS_START && (
+              <div class="chapter-divider" id="chapter-agents" aria-label="Chapter: Agents Context layer">
+                <span class="chapter-eyebrow eyebrow">Chapter II</span>
+                <h3 class="chapter-title">Agents Context layer</h3>
+                <p class="chapter-desc">
+                  v0.6.0+ — The layer that consumes the memory store autonomously:
+                  context assembly, sliding-window continuity, proactive recall, skill selection,
+                  and a native ReAct agent runtime. gradatum stops serving only external agents
+                  and starts reasoning across sessions on its own.
+                </p>
+              </div>
+            )}
+            <details
+              id={`v-${slug}`}
+              class={`version-phase state-${phase.status}${phase.grade ? ` grade-${phase.grade.toLowerCase()}` : ''}`}
+              role="listitem"
+              open={expanded}
+            >
+              <summary class="version-summary">
+                <div class="version-summary-inner">
+                  <span class="version-eyebrow eyebrow">{phase.version} · {phase.theme.toLowerCase()}</span>
+                  <h3 class="version-title">
+                    {phase.grade && (
+                      <span
+                        class={`grade-badge grade-${phase.grade.toLowerCase()}`}
+                        aria-label={`${phase.grade} grade milestone`}
+                      >
+                        {phase.grade.toUpperCase()}
+                      </span>
+                    )}
+                    {phase.theme}
+                  </h3>
+                  <span
+                    class={`phase-state-badge badge-${phase.status}`}
+                    aria-label={`Status: ${phase.status === 'in-progress' ? 'in progress' : phase.status === 'done' ? 'shipped' : 'planned'}`}
+                  >
+                    {phase.status === 'in-progress' ? '⚡ IN PROGRESS' : phase.status === 'done' ? '✓ SHIPPED' : 'planned'}
+                  </span>
+                </div>
+              </summary>
+
+              <div class="version-content">
+                <p class="version-description">{phase.description}</p>
+
+                {phase.showFeaturesLink && (
+                  <a href="/features" class="features-link eyebrow">
+                    explore shipped features →
+                  </a>
+                )}
+
+                {phase.milestones && (
+                  <ol class="milestones-list" aria-label={`Milestones ${phase.version}`}>
+                    {phase.milestones.map((m) => (
+                      <li class={`milestone milestone-${m.status}`}>
+                        <span class="milestone-icon" aria-hidden="true">{milestoneIcon[m.status]}</span>
+                        <span class="milestone-title">{m.title}</span>
+                        <span class="milestone-version">{m.version}</span>
+                        {m.date && (
+                          <span class="milestone-date" aria-label={`date: ${m.date}`}>{m.date}</span>
+                        )}
+                      </li>
+                    ))}
+                  </ol>
+                )}
+
+                {phase.scopeTeaserItems && phase.scopeTeaserItems.length > 0 && (
+                  <p class="scope-teaser">
+                    {phase.scopeTeaserItems.join(' · ')}
+                  </p>
+                )}
+              </div>
+            </details>
+          </>
         );
       })}
     </div>
@@ -133,6 +163,36 @@ const slugifyVersion = (v: string) => v.replace(/\./g, '-'); // v0.1.0 → v0-1-
     font-family: var(--font-mono);
     font-size: 0.8125rem;
     color: var(--muted);
+  }
+
+  /* ── Chapter dividers (2-chapter structure) ──────────── */
+
+  .chapter-divider {
+    margin-top: 4rem;
+    padding: 2rem 0 1.5rem;
+    border-top: 2px solid var(--accent);
+  }
+
+  .chapter-eyebrow {
+    color: var(--accent);
+    letter-spacing: 0.2em;
+  }
+
+  .chapter-title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 500;
+    font-style: italic;
+    color: var(--ink);
+    margin: 0.5rem 0 0.875rem;
+  }
+
+  .chapter-desc {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 64ch;
+    margin: 0;
   }
 
   /* ── Version phases ───────────────────────────────────── */

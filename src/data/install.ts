@@ -71,7 +71,7 @@ const modes: InstallMode[] = [
     ],
     llm: 'Local or cloud',
     mcpAccess: 'both',
-    status: 'planned-v1.0',
+    status: 'planned-v0.5',
   },
   {
     id: 'remote',
