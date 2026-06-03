@@ -10,7 +10,7 @@ const milestoneIcon: Record<Milestone['status'], string> = {
 };
 
 const isExpandedByDefault = (v: string) =>
-  v === 'v0.2.0' || v === 'v0.3.0' || v === 'v1.0.0' || v === 'v2.0.0';
+  v === 'v0.2.0' || v === 'v0.3.0' || v === 'v0.5.0' || v === 'v1.0.0' || v === 'v2.0.0';
 
 const slugifyVersion = (v: string) => v.replace(/\./g, '-'); // v0.1.0 → v0-1-0
 ---
@@ -18,7 +18,7 @@ const slugifyVersion = (v: string) => v.replace(/\./g, '-'); // v0.1.0 → v0-1-
 <section id="roadmap" class="roadmap section-pad section-gap" aria-labelledby="roadmap-title">
   <div class="roadmap-inner">
     <div class="eyebrow">VI · Status &amp; Roadmap</div>
-    <h2 id="roadmap-title" class="roadmap-h2">Roadmap — eight versions, four milestones</h2>
+    <h2 id="roadmap-title" class="roadmap-h2">Roadmap — nine versions, four milestones</h2>
     <p class="roadmap-meta">
       <code>v0.3.3</code> · 1093 tests · 28 crates · Rust 2021 · MSRV 1.85
     </p>

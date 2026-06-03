@@ -1,5 +1,5 @@
 /**
- * gradatum-www — Roadmap data (8 linear versions, Bronze→Platinum)
+ * gradatum-www — Roadmap data (9 linear versions, Bronze→Platinum)
  *
  * GOVERNANCE RULES (Council Art.19 Round 1 acted):
  *   MAJ status/date d'un milestone existant = pas council Art.19.
@@ -178,40 +178,86 @@ const versions: VersionPhase[] = [
   {
     version: 'v0.4.0',
     status: 'planned',
-    theme: 'Search Phase B + Ingest',
+    theme: 'Vault Core — Durable Memory Layer',
     description:
-      'Deepens the knowledge pipeline — structured ingest, temporal decay scoring, wikilink graph traversal, note history and optimistic locking for safe concurrent writes, and provenance trust metadata so retrieved content carries verifiable lineage.',
-    scopeTeaserItems: ['Structured ingest', 'Temporal decay', 'Wikilinks', 'Note history', 'Provenance'],
-    featureRefs: ['F-06', 'F-17', 'F-35', 'F-39', 'F-40', 'F-41', 'F-47'],
+      'Completes the core knowledge store: structured ingest with content-aware chunking, copy-on-write note history with optimistic locking for safe concurrent writes, stable wikilink graph traversal, temporal decay scoring and provenance trust so retrieved content carries verifiable lineage, declarative lifecycle rules that keep the vault compact without losing traceability, scheduled distillation that compresses raw notes into reusable knowledge, and pluggable storage backends.',
+    scopeTeaserItems: ['Structured ingest', 'Note history + locking', 'Temporal decay + provenance', 'Lifecycle + compaction', 'Scheduled distillation', 'Pluggable backends'],
+    featureRefs: ['F-06', 'F-39', 'F-40', 'F-41', 'F-47', 'F-17', 'F-19', 'F-09', 'F-36', 'F-31', 'F-32', 'F-44', 'F-55', 'F-22', 'F-25', 'F-26'],
+    showFeaturesLink: true,
+    milestones: [
+      {
+        status: 'planned',
+        title: 'Structured ingest — content-aware chunking, table extraction',
+        version: 'v0.4.0',
+      },
+      {
+        status: 'planned',
+        title: 'Durable writes — note history, optimistic locking, stable wikilinks, provenance trust',
+        version: 'v0.4.0',
+      },
+      {
+        status: 'planned',
+        title: 'Temporal retrieval — event-log driven decay, privacy filter, drift detection',
+        version: 'v0.4.0',
+      },
+      {
+        status: 'planned',
+        title: 'Vault lifecycle — scope, lifecycle rules, intelligent compaction, temporal index',
+        version: 'v0.4.0',
+      },
+      {
+        status: 'planned',
+        title: 'Distillation — scheduled semantic / learn / peer jobs',
+        version: 'v0.4.0',
+      },
+      {
+        status: 'planned',
+        title: 'Pluggable storage backends — remote SQLite (libsql), opt-in vector store',
+        version: 'v0.4.0',
+      },
+    ],
   },
   {
     version: 'v0.5.0',
     grade: 'Silver',
     status: 'planned',
-    theme: 'Agent ReAct + Cognitive layer',
+    theme: 'Queryable Memory Store — MCP-Native Backend',
     description:
-      'Ships a full ReAct agent runtime with a LLM router, distillation, and memory management — rolling window context, vault-scoped retrieval, and adaptive learning loops — enabling the system to reason across sessions rather than treating every query as stateless.',
-    scopeTeaserItems: ['ReAct agent', 'LLM router', 'Distill', 'Rolling window', 'VaultScope', 'Iterative memory'],
-    featureRefs: ['F-04', 'F-05', 'F-09', 'F-11', 'F-12', 'F-22', 'F-29', 'F-30', 'F-31', 'F-32', 'F-36', 'F-37', 'F-44', 'F-46', 'F-50', 'F-52', 'F-54'],
+      'Turns the completed vault into a memory store any client can query directly through the Model Context Protocol (MCP) — a native MCP server with Streamable HTTP transport, multi-user isolation with OAuth-based remote access, write-time validation with automatic repair, and a vault audit & deduplication pass. This is a deliberate ordering: the memory store becomes a stable, externally consumable product first — usable today by any MCP client (Claude, IDEs, custom agents) — and only then does gradatum grow its own agent runtime (v0.6.0) on top of the exact same interface it already exposes to everyone else. The store earns its API by serving others before it serves itself.',
+    scopeTeaserItems: ['Native MCP server', 'Streamable HTTP transport', 'Multi-user + OAuth', 'Validation + auto-repair', 'Vault audit'],
+    featureRefs: ['F-38', 'F-56', 'F-43', 'F-45', 'F-57', 'F-51', 'F-55'],
+    showFeaturesLink: true,
   },
   {
     version: 'v0.6.0',
     status: 'planned',
-    theme: 'Messaging + Temporal + Distill mature',
+    theme: 'Context Builder + Agent Runtime',
     description:
-      'Matures the distillation layer with peer learning, rationale capture, and a stable public crate API; adds NATS-backed event collection and a v2 skill runtime, turning gradatum into a composable substrate other tools can build on reliably.',
-    scopeTeaserItems: ['NATS collector', 'Peer learning', 'Rationale', 'Distill crate API', 'Skill v2'],
-    featureRefs: ['F-20', 'F-21', 'F-22', 'F-52', 'F-55', 'F-58'],
+      'Adds the context-assembly layer — identity rendering, sliding-window memory, proactive recall, a declarative user profile, and skill selection that picks only the relevant skills before injection — together with the native ReAct (reason-and-act) agent runtime, its router and safety guards. From here gradatum can consume its own memory store autonomously, reasoning across sessions instead of treating each query as stateless, not only serving that store to external clients.',
+    scopeTeaserItems: ['Context builder', 'Sliding window', 'Proactive recall', 'Skill selection', 'ReAct agent + guards'],
+    featureRefs: ['F-35', 'F-30', 'F-46', 'F-50', 'F-58', 'F-04', 'F-05', 'F-11', 'F-12', 'F-29'],
+    showFeaturesLink: false,
+  },
+  {
+    version: 'v0.7.0',
+    status: 'planned',
+    theme: 'Serving + Composability',
+    description:
+      'Rounds out the platform with a bundled local inference engine, a web collector and messaging bridge, a progressive operations UI, pipeline orchestration, and a service registry — turning gradatum into a composable substrate other tools can build on.',
+    scopeTeaserItems: ['Local inference engine', 'Collector + messaging', 'Operations UI', 'Pipeline orchestration', 'Service registry'],
+    featureRefs: ['F-07', 'F-20', 'F-21', 'F-37', 'F-52', 'F-54'],
+    showFeaturesLink: false,
   },
   {
     version: 'v1.0.0',
     grade: 'Gold',
     status: 'planned',
-    theme: 'Production Release',
+    theme: 'Production Baseline',
     description:
-      'Delivers the first production-ready release — native MCP protocol support, a bundled llama.cpp inference engine, full multi-user isolation with OAuth, pluggable storage backends, and self-healing vault operations so teams can deploy gradatum as a shared, long-running service.',
-    scopeTeaserItems: ['MCP native', 'llama.cpp engine', 'Multi-user', 'OAuth', 'Pluggable backends', 'Self-healing'],
-    featureRefs: ['F-07', 'F-08', 'F-09', 'F-25', 'F-26', 'F-37', 'F-38', 'F-43', 'F-45', 'F-51', 'F-55', 'F-56', 'F-57', 'F-58'],
+      'The first production-certified release — the point where gradatum becomes safe to build on. The public trait contracts freeze as stable (semver guarantees you can depend on), the privacy filter runs on a local ONNX (portable inference) path with no external LLM dependency, the system proves 30 days of continuous operation, and the full LongMemEval long-term-memory benchmark runs reproducibly. v1.0.0 adds no new API surface by design: it is a stability and certification milestone, not a feature drop — the moment the contracts stop moving.',
+    scopeTeaserItems: ['Stable API — semver guarantees', 'Local ONNX privacy filter', '30-day production proof', 'Full LongMemEval reproducible'],
+    featureRefs: [],
+    showFeaturesLink: false,
   },
   {
     version: 'v2.0.0',
@@ -222,6 +268,7 @@ const versions: VersionPhase[] = [
       "Extends the platform to multimodal inputs with a breaking-change chat API, a bring-your-own-compute layer for external inference, a desktop agent, and long-horizon memory consolidation — completing gradatum's trajectory from local knowledge store to autonomous cognitive infrastructure.",
     scopeTeaserItems: ['Multimodal chat (BREAKING)', 'BYOC L4', 'Desktop agent', 'Memory consolidation'],
     featureRefs: ['F-03', 'F-10', 'F-27', 'F-49'],
+    showFeaturesLink: false,
   },
 ];
 
