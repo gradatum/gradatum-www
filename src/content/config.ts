@@ -96,7 +96,22 @@ export const featureGroupSchema = z.object({
   features: z.array(featureSchema),
 });
 
-export const featureGroupArraySchema = z.array(featureGroupSchema);
+export const featureGroupArraySchema = z.array(featureGroupSchema).superRefine((groups, ctx) => {
+  const seen = new Set<string>();
+  groups.forEach((group, gi) => {
+    group.features.forEach((feature, fi) => {
+      if (seen.has(feature.id)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `Duplicate feature id '${feature.id}' found in group[${gi}].features[${fi}] — each feature id must be unique across all groups.`,
+          path: [gi, 'features', fi, 'id'],
+        });
+      } else {
+        seen.add(feature.id);
+      }
+    });
+  });
+});
 
 export type Feature = z.infer<typeof featureSchema>;
 export type FeatureGroup = z.infer<typeof featureGroupSchema>;
