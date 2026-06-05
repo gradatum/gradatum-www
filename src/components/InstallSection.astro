@@ -175,29 +175,162 @@ gradatum-admin backup</code></pre>
         Single-binary on one box, or scale out: one GPU host serving several models,
         an app host routing through the gateway with automatic CPU fallback.
       </p>
-      <pre class="install-pre install-topology-pre"><code>          consumers (apps, agents, MCP clients)
-                            │
-                            ▼
- ┌─────────────── app-host (Linux, 10.0.0.10) ───────────────┐
- │  gradatum-server ──┐           ┌──────────────────────┐    │
- │  gradatum-worker ──┴─────────▶ │ gradatum-gateway      │    │
- │                                │ (router + circuit-    │    │
- │                                │  breaker)             │    │
- │                                └───┬──────────┬───────┘    │
- │                           primary  │          │ fallback    │
- │                                    │          ▼             │
- │                                    │  ┌──────────────────┐  │
- │                                    │  │ local CPU engine │  │
- │                                    │  │ + embedder       │  │
- │                                    │  └──────────────────┘  │
- └────────────────────────────────────┼───────────────────────┘
-                                      │ LAN
- ┌─────────────── gpu-host (Linux, 10.0.0.20) ───────────────┐
- │  gradatum-engine — one supervisor binary, N instances:     │
- │   chat :8083 · embed :8432 · small :8082 · reason :8081    │
- │   each instance supervises one llama-server child          │
- │   GGUF models read-only under /opt/gradatum/models/        │
- └───────────────────────────────────────────────────────────┘</code></pre>
+
+      <!-- SVG diagram (default) — mirrors ArchDiagram conventions -->
+      <div class="diagram-svg topo-diagram" aria-label="Deployment topology diagram" role="img">
+        <svg
+          viewBox="0 0 900 482"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          focusable="false"
+          class="topo-svg"
+        >
+          <defs>
+            <marker id="topo-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="var(--ink-soft)" />
+            </marker>
+            <marker id="topo-arrow-accent" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="var(--accent)" />
+            </marker>
+          </defs>
+
+          <!-- ── Row 0: CONSUMERS ── -->
+          <rect x="10" y="10" width="880" height="44" rx="0"
+                fill="none" stroke="var(--rule)" stroke-width="1"/>
+          <text x="24" y="27" class="svg-label-mono">CONSUMERS</text>
+          <text x="24" y="45" class="svg-label-sm">apps · agents · MCP clients</text>
+          <text x="660" y="38" class="svg-label-proto">MCP / HTTP / REST</text>
+
+          <!-- Arrow consumers → app-host -->
+          <line x1="450" y1="54" x2="450" y2="84"
+                stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#topo-arrow)"/>
+
+          <!-- ── Row 1: APP-HOST swimlane ── -->
+          <rect x="10" y="88" width="880" height="162" rx="0"
+                fill="color-mix(in srgb, var(--rule) 18%, transparent)"
+                stroke="var(--rule)" stroke-width="1"/>
+          <text x="24" y="106" class="svg-label-mono">APP-HOST  ·  Linux</text>
+
+          <!-- gradatum-server -->
+          <rect x="30" y="116" width="220" height="40" rx="0"
+                fill="none" stroke="var(--rule)" stroke-width="1.5"/>
+          <text x="44" y="140" class="svg-box-main">gradatum-server</text>
+          <text x="44" y="152" class="svg-box-sub">:19090 · /api/v1 · /mcp</text>
+
+          <!-- gradatum-worker -->
+          <rect x="270" y="116" width="220" height="40" rx="0"
+                fill="none" stroke="var(--rule)" stroke-width="1.5"/>
+          <text x="284" y="140" class="svg-box-main">gradatum-worker</text>
+          <text x="284" y="152" class="svg-box-sub">curator · maintenance</text>
+
+          <!-- Arrow server+worker → gateway -->
+          <line x1="490" y1="136" x2="535" y2="136"
+                stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#topo-arrow)"/>
+
+          <!-- gradatum-gateway (accent — key routing element) -->
+          <rect x="538" y="116" width="342" height="40" rx="0"
+                fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+          <text x="552" y="140" class="svg-box-main">gradatum-gateway  :8436</text>
+          <text x="552" y="152" class="svg-box-sub">router · circuit-breaker</text>
+
+          <!-- local CPU fallback box -->
+          <rect x="538" y="176" width="342" height="36" rx="0"
+                fill="none" stroke="var(--rule)" stroke-width="1"/>
+          <text x="552" y="196" class="svg-box-main">local CPU fallback</text>
+          <text x="552" y="208" class="svg-box-sub">engine + embedder</text>
+
+          <!-- Arrow gateway → fallback (fallback path, dashed) -->
+          <line x1="709" y1="156" x2="709" y2="176"
+                stroke="var(--ink-soft)" stroke-width="1"
+                stroke-dasharray="3 3"
+                marker-end="url(#topo-arrow)"/>
+          <text x="716" y="170" class="svg-label-proto">fallback</text>
+
+          <!-- Arrow primary: gateway bottom-left → out of app-host (toward gpu-host) -->
+          <line x1="570" y1="156" x2="570" y2="250"
+                stroke="var(--accent)" stroke-width="1.5" marker-end="url(#topo-arrow-accent)"/>
+          <text x="576" y="170" class="svg-label-proto">primary</text>
+
+          <!-- ── LAN separator label ── -->
+          <text x="440" y="272" class="svg-label-mono" text-anchor="middle">LAN</text>
+          <line x1="10" y1="262" x2="425" y2="262"
+                stroke="var(--rule)" stroke-width="1" stroke-dasharray="4 4"/>
+          <line x1="455" y1="262" x2="890" y2="262"
+                stroke="var(--rule)" stroke-width="1" stroke-dasharray="4 4"/>
+
+          <!-- ── Row 2: GPU-HOST swimlane ── -->
+          <rect x="10" y="280" width="880" height="162" rx="0"
+                fill="color-mix(in srgb, var(--rule) 10%, transparent)"
+                stroke="var(--rule)" stroke-width="1"/>
+          <text x="24" y="298" class="svg-label-mono">GPU-HOST  ·  Linux</text>
+          <text x="300" y="298" class="svg-label-sm">gradatum-engine · one supervisor binary, one instance per model</text>
+
+          <!-- 5 model boxes — evenly spaced, width=160, gap=12 -->
+          <!-- chat :8083 — x=30 -->
+          <rect x="30" y="308" width="158" height="36" rx="0"
+                fill="none" stroke="var(--rule)" stroke-width="1"/>
+          <text x="44" y="328" class="svg-box-main">chat  :8083</text>
+          <text x="44" y="340" class="svg-box-sub">llama-server child</text>
+
+          <!-- embed :8432 — x=200 -->
+          <rect x="200" y="308" width="158" height="36" rx="0"
+                fill="none" stroke="var(--rule)" stroke-width="1"/>
+          <text x="214" y="328" class="svg-box-main">embed  :8432</text>
+          <text x="214" y="340" class="svg-box-sub">llama-server child</text>
+
+          <!-- small :8082 — x=370 -->
+          <rect x="370" y="308" width="158" height="36" rx="0"
+                fill="none" stroke="var(--rule)" stroke-width="1"/>
+          <text x="384" y="328" class="svg-box-main">small  :8082</text>
+          <text x="384" y="340" class="svg-box-sub">llama-server child</text>
+
+          <!-- reason :8081 — x=540 -->
+          <rect x="540" y="308" width="158" height="36" rx="0"
+                fill="none" stroke="var(--rule)" stroke-width="1"/>
+          <text x="554" y="328" class="svg-box-main">reason  :8081</text>
+          <text x="554" y="340" class="svg-box-sub">llama-server child</text>
+
+          <!-- vision :8080 — x=710 -->
+          <rect x="710" y="308" width="170" height="36" rx="0"
+                fill="none" stroke="var(--rule)" stroke-width="1"/>
+          <text x="724" y="328" class="svg-box-main">vision  :8080</text>
+          <text x="724" y="340" class="svg-box-sub">+mmproj · llama-server child</text>
+
+          <!-- GPU-host annotations -->
+          <text x="30" y="368" class="svg-label-proto">each instance supervises one llama-server child (loopback)</text>
+          <text x="30" y="382" class="svg-label-proto">GGUF models bind-mounted read-only  ·  /opt/gradatum/models/</text>
+
+          <!-- Primary path arrow arrives at gpu-host top -->
+          <line x1="570" y1="250" x2="570" y2="280"
+                stroke="var(--accent)" stroke-width="1.5" marker-end="url(#topo-arrow-accent)"/>
+
+          <!-- ── Bottom annotation ── -->
+          <text x="450" y="462" class="svg-label-proto" text-anchor="middle">primary → GPU host  ·  fallback → local CPU (circuit-breaker auto)</text>
+        </svg>
+      </div>
+
+      <!-- ASCII fallback (shown when data-diagram="ascii") -->
+      <pre class="diagram-ascii topo-ascii" aria-label="ASCII deployment topology diagram">
+  consumers (apps · agents · MCP clients)
+               ↓  MCP / HTTP / REST
+  ┌──────────────────── app-host (Linux) ───────────────────────┐
+  │  gradatum-server ─┐                                         │
+  │  gradatum-worker ─┴──────────▶ gradatum-gateway :8436       │
+  │                                (router · circuit-breaker)   │
+  │                                  │ primary       │ fallback │
+  │                                  ▼               ▼          │
+  │                            [GPU-HOST]   local CPU fallback  │
+  └──────────────────────────────────┼────────────────────────┘
+                                   LAN
+  ┌──────────────────── gpu-host (Linux) ───────────────────────┐
+  │  gradatum-engine · one supervisor binary, one instance/model│
+  │   chat :8083 · embed :8432 · small :8082                    │
+  │   reason :8081 · vision :8080 (+mmproj)                     │
+  │   each instance supervises one llama-server child (loopback) │
+  │   GGUF bind-mounted ro · /opt/gradatum/models/              │
+  └─────────────────────────────────────────────────────────────┘
+  primary → GPU host · fallback → local CPU (circuit-breaker auto)</pre>
+
       <p class="install-topology-note">
         Full deployment guide and configuration reference:
         <a href="https://github.com/gradatum/gradatum/blob/main/docs/DEPLOYMENT.md" class="topology-link">docs/DEPLOYMENT.md</a>
@@ -529,15 +662,73 @@ gradatum-admin backup</code></pre>
     line-height: 1.65;
     color: var(--ink-soft);
     margin-top: 0.75rem;
-    margin-bottom: 1.25rem;
+    margin-bottom: 0;
     max-width: 680px;
   }
 
-  .install-topology-pre {
-    /* inherits .install-pre — override font-size for ASCII art legibility */
+  /* SVG diagram container — mirrors .diagram-svg from ArchDiagram */
+  .topo-diagram {
+    margin-top: 2rem;
+    border: 1px solid var(--rule);
+    background: var(--bg);
+    padding: 1.5rem;
+    overflow-x: auto;
+  }
+
+  .topo-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* SVG text styles — identical to ArchDiagram (scoped via .install-topology) */
+  .install-topology .svg-label-mono {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .install-topology .svg-label-sm {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--ink-soft);
+  }
+
+  .install-topology .svg-label-proto {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--accent);
+    letter-spacing: 0.05em;
+  }
+
+  .install-topology .svg-box-main {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--ink);
+    font-weight: 500;
+  }
+
+  .install-topology .svg-box-sub {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    fill: var(--ink-soft);
+  }
+
+  /* ASCII fallback — mirrors .diagram-ascii from ArchDiagram */
+  .topo-ascii {
+    display: none;
+    margin-top: 2rem;
+    border-left: 3px solid var(--accent);
     font-size: 0.75rem;
     line-height: 1.55;
+    overflow-x: auto;
   }
+
+  /* Toggle based on data-diagram attr — same mechanism as ArchDiagram */
+  html[data-diagram="ascii"] .topo-diagram { display: none; }
+  html[data-diagram="ascii"] .topo-ascii   { display: block; }
 
   .install-topology-note {
     margin-top: 0.875rem;
