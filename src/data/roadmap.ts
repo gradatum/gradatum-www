@@ -169,9 +169,21 @@ const versions: VersionPhase[] = [
       },
       {
         status: 'done',
-        title: 'v0.3.1–0.3.3 reliability patches — multi-worker job-queue concurrency (BEGIN IMMEDIATE deadlock fix), 1093 tests PASS, live',
+        title: 'v0.3.1–0.3.3 reliability patches — multi-worker job-queue concurrency (BEGIN IMMEDIATE deadlock fix)',
         version: 'v0.3.3',
         date: '2026-06-02',
+      },
+      {
+        status: 'done',
+        title: 'v0.3.4 — vault_search title:null fix (write-path: title column populated at curate, migration 0009 backfill)',
+        version: 'v0.3.4',
+        date: '2026-06-03',
+      },
+      {
+        status: 'done',
+        title: 'v0.3.5 — search read-path: semantic-only hits enriched with title+snippet; legacy title recovery — 1223 tests PASS, live',
+        version: 'v0.3.5',
+        date: '2026-06-03',
       },
     ],
   },
