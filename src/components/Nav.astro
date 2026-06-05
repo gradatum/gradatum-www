@@ -1,7 +1,7 @@
 ---
 import GlyphLogo from './GlyphLogo.astro';
 
-const VERSION = 'v0.3.5';
+const VERSION = 'v0.3.6';
 ---
 <header class="nav-bar" role="banner">
   <div class="nav-inner">
@@ -22,9 +22,12 @@ const VERSION = 'v0.3.5';
         <li><a href="/install">install</a></li>
         <li><a href="/use-cases">use cases</a></li>
         <li>
-          <span class="nav-source-soon" aria-label="Source code — OSS release pending">
-            source soon
-          </span>
+          <a
+            href="https://github.com/gradatum/gradatum"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Source code on GitHub"
+          >github</a>
         </li>
       </ul>
     </nav>
@@ -93,15 +96,7 @@ const VERSION = 'v0.3.5';
     color: var(--ink);
   }
 
-  .nav-source-soon {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    cursor: default;
-    user-select: none;
-  }
+  /* .nav-source-soon removed — GitHub link now active */
 
   @media (max-width: 768px) {
     .nav-inner {

@@ -18,9 +18,24 @@
     </p>
 
     <div class="hero-cta" role="group" aria-label="Primary actions">
-      <span class="btn-source-soon" aria-label="Source code — OSS release pending">
-        Source — coming soon (OSS release pending)
-      </span>
+      <a
+        href="https://github.com/gradatum/gradatum"
+        class="btn-primary"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="View source on GitHub"
+      >
+        GitHub
+      </a>
+      <a
+        href="https://crates.io/crates/gradatum"
+        class="btn-secondary"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="gradatum on crates.io"
+      >
+        crates.io
+      </a>
       <a href="/vault#arch" class="btn-text">
         Read the architecture
       </a>
@@ -84,9 +99,9 @@
     flex-wrap: wrap;
   }
 
-  .btn-source-soon {
-    background: color-mix(in srgb, var(--ink) 12%, transparent);
-    color: var(--muted);
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
     padding: 1rem 1.75rem;
     font-family: var(--font-mono);
     font-size: 0.8125rem;
@@ -95,9 +110,33 @@
     min-height: 48px;
     display: inline-flex;
     align-items: center;
-    cursor: default;
-    user-select: none;
+    text-decoration: none;
+    transition: opacity 0.15s ease;
+  }
+
+  .btn-primary:hover {
+    opacity: 0.85;
+  }
+
+  .btn-secondary {
+    background: color-mix(in srgb, var(--ink) 10%, transparent);
+    color: var(--ink-soft);
+    padding: 1rem 1.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
     border: 1px solid var(--rule);
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .btn-secondary:hover {
+    color: var(--ink);
+    border-color: var(--ink-soft);
   }
 
   .btn-text {

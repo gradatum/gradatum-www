@@ -13,15 +13,35 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
       they differ in services started, LLM provider, and access pattern.
     </p>
 
-    <!-- One-liner — coming soon -->
-    <div class="install-oneliner install-oneliner-soon">
-      <div class="eyebrow block-label">Installation</div>
-      <p class="install-soon-notice">
-        Installation packages (one-liner, <code>.deb</code>, Docker image) will be available
-        at the first OSS release — coming soon.
-        <br />
-        Until then, build from source using the Quick Start on the
-        <a href="/vault#install">Vault page</a>.
+    <!-- Installation — source open + crates.io -->
+    <div class="install-oneliner">
+      <div class="eyebrow block-label">Get started — alpha v0.3.x</div>
+
+      <div class="install-sources">
+        <div class="install-source-block">
+          <div class="eyebrow install-source-label">From source</div>
+          <pre class="install-pre install-source-pre"><code>git clone https://github.com/gradatum/gradatum
+cd gradatum &amp;&amp; cargo build --release --workspace</code></pre>
+          <p class="install-source-note">
+            <a href="https://github.com/gradatum/gradatum" target="_blank" rel="noopener noreferrer">github.com/gradatum/gradatum</a>
+            · Apache-2.0
+          </p>
+        </div>
+
+        <div class="install-source-block">
+          <div class="eyebrow install-source-label">Via crates.io</div>
+          <pre class="install-pre install-source-pre"><code>cargo add gradatum  <span class="install-comment"># umbrella SDK</span></code></pre>
+          <p class="install-source-note">
+            <a href="https://crates.io/crates/gradatum" target="_blank" rel="noopener noreferrer">crates.io/crates/gradatum</a>
+            · 28 crates in workspace
+          </p>
+        </div>
+      </div>
+
+      <p class="install-alpha-notice">
+        Alpha — API not stable before v1.0. See
+        <a href="https://github.com/gradatum/gradatum/blob/main/docs/DEPLOYMENT.md" target="_blank" rel="noopener noreferrer">docs/DEPLOYMENT.md</a>
+        for the full deployment reference.
       </p>
     </div>
 
@@ -333,8 +353,7 @@ gradatum-admin backup</code></pre>
 
       <p class="install-topology-note">
         Full deployment guide and configuration reference:
-        <a href="https://github.com/gradatum/gradatum/blob/main/docs/DEPLOYMENT.md" class="topology-link">docs/DEPLOYMENT.md</a>
-        (available at OSS release).
+        <a href="https://github.com/gradatum/gradatum/blob/main/docs/DEPLOYMENT.md" class="topology-link">docs/DEPLOYMENT.md</a>.
       </p>
     </div>
   </div>
@@ -379,33 +398,76 @@ gradatum-admin backup</code></pre>
     line-height: 1.6;
   }
 
-  /* One-liner block */
+  /* Source install block */
   .install-oneliner {
     margin-top: 3rem;
   }
 
-  .install-oneliner-soon {
-    background: color-mix(in srgb, var(--rule) 18%, transparent);
-    border: 1px solid var(--rule);
-    padding: 1.5rem;
-    border-left: 3px solid var(--accent);
+  .install-sources {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 1.25rem;
   }
 
-  .install-soon-notice {
-    font-size: 1rem;
-    line-height: 1.65;
+  .install-source-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .install-source-label {
+    letter-spacing: 0.15em;
+    margin-bottom: 0;
+  }
+
+  .install-source-pre {
+    flex: 1;
+  }
+
+  .install-comment {
+    color: var(--code-green);
+  }
+
+  .install-source-note {
+    font-size: 0.8125rem;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .install-source-note a {
     color: var(--ink-soft);
-    margin-top: 0.75rem;
+    text-decoration: none;
+    transition: color 0.15s ease;
   }
 
-  .install-soon-notice a {
+  .install-source-note a:hover {
+    color: var(--accent);
+  }
+
+  .install-alpha-notice {
+    margin-top: 1.25rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  .install-alpha-notice a {
     color: var(--accent);
     text-decoration: none;
   }
 
-  .install-soon-notice a:hover {
+  .install-alpha-notice a:hover {
     text-decoration: underline;
     text-underline-offset: 3px;
+  }
+
+  @media (max-width: 640px) {
+    .install-sources {
+      grid-template-columns: 1fr;
+    }
   }
 
   .block-label {

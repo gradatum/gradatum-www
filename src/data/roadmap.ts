@@ -185,6 +185,12 @@ const versions: VersionPhase[] = [
         version: 'v0.3.5',
         date: '2026-06-03',
       },
+      {
+        status: 'done',
+        title: 'v0.3.6 — First public OSS release: 28 crates published on crates.io, source open on GitHub (Apache-2.0)',
+        version: 'v0.3.6',
+        date: '2026-06-05',
+      },
     ],
   },
   {

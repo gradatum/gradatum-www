@@ -4,21 +4,21 @@
   <div class="qs-inner">
     <div class="eyebrow">VIII · Quick start</div>
     <h2 id="qs-title" class="qs-h2">
-      Source &amp; packages at first OSS release.
-      <span class="qs-muted">coming soon.</span>
+      Build from source or add via crates.io.
     </h2>
 
     <div class="qs-teaser-cta">
       <a href="/install" class="cta-link eyebrow">View all install modes (7 profiles)</a>
+      <a href="https://github.com/gradatum/gradatum" target="_blank" rel="noopener noreferrer" class="cta-link eyebrow">Source on GitHub →</a>
       <a href="/use-cases" class="cta-link eyebrow">See use cases (Without / With)</a>
     </div>
 
     <div class="qs-blocks">
       <!-- Block 1: Clone & build -->
       <div class="qs-block">
-        <div class="eyebrow block-label">Clone & build (source release pending)</div>
-        <pre class="qs-pre"><code><span class="c"># source available at first OSS release — coming soon</span>
-<span class="c"># git clone https://github.com/gradatum/gradatum</span>
+        <div class="eyebrow block-label">Clone &amp; build (alpha v0.3.x — API not stable before v1.0)</div>
+        <pre class="qs-pre"><code><span class="c"># build from source</span>
+git clone https://github.com/gradatum/gradatum
 cd gradatum && cargo build --release --workspace
 
 <span class="c"># initialize a vault with the hierarchical preset</span>
@@ -62,8 +62,9 @@ curl http://localhost:19090/api/v1/vault_search \\
     </div>
 
     <p class="qs-note">
-      Installation packages (one-liner, <code>.deb</code>, Docker image) will be available
-      at the first OSS release — coming soon. See the
+      Alpha release (v0.3.x) — source open on <a href="https://github.com/gradatum/gradatum" target="_blank" rel="noopener noreferrer" class="qs-note-link">GitHub</a>,
+      crates on <a href="https://crates.io/crates/gradatum" target="_blank" rel="noopener noreferrer" class="qs-note-link">crates.io</a>.
+      API not stable before v1.0. See the
       <a href="/install" class="qs-note-link">Install page</a> for all deployment profiles.
     </p>
   </div>

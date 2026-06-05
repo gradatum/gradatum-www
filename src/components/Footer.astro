@@ -15,9 +15,9 @@ const stackLinks = [
         <div class="brand-name">Gradatum</div>
         <div class="eyebrow brand-tagline">memoria · gradatim · per gradus</div>
         <p class="brand-desc">
-          Apache-2.0 · Alpha — under construction.
-          Migrated off the predecessor backend — gradatum now primary.
-          Source release coming soon (OSS release pending).
+          Apache-2.0 · Open source — alpha, API not stable before v1.0.
+          Source on <a href="https://github.com/gradatum/gradatum" target="_blank" rel="noopener noreferrer">GitHub</a> ·
+          packages on <a href="https://crates.io/crates/gradatum" target="_blank" rel="noopener noreferrer">crates.io</a>.
         </p>
       </div>
 
@@ -36,7 +36,8 @@ const stackLinks = [
       <div class="footer-col">
         <div class="eyebrow col-head">Project</div>
         <ul role="list">
-          <li><span class="footer-text-muted">GitHub — coming soon</span></li>
+          <li><a href="https://github.com/gradatum/gradatum" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li><a href="https://crates.io/crates/gradatum" target="_blank" rel="noopener noreferrer">crates.io</a></li>
           <li><span class="footer-text-muted">License — Apache-2.0</span></li>
         </ul>
       </div>
@@ -106,6 +107,17 @@ const stackLinks = [
     color: var(--ink-soft);
     max-width: 22rem;
     line-height: 1.65;
+  }
+
+  .brand-desc a {
+    color: var(--ink-soft);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.15s ease;
+  }
+
+  .brand-desc a:hover {
+    color: var(--accent);
   }
 
   .col-head {
