@@ -13,29 +13,123 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
       they differ in services started, LLM provider, and access pattern.
     </p>
 
-    <!-- Installation — source open + crates.io -->
+    <!-- Installation — 3 voies -->
     <div class="install-oneliner">
-      <div class="eyebrow block-label">Get started — alpha v0.3.x</div>
+      <div class="eyebrow block-label">Get started — alpha v0.3.x · Linux x86_64</div>
 
-      <div class="install-sources">
-        <div class="install-source-block">
-          <div class="eyebrow install-source-label">From source</div>
-          <pre class="install-pre install-source-pre"><code>git clone https://github.com/gradatum/gradatum
+      <div class="install-ways">
+
+        <!-- Voie 1 — Binaires pré-compilés (recommandé) -->
+        <div class="install-way install-way--primary">
+          <div class="install-way-header">
+            <div class="eyebrow install-way-label">Pre-built binaries</div>
+            <span class="install-way-badge">recommended</span>
+          </div>
+          <p class="install-way-desc">
+            Three archives — download only what your deployment needs.
+            Linux x86_64. SHA256 and SLSA provenance attestation per archive.
+          </p>
+
+          <div class="install-archives">
+            <div class="install-archive">
+              <div class="install-archive-role">
+                <span class="install-archive-name">gradatum-server</span>
+                <span class="install-archive-badge">backbone vault</span>
+              </div>
+              <p class="install-archive-desc">
+                Contains <code>gradatum-server</code>, <code>gradatum-worker</code>, <code>gradatum-admin</code>.
+                Core vault store, job queue, admin CLI.
+              </p>
+              <pre class="install-pre install-archive-pre"><code>gradatum-server-v0.3.6-x86_64-unknown-linux-gnu.tar.gz</code></pre>
+            </div>
+
+            <div class="install-archive">
+              <div class="install-archive-role">
+                <span class="install-archive-name">gradatum-llm</span>
+                <span class="install-archive-badge">LLM layer</span>
+              </div>
+              <p class="install-archive-desc">
+                Contains <code>gradatum-gateway</code> and <code>gradatum-engine</code>.
+                Router, circuit-breaker, llama-server supervisor. Required for local inference.
+              </p>
+              <pre class="install-pre install-archive-pre"><code>gradatum-llm-v0.3.6-x86_64-unknown-linux-gnu.tar.gz</code></pre>
+            </div>
+
+            <div class="install-archive">
+              <div class="install-archive-role">
+                <span class="install-archive-name">gradatum-mcp</span>
+                <span class="install-archive-badge">agent bridge</span>
+              </div>
+              <p class="install-archive-desc">
+                Contains <code>gradatum-mcp-stub</code>.
+                MCP bridge for agent clients (Claude Code, Claude Desktop, etc.).
+              </p>
+              <pre class="install-pre install-archive-pre"><code>gradatum-mcp-v0.3.6-x86_64-unknown-linux-gnu.tar.gz</code></pre>
+            </div>
+          </div>
+
+          <div class="install-release-footer">
+            <a
+              href="https://github.com/gradatum/gradatum/releases"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="install-release-link"
+            >github.com/gradatum/gradatum/releases →</a>
+            <span class="install-release-meta">SHA256SUMS · SLSA attestation per archive</span>
+          </div>
+
+          <div class="install-verify-block">
+            <div class="eyebrow install-source-label">Verify integrity</div>
+            <pre class="install-pre install-source-pre"><code><span class="install-comment"># verify SHA256 (example — server archive)</span>
+sha256sum -c SHA256SUMS --ignore-missing
+
+<span class="install-comment"># verify SLSA build provenance (GitHub native)</span>
+gh attestation verify \
+  gradatum-server-v0.3.6-x86_64-unknown-linux-gnu.tar.gz \
+  --repo gradatum/gradatum</code></pre>
+          </div>
+        </div>
+
+        <!-- Voies 2 + 3 en ligne -->
+        <div class="install-ways-secondary">
+
+          <!-- Voie 2 — crates.io SDK -->
+          <div class="install-way">
+            <div class="install-way-header">
+              <div class="eyebrow install-way-label">Via crates.io</div>
+              <span class="install-way-badge install-way-badge--secondary">Rust SDK</span>
+            </div>
+            <p class="install-way-desc">
+              Embed gradatum as a library dependency in your Rust project.
+              28 crates in the workspace — <code>gradatum</code> is the umbrella entry point.
+            </p>
+            <pre class="install-pre install-source-pre"><code>cargo add gradatum  <span class="install-comment"># umbrella SDK</span></code></pre>
+            <p class="install-source-note">
+              <a href="https://crates.io/crates/gradatum" target="_blank" rel="noopener noreferrer">crates.io/crates/gradatum</a>
+              · 28 crates · Apache-2.0
+            </p>
+          </div>
+
+          <!-- Voie 3 — Build from source -->
+          <div class="install-way">
+            <div class="install-way-header">
+              <div class="eyebrow install-way-label">Build from source</div>
+              <span class="install-way-badge install-way-badge--secondary">full control</span>
+            </div>
+            <p class="install-way-desc">
+              Clone the repository and compile all workspace crates.
+              Requires Rust 1.85+ (MSRV).
+            </p>
+            <pre class="install-pre install-source-pre"><code>git clone https://github.com/gradatum/gradatum
 cd gradatum &amp;&amp; cargo build --release --workspace</code></pre>
-          <p class="install-source-note">
-            <a href="https://github.com/gradatum/gradatum" target="_blank" rel="noopener noreferrer">github.com/gradatum/gradatum</a>
-            · Apache-2.0
-          </p>
+            <p class="install-source-note">
+              <a href="https://github.com/gradatum/gradatum" target="_blank" rel="noopener noreferrer">github.com/gradatum/gradatum</a>
+              · Apache-2.0 · Rust 2021 · MSRV 1.85
+            </p>
+          </div>
+
         </div>
 
-        <div class="install-source-block">
-          <div class="eyebrow install-source-label">Via crates.io</div>
-          <pre class="install-pre install-source-pre"><code>cargo add gradatum  <span class="install-comment"># umbrella SDK</span></code></pre>
-          <p class="install-source-note">
-            <a href="https://crates.io/crates/gradatum" target="_blank" rel="noopener noreferrer">crates.io/crates/gradatum</a>
-            · 28 crates in workspace
-          </p>
-        </div>
       </div>
 
       <p class="install-alpha-notice">
@@ -398,24 +492,164 @@ gradatum-admin backup</code></pre>
     line-height: 1.6;
   }
 
-  /* Source install block */
+  /* ── Install — 3 voies ──────────────────────────────────────────────────── */
+
   .install-oneliner {
     margin-top: 3rem;
   }
 
-  .install-sources {
+  /* Grid: primary (binaires) full-width, puis 2 colonnes pour crates/source */
+  .install-ways {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 2rem;
     margin-top: 1.25rem;
   }
 
-  .install-source-block {
+  /* Voie individuelle */
+  .install-way {
+    border: 1px solid var(--rule);
+    padding: 1.75rem;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem;
   }
 
+  /* Voie primaire — accent border */
+  .install-way--primary {
+    border-color: var(--accent);
+  }
+
+  .install-way-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .install-way-label {
+    letter-spacing: 0.18em;
+    margin: 0;
+  }
+
+  .install-way-badge {
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.65rem;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+
+  .install-way-badge--secondary {
+    border-color: var(--rule);
+    color: var(--muted);
+  }
+
+  .install-way-desc {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Grille archives */
+  .install-archives {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  .install-archive {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    border-left: 2px solid var(--rule);
+    padding-left: 1rem;
+  }
+
+  .install-archive-role {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .install-archive-name {
+    font-family: var(--font-mono);
+    font-size: 0.78125rem;
+    color: var(--ink);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  .install-archive-badge {
+    font-family: var(--font-mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .install-archive-desc {
+    font-size: 0.8125rem;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .install-archive-pre {
+    margin: 0;
+  }
+
+  .install-archive-pre code {
+    font-size: 0.6875rem;
+    word-break: break-all;
+  }
+
+  /* Release footer + vérif */
+  .install-release-footer {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .install-release-link {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    text-decoration: none;
+    transition: opacity 0.12s ease;
+  }
+
+  .install-release-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .install-release-meta {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .install-verify-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  /* Styles partagés source/crates */
   .install-source-label {
     letter-spacing: 0.15em;
     margin-bottom: 0;
@@ -464,9 +698,39 @@ gradatum-admin backup</code></pre>
     text-underline-offset: 3px;
   }
 
-  @media (max-width: 640px) {
-    .install-sources {
+  /* Voies secondaires — 2 colonnes sur desktop */
+  .install-ways-secondary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .install-archives {
       grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .install-ways-secondary {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .install-way {
+      padding: 1.25rem;
+    }
+
+    .install-archives {
+      grid-template-columns: 1fr;
+    }
+
+    .install-release-footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
     }
   }
 
