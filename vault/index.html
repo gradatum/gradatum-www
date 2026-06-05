@@ -181,7 +181,7 @@ v0.6.0+ — The layer that consumes the memory store autonomously:
     window.addEventListener('hashchange', openTargeted);
   })();
 </script>  <hr class="rule" data-astro-cid-bo36sp6k> <section id="install" class="qs section-pad section-gap" aria-labelledby="qs-title" data-astro-cid-d3yughyh> <div class="qs-inner" data-astro-cid-d3yughyh> <div class="eyebrow" data-astro-cid-d3yughyh>VIII · Quick start</div> <h2 id="qs-title" class="qs-h2" data-astro-cid-d3yughyh>
-Build from source or add via crates.io.
+Pre-built binaries, crates.io, or build from source.
 </h2> <div class="qs-teaser-cta" data-astro-cid-d3yughyh> <a href="/install" class="cta-link eyebrow" data-astro-cid-d3yughyh>View all install modes (7 profiles)</a> <a href="https://github.com/gradatum/gradatum" target="_blank" rel="noopener noreferrer" class="cta-link eyebrow" data-astro-cid-d3yughyh>Source on GitHub →</a> <a href="/use-cases" class="cta-link eyebrow" data-astro-cid-d3yughyh>See use cases (Without / With)</a> </div> <div class="qs-blocks" data-astro-cid-d3yughyh> <!-- Block 1: Clone & build --> <div class="qs-block" data-astro-cid-d3yughyh> <div class="eyebrow block-label" data-astro-cid-d3yughyh>Clone &amp; build (alpha v0.3.x — API not stable before v1.0)</div> <pre class="qs-pre" data-astro-cid-d3yughyh><code data-astro-cid-d3yughyh><span class="c" data-astro-cid-d3yughyh># build from source</span>
 git clone https://github.com/gradatum/gradatum
 cd gradatum && cargo build --release --workspace
@@ -211,7 +211,9 @@ env     = &#123; GRADATUM_BEARER = &quot;your-bearer-token&quot; &#125;
 curl http://localhost:19090/health
 curl http://localhost:19090/api/v1/vault_search \
   -d '&#123;"query":"ULID","locus":"projecta/*"&#125;'</code></pre> </div> </div> <p class="qs-note" data-astro-cid-d3yughyh>
-Alpha release (v0.3.x) — source open on <a href="https://github.com/gradatum/gradatum" target="_blank" rel="noopener noreferrer" class="qs-note-link" data-astro-cid-d3yughyh>GitHub</a>,
+Alpha release (v0.3.x) — pre-built binaries (server / llm / mcp) on
+<a href="https://github.com/gradatum/gradatum/releases" target="_blank" rel="noopener noreferrer" class="qs-note-link" data-astro-cid-d3yughyh>GitHub Releases</a>,
+      source on <a href="https://github.com/gradatum/gradatum" target="_blank" rel="noopener noreferrer" class="qs-note-link" data-astro-cid-d3yughyh>GitHub</a>,
       crates on <a href="https://crates.io/crates/gradatum" target="_blank" rel="noopener noreferrer" class="qs-note-link" data-astro-cid-d3yughyh>crates.io</a>.
       API not stable before v1.0. See the
 <a href="/install" class="qs-note-link" data-astro-cid-d3yughyh>Install page</a> for all deployment profiles.
