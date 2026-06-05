@@ -167,6 +167,43 @@ gradatum-admin vault list
 gradatum-admin distill status
 gradatum-admin backup</code></pre>
     </div>
+
+    <!-- Example topology -->
+    <div class="install-topology">
+      <div class="eyebrow block-label">Example topology — multi-host GPU serving</div>
+      <p class="install-topology-desc">
+        Single-binary on one box, or scale out: one GPU host serving several models,
+        an app host routing through the gateway with automatic CPU fallback.
+      </p>
+      <pre class="install-pre install-topology-pre"><code>          consumers (apps, agents, MCP clients)
+                            │
+                            ▼
+ ┌─────────────── app-host (Linux, 10.0.0.10) ───────────────┐
+ │  gradatum-server ──┐           ┌──────────────────────┐    │
+ │  gradatum-worker ──┴─────────▶ │ gradatum-gateway      │    │
+ │                                │ (router + circuit-    │    │
+ │                                │  breaker)             │    │
+ │                                └───┬──────────┬───────┘    │
+ │                           primary  │          │ fallback    │
+ │                                    │          ▼             │
+ │                                    │  ┌──────────────────┐  │
+ │                                    │  │ local CPU engine │  │
+ │                                    │  │ + embedder       │  │
+ │                                    │  └──────────────────┘  │
+ └────────────────────────────────────┼───────────────────────┘
+                                      │ LAN
+ ┌─────────────── gpu-host (Linux, 10.0.0.20) ───────────────┐
+ │  gradatum-engine — one supervisor binary, N instances:     │
+ │   chat :8083 · embed :8432 · small :8082 · reason :8081    │
+ │   each instance supervises one llama-server child          │
+ │   GGUF models read-only under /opt/gradatum/models/        │
+ └───────────────────────────────────────────────────────────┘</code></pre>
+      <p class="install-topology-note">
+        Full deployment guide and configuration reference:
+        <a href="https://github.com/gradatum/gradatum/blob/main/docs/DEPLOYMENT.md" class="topology-link">docs/DEPLOYMENT.md</a>
+        (available at OSS release).
+      </p>
+    </div>
   </div>
 </section>
 
@@ -480,6 +517,43 @@ gradatum-admin backup</code></pre>
   /* Post-install */
   .install-postinstall {
     margin-top: 4.5rem;
+  }
+
+  /* Example topology */
+  .install-topology {
+    margin-top: 4.5rem;
+  }
+
+  .install-topology-desc {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    margin-top: 0.75rem;
+    margin-bottom: 1.25rem;
+    max-width: 680px;
+  }
+
+  .install-topology-pre {
+    /* inherits .install-pre — override font-size for ASCII art legibility */
+    font-size: 0.75rem;
+    line-height: 1.55;
+  }
+
+  .install-topology-note {
+    margin-top: 0.875rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .topology-link {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .topology-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   /* Responsive */
