@@ -121,7 +121,7 @@ const groups: FeatureGroup[] = [
   },
   {
     grade: 'Silver',
-    versionPrefix: 'v0.4.x–v0.5.x',
+    versionPrefix: 'v0.5.x',
     description:
       'Completes the durable memory layer, exposes the vault as a queryable MCP-native backend, and adds multi-user isolation with OAuth-based remote access.',
     features: [
@@ -155,7 +155,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Knowledge engineers and developers who build interconnected notes and need cross-references to remain valid as the vault evolves over time.',
-        status: 'planned',
+        status: 'released',
         version: 'v0.4.0',
       },
       {
@@ -171,7 +171,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Developers and teams who need an audit trail of how knowledge evolved — including distillation drift detection and rollback of accidental overwrites.',
-        status: 'planned',
+        status: 'released',
         version: 'v0.4.0',
       },
       {
@@ -187,7 +187,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Developers building multi-agent pipelines or concurrent writer workflows where two agents may update the same note within the same time window.',
-        status: 'planned',
+        status: 'released',
         version: 'v0.4.0',
       },
       {
@@ -203,7 +203,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Teams running multi-agent pipelines who need to distinguish high-confidence knowledge from speculative or low-provenance notes before acting on retrieved content.',
-        status: 'planned',
+        status: 'released',
         version: 'v0.4.0',
       },
       {

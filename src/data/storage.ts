@@ -9,7 +9,7 @@ const rawBackends = [
     name: 'Local FS',
     tier: 'primary' as const,
     scheme: 'fs',
-    notes: 'Default. NVMe local only — NFS explicitly rejected (RFC-0002 §8 nfs_check.rs).',
+    notes: 'Default. NVMe local only — NFS rejected: POSIX lock incompatibility causes data corruption under concurrent writers.',
   },
   {
     name: 'S3 / R2',

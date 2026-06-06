@@ -8,7 +8,7 @@ interface Backend {
 
 const backends: Backend[] = [
   { name: 'Local FS', tier: 'primary', scheme: 'fs',
-    notes: 'Default. NVMe local only — NFS explicitly rejected per RFC-0002 §8.' },
+    notes: 'Default. NVMe local only — NFS rejected: POSIX lock incompatibility causes data corruption under concurrent writers.' },
   { name: 'S3 / R2', tier: 'primary', scheme: 's3',
     notes: 'AWS S3, Cloudflare R2, MinIO, Backblaze B2.' },
   { name: 'Azure Blob', tier: 'secondary', scheme: 'azblob',
@@ -38,7 +38,7 @@ const tierLabel: Record<Backend['tier'], string> = {
     <p class="storage-desc">
       Gradatum uses <a href="https://opendal.apache.org" target="_blank" rel="noopener noreferrer" class="storage-link">Apache OpenDAL</a>
       as a unified storage abstraction layer. Switch backends without touching application code.
-      NFS is explicitly rejected — see RFC-0002 §8.
+      NFS is explicitly rejected: POSIX lock incompatibility causes data corruption under concurrent writers.
     </p>
 
     <ul class="backends-grid" role="list" aria-label="Storage backends">
@@ -69,7 +69,7 @@ root    = "/gradatum/main"
 backend = "fs"
 root    = "~/.gradatum/vaults/staging"  <span class="c"># local NVMe for testing</span>
 
-<span class="c"># NFS explicitly rejected — see RFC-0002 §8</span>
+<span class="c"># NFS rejected: POSIX lock incompatibility (data corruption under concurrent writers)</span>
 <span class="c"># backend = "nfs"  ← will fail at startup with nfs_check.rs guard</span></code></pre>
     </div>
   </div>

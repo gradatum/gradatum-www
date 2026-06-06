@@ -22,7 +22,7 @@ const rawProperties = [
   {
     name: 'Multi-vault',
     description:
-      'Separate main from staging and bench-* vaults for testing, migration, A/B prompts. Atomic swap when ready.',
+      'Separate main from staging and bench-* vaults for testing, migration, A/B prompts. Atomic swap when ready. Multi-agent addressing with VaultScope planned v0.4.2.',
   },
   {
     name: 'Hierarchical ACL',
@@ -42,7 +42,7 @@ const rawProperties = [
   {
     name: 'Hybrid search',
     description:
-      'BM25 (SQLite FTS5) + semantic search (cosine; sqlite-vec ANN planned v0.4.0) + PageRank graph + cross-encoder reranker (ONNX, optional). Multi-signal fusion via RRF (Reciprocal Rank Fusion).',
+      'BM25 (SQLite FTS5) + semantic search (cosine brute-force; ANN planned v0.4.4) + PageRank graph + cross-encoder reranker (ONNX, optional). Multi-signal fusion via RRF (Reciprocal Rank Fusion).',
   },
 ] satisfies typeof rawProperties;
 

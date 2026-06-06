@@ -1,12 +1,10 @@
 /**
  * gradatum-www — Roadmap data (9 linear versions, Bronze→Platinum)
  *
- * GOVERNANCE RULES (Council Art.19 Round 1 acted):
- *   MAJ status/date d'un milestone existant = pas council Art.19.
- *   Ajout/suppression d'une VersionPhase = council Art.19 obligatoire
- *     (impacte structure OSS publique).
- *   Modification thème/description/grade = council Art.19
- *     (signal structurel).
+ * Maintenance notes:
+ *   Updating status/date of an existing milestone: edit in place, rebuild.
+ *   Adding/removing a VersionPhase: update public OSS structure and rebuild.
+ *   Changing theme/description/grade: update and rebuild.
  */
 import type { VersionPhase } from '../content/config';
 import { versionPhaseArraySchema } from '../content/config';
@@ -53,7 +51,7 @@ const versions: VersionPhase[] = [
       },
       {
         status: 'done',
-        title: 'Migrated off the predecessor backend — gradatum now primary',
+        title: 'Migrated off the predecessor backend — gradatum primary store',
         version: 'v0.1.0-alpha.13',
         date: '2026-05-25',
       },
@@ -96,7 +94,7 @@ const versions: VersionPhase[] = [
     milestones: [
       {
         status: 'done',
-        title: 'F-14 partial: Apalis foundation + types v81 forward-compat',
+        title: 'F-14 partial: Apalis foundation + forward-compatible type definitions',
         version: 'v0.2.0',
         date: '2026-05-29',
       },
@@ -191,11 +189,17 @@ const versions: VersionPhase[] = [
         version: 'v0.3.6',
         date: '2026-06-05',
       },
+      {
+        status: 'done',
+        title: 'v0.3.7 — Reliability: search/read/write round-trip fixes (title persistence, vault_read by ULID, wikilink reconciliation)',
+        version: 'v0.3.7',
+        date: '2026-06-05',
+      },
     ],
   },
   {
     version: 'v0.4.0',
-    status: 'planned',
+    status: 'done',
     theme: 'Vault Core — Durable Memory Layer',
     description:
       'Completes the core knowledge store: structured ingest with content-aware chunking, copy-on-write note history with optimistic locking for safe concurrent writes, stable wikilink graph traversal, temporal decay scoring and provenance trust so retrieved content carries verifiable lineage, declarative lifecycle rules that keep the vault compact without losing traceability, scheduled distillation that compresses raw notes into reusable knowledge, and pluggable storage backends.',
@@ -204,34 +208,34 @@ const versions: VersionPhase[] = [
     showFeaturesLink: true,
     milestones: [
       {
-        status: 'planned',
-        title: 'Structured ingest — content-aware chunking, table extraction',
+        status: 'done',
+        title: 'F-47 Provenance Trust Score — verifiable note lineage, trust field integrated with search ranking',
         version: 'v0.4.0',
+        date: '2026-06-06',
       },
       {
-        status: 'planned',
-        title: 'Durable writes — note history, optimistic locking, stable wikilinks, provenance trust',
+        status: 'done',
+        title: 'F-39 Stable Wikilinks — redirect_table, ULID anchors, backlink index at write time',
         version: 'v0.4.0',
+        date: '2026-06-06',
       },
       {
-        status: 'planned',
-        title: 'Temporal retrieval — event-log driven decay, privacy filter, drift detection',
+        status: 'done',
+        title: 'F-41 Optimistic Locking — write_if_match SHA-256 content hash, 409 Conflict on race',
         version: 'v0.4.0',
+        date: '2026-06-06',
       },
       {
-        status: 'planned',
-        title: 'Vault lifecycle — scope, lifecycle rules, intelligent compaction, temporal index',
+        status: 'done',
+        title: 'F-40 Note History — copy-on-write version trail, history/* endpoints, max_versions cap',
         version: 'v0.4.0',
+        date: '2026-06-06',
       },
       {
-        status: 'planned',
-        title: 'Distillation — scheduled semantic / learn / peer jobs',
+        status: 'done',
+        title: 'Tag v0.4.0 — 28 crates, 1178 tests PASS, « Écriture durable » milestone',
         version: 'v0.4.0',
-      },
-      {
-        status: 'planned',
-        title: 'Pluggable storage backends — remote SQLite (libsql), opt-in vector store',
-        version: 'v0.4.0',
+        date: '2026-06-06',
       },
     ],
   },

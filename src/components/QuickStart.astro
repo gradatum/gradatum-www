@@ -16,37 +16,40 @@
     <div class="qs-blocks">
       <!-- Block 1: Clone & build -->
       <div class="qs-block">
-        <div class="eyebrow block-label">Clone &amp; build (alpha v0.3.x — API not stable before v1.0)</div>
+        <div class="eyebrow block-label">Clone &amp; build (v0.4.0 · API not stable before v1.0)</div>
         <pre class="qs-pre"><code><span class="c"># build from source</span>
 git clone https://github.com/gradatum/gradatum
 cd gradatum && cargo build --release --workspace
 
 <span class="c"># initialize a vault with the hierarchical preset</span>
-gradatum-admin init --preset=hierarchical \
-  --projects=projecta,projectb
+gradatum-admin init --preset hierarchical \
+  --root /var/lib/gradatum
 
-<span class="c"># start the server (Phase 2.0+)</span>
+<span class="c"># start the server</span>
 systemctl --user start gradatum-server</code></pre>
       </div>
 
-      <!-- Block 2: Write & search -->
+      <!-- Block 2: Write & search via HTTP API -->
       <div class="qs-block">
-        <div class="eyebrow block-label">Write & search</div>
-        <pre class="qs-pre"><code><span class="c"># write a note</span>
-gradatum write --locus=projecta/backend \
-  --section=decisions \
-  "Use ULID for stable note identity"
+        <div class="eyebrow block-label">Write &amp; search (REST API)</div>
+        <pre class="qs-pre" set:html={`<code><span class="c"># write a note (vault_write)</span>
+curl -X POST http://localhost:19090/api/v1/vault_write \\
+  -H "Authorization: Bearer &#36;GRADATUM_BEARER" \\
+  -H "Content-Type: application/json" \\
+  -d '&#123;"locus":"projecta/backend","section":"decisions","body":"Use ULID for stable note identity"&#125;'
 
 <span class="c"># search across loci</span>
-gradatum search "ULID identity" --locus="projecta/*"
+curl http://localhost:19090/api/v1/vault_search \\
+  -H "Authorization: Bearer &#36;GRADATUM_BEARER" \\
+  -d '&#123;"query":"ULID identity","locus":"projecta/*"&#125;'
 
 <span class="c"># list vaults</span>
-gradatum-admin vault list</code></pre>
+gradatum-admin vault list</code>`}></pre>
       </div>
 
-      <!-- Block 3: MCP (Phase 2.0) -->
+      <!-- Block 3: MCP stub -->
       <div class="qs-block">
-        <div class="eyebrow block-label">MCP integration (Phase 2.0)</div>
+        <div class="eyebrow block-label">MCP integration (MCP stub)</div>
         <pre class="qs-pre" set:html={`<code><span class="c"># gradatum.toml — MCP stub for Claude Code</span>
 [[mcpServers]]
 name    = &quot;gradatum&quot;
@@ -62,7 +65,7 @@ curl http://localhost:19090/api/v1/vault_search \\
     </div>
 
     <p class="qs-note">
-      Alpha release (v0.3.x) — pre-built binaries (server / llm / mcp) on
+      v0.4.0 — pre-built binaries (server / llm / mcp) on
       <a href="https://github.com/gradatum/gradatum/releases" target="_blank" rel="noopener noreferrer" class="qs-note-link">GitHub Releases</a>,
       source on <a href="https://github.com/gradatum/gradatum" target="_blank" rel="noopener noreferrer" class="qs-note-link">GitHub</a>,
       crates on <a href="https://crates.io/crates/gradatum" target="_blank" rel="noopener noreferrer" class="qs-note-link">crates.io</a>.
