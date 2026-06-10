@@ -348,7 +348,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers running long-lived agent sessions who want raw notes compressed into searchable knowledge automatically — and teams building shared knowledge stores that grow in quality over time.',
         status: 'planned',
-        version: 'v0.4.3',
+        version: 'v0.4.4',
       },
       {
         id: 'f-61',
