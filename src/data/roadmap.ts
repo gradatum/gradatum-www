@@ -237,6 +237,24 @@ const versions: VersionPhase[] = [
         version: 'v0.4.0',
         date: '2026-06-06',
       },
+      {
+        status: 'done',
+        title: 'v0.4.1 — Quality & reliability: zero-panic API surface, doc-comments 28 crates, SECURITY.md, revocation wired, MSRV 1.88, first public release (crates.io + GitHub)',
+        version: 'v0.4.1',
+        date: '2026-06-06',
+      },
+      {
+        status: 'done',
+        title: 'v0.4.2 — Internal: note_id in vault_write response, vault_downgrade 404, DTO unification, gateway metrics cardinality',
+        version: 'v0.4.2',
+        date: '2026-06-07',
+      },
+      {
+        status: 'done',
+        title: 'v0.4.3 — Vault lifecycle: semantic forget (dry-run + decay), note lifecycle state machine, configurable history pruning, multi-vault query scoping, multimodal gateway support, temporal index foundation',
+        version: 'v0.4.3',
+        date: '2026-06-10',
+      },
     ],
   },
   {

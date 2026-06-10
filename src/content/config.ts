@@ -79,8 +79,8 @@ export type VersionPhase = z.infer<typeof versionPhaseSchema>;
 // ── Feature schema ────────────────────────────────────────────────────────────
 
 export const featureSchema = z.object({
-  id: z.string().regex(/^f-\d{2}$/),
-  refLabel: z.string().regex(/^F-\d{2}$/),
+  id: z.string().regex(/^f-\d{2,3}$/),
+  refLabel: z.string().regex(/^F-\d{2,3}$/),
   name: z.string().min(10),
   positioning: z.string().min(20).max(200),
   howItWorks: z.array(z.string()).min(1).max(4),

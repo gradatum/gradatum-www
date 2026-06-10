@@ -284,55 +284,55 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers building multi-agent systems where several agents share or exchange knowledge across isolated vaults, and need deterministic addressing for background jobs.',
         status: 'planned',
-        version: 'v0.4.2',
+        version: 'v0.4.3',
       },
       {
         id: 'f-32',
         refLabel: 'F-32',
-        name: 'Vault Lifecycle Management: Declarative Retention Rules',
+        name: 'Vault Lifecycle Management: State Machine, Retention and History Pruning',
         positioning:
-          'Keeps the vault compact and high-quality automatically by applying declarative retention rules — no manual curation required.',
+          'Adds an explicit note lifecycle state machine (Draft → PendingReview → Live → Deprecated → Garbage) and declarative retention rules — keeping the vault compact and high-quality automatically.',
         howItWorks: [
-          'Operators define [[vault.lifecycle]] rules in TOML: conditions such as age, decay score below threshold, or locus pattern trigger a Job::Purge(Lifecycle).',
-          'The purge job respects ordering constraints — it runs after distillation and audit jobs so no note is deleted before its value has been extracted.',
-          'worker/ directories used during background jobs are pruned after a configurable number of days (default: 30), keeping ephemeral state from accumulating.',
+          'Each note carries a lifecycle_state field; transitions are explicit API calls with optional guard conditions so no note skips a required validation step. Draft notes are excluded from search by default; Deprecated notes are downweighted.',
+          'Operators define [[vault.lifecycle]] rules in TOML: conditions such as age, decay score, or locus pattern trigger a Job::Purge(Lifecycle). The purge job runs after distillation so no note is deleted before its value has been extracted.',
+          'Configurable history pruning caps per-note version history with max_versions and a TTL, preventing unbounded growth of the .history/ directories.',
         ],
         whoItsFor:
-          'Operators who want the vault to self-regulate quality over time without scripting manual cleanup — and contributors who need deterministic lifecycle behavior for testing retention policies.',
+          'Operators who want the vault to self-regulate quality over time, and teams building multi-agent pipelines that need a formal quality gate between note production and retrieval.',
         status: 'planned',
-        version: 'v0.4.2',
+        version: 'v0.4.3',
       },
       {
         id: 'f-44',
         refLabel: 'F-44',
         name: 'Semantic Forget: Intentional Scoped Deletion',
         positioning:
-          'Lets operators explicitly remove a topic or locus from the vault — with a mandatory dry-run preview and cascading decay before permanent deletion.',
+          'Lets operators explicitly remove a topic or locus from the vault — with a mandatory dry-run preview, double confirmation, and progressive decay instead of immediate deletion.',
         howItWorks: [
-          'vault_forget(scope) marks matching notes with forgotten=true and applies accelerated decay, removing them from search results within the configured window.',
-          'A dry-run mode lists the affected notes and any distilled skills derived from them before any deletion is committed.',
-          'Cascade behavior is configurable: forgetting a knowledge/ topic can optionally propagate to linked skills/ and peers/ entries derived from it.',
+          'vault_forget(scope, dry_run: true) returns the full list of affected notes and any derived skills before any state change — the operator reviews and confirms explicitly.',
+          'On confirmed deletion, notes are marked forgotten=true and decay accelerates over a configurable window, removing them from search results progressively rather than immediately.',
+          'Cascade behavior is configurable: forgetting a knowledge/ topic can optionally propagate to linked skills/ and peers/ entries derived from it, with each cascade step listed in the dry-run preview.',
         ],
         whoItsFor:
-          'Teams or individuals who need to remove a project, a topic, or a person from the vault intentionally — with traceability and the option to undo before the decay window closes.',
+          'Teams or individuals removing a project, topic, or person from the vault intentionally — with full visibility into what will be affected before committing, and a decay window to undo.',
         status: 'planned',
-        version: 'v0.4.2',
+        version: 'v0.4.3',
       },
       {
         id: 'f-55',
         refLabel: 'F-55',
-        name: 'Temporal Awareness: Chronological Memory Index',
+        name: 'Temporal Index Foundation: Chronological Memory Queries',
         positioning:
-          'Adds a chronological dimension to vault search — letting agents query what happened before, after, or around a date, without a calendar application or graph database.',
+          'Lays the foundation for time-aware vault queries — a chronological index from note frontmatter lets agents ask what happened before, after, or around a date without a calendar or graph database.',
         howItWorks: [
-          'A TemporalIndex is derived at write time from frontmatter fields (occurred_at, valid_from, event-date, created) — no LLM extraction, no separate store.',
+          'A TemporalIndex is derived at write time from frontmatter fields (occurred_at, valid_from, event-date, created) — no LLM extraction, no separate store. This release ships the index and the vault_timeline API surface; higher-level temporal reasoning ships in v0.5.0.',
           'The vault_timeline tool exposes before/after/around/upcoming queries; the index is fully reconstructible via a ReIndex job if frontmatter changes.',
           'Job::Validate cross-checks temporal contradictions between notes (e.g., two notes asserting conflicting event orders) as part of the memory validation pipeline.',
         ],
         whoItsFor:
           'Agents and developers who need to reconstruct decision timelines, detect sequencing contradictions, or surface upcoming-deadline notes — without adding a calendar or graph infrastructure.',
         status: 'planned',
-        version: 'v0.4.2',
+        version: 'v0.4.3',
       },
       {
         id: 'f-22',
@@ -347,6 +347,22 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Developers running long-lived agent sessions who want raw notes compressed into searchable knowledge automatically — and teams building shared knowledge stores that grow in quality over time.',
+        status: 'planned',
+        version: 'v0.4.3',
+      },
+      {
+        id: 'f-61',
+        refLabel: 'F-61',
+        name: 'Multimodal Gateway: OpenAI Content-Array and Vision Routing',
+        positioning:
+          'Extends the gateway to accept the OpenAI content-array message format and route vision requests to an appropriate model — enabling multimodal inputs without changing the vault API.',
+        howItWorks: [
+          'The gateway parses ChatMessage::User as either a plain string or a Vec<ContentPart> (text + image_url), matching the OpenAI chat completions schema, so existing text-only clients are unaffected.',
+          'A vision routing gate inspects the content array at request time: messages containing image parts are forwarded to a configured vision-capable endpoint; text-only messages follow the standard routing path.',
+          'Configuration exposes a vision_endpoint field in the gateway TOML; if unset, image-bearing requests return a 422 with an explicit error rather than silently stripping the image.',
+        ],
+        whoItsFor:
+          'Developers building agents that process screenshots, diagrams, or documents alongside text, and operators who want multimodal inputs handled at the gateway layer without routing logic in each client.',
         status: 'planned',
         version: 'v0.4.3',
       },

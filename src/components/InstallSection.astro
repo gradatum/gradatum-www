@@ -15,7 +15,7 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
 
     <!-- Installation — 3 voies -->
     <div class="install-oneliner">
-      <div class="eyebrow block-label">Get started — v0.4.1 · Linux x86_64</div>
+      <div class="eyebrow block-label">Get started — v0.4.3 · Linux x86_64</div>
 
       <div class="install-ways">
 
@@ -40,7 +40,7 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
                 Contains <code>gradatum-server</code>, <code>gradatum-worker</code>, <code>gradatum-admin</code>.
                 Core vault store, job queue, admin CLI.
               </p>
-              <pre class="install-pre install-archive-pre"><code>gradatum-server-v0.4.1-x86_64-unknown-linux-gnu.tar.gz</code></pre>
+              <pre class="install-pre install-archive-pre"><code>gradatum-server-v0.4.3-x86_64-unknown-linux-gnu.tar.gz</code></pre>
             </div>
 
             <div class="install-archive">
@@ -52,7 +52,7 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
                 Contains <code>gradatum-gateway</code> and <code>gradatum-engine</code>.
                 Router, circuit-breaker, llama-server supervisor. Required for local inference.
               </p>
-              <pre class="install-pre install-archive-pre"><code>gradatum-llm-v0.4.1-x86_64-unknown-linux-gnu.tar.gz</code></pre>
+              <pre class="install-pre install-archive-pre"><code>gradatum-llm-v0.4.3-x86_64-unknown-linux-gnu.tar.gz</code></pre>
             </div>
 
             <div class="install-archive">
@@ -64,7 +64,7 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
                 Contains <code>gradatum-mcp-stub</code>.
                 MCP bridge for agent clients (Claude Code, Claude Desktop, etc.).
               </p>
-              <pre class="install-pre install-archive-pre"><code>gradatum-mcp-v0.4.1-x86_64-unknown-linux-gnu.tar.gz</code></pre>
+              <pre class="install-pre install-archive-pre"><code>gradatum-mcp-v0.4.3-x86_64-unknown-linux-gnu.tar.gz</code></pre>
             </div>
           </div>
 
@@ -85,7 +85,7 @@ sha256sum -c SHA256SUMS --ignore-missing
 
 <span class="install-comment"># verify SLSA build provenance (GitHub native)</span>
 gh attestation verify \
-  gradatum-server-v0.4.1-x86_64-unknown-linux-gnu.tar.gz \
+  gradatum-server-v0.4.3-x86_64-unknown-linux-gnu.tar.gz \
   --repo gradatum/gradatum</code></pre>
           </div>
         </div>
@@ -133,7 +133,7 @@ cd gradatum &amp;&amp; cargo build --release --workspace</code></pre>
       </div>
 
       <p class="install-alpha-notice">
-        v0.4.1 · Linux x86_64 · API not stable before v1.0. See
+        v0.4.3 · Linux x86_64 · API not stable before v1.0. See
         <a href="https://github.com/gradatum/gradatum/blob/main/docs/DEPLOYMENT.md" target="_blank" rel="noopener noreferrer">docs/DEPLOYMENT.md</a>
         for the full deployment reference.
       </p>
