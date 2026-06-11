@@ -220,7 +220,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Agents and search clients that need results biased toward current knowledge — particularly useful for decision logs, meeting notes, and time-sensitive technical documentation.',
         status: 'planned',
-        version: 'v0.4.1',
+        version: 'v0.4.4',
       },
       {
         id: 'f-19',
@@ -236,7 +236,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators who need to understand which vault features drive LLM spend, and developers building cost-attribution dashboards or budget-alert workflows on top of the vault.',
         status: 'planned',
-        version: 'v0.4.1',
+        version: 'v0.4.4',
       },
       {
         id: 'f-09',
@@ -347,6 +347,22 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Developers running long-lived agent sessions who want raw notes compressed into searchable knowledge automatically — and teams building shared knowledge stores that grow in quality over time.',
+        status: 'planned',
+        version: 'v0.4.4',
+      },
+      {
+        id: 'f-60',
+        refLabel: 'F-60',
+        name: 'Lessons Recall: Dedicated Endpoint, MCP Tool, and Hook',
+        positioning:
+          'Surfaces distilled lessons-learned notes on demand via a dedicated recall endpoint, a native MCP tool, and an agent hook — making accumulated lessons actionable at decision time.',
+        howItWorks: [
+          'A dedicated GET /api/v1/lessons/recall endpoint queries the lessons-learned corpus with semantic search and returns ranked results with source attribution.',
+          'A vault_lessons_recall MCP tool exposes the same surface directly to MCP clients, with optional role and tag filters so agents retrieve only domain-relevant lessons.',
+          'A pre-action hook fires automatically when the agent is about to start a new task, injecting the top-3 matching lessons into the context before the first response.',
+        ],
+        whoItsFor:
+          'Developers and agents who want past mistakes and validated patterns surfaced automatically before acting — not just stored somewhere and manually searched.',
         status: 'planned',
         version: 'v0.4.4',
       },
