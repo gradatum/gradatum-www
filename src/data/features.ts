@@ -415,6 +415,23 @@ const groups: FeatureGroup[] = [
         version: 'v0.4.4',
       },
       {
+        id: 'f-37',
+        refLabel: 'F-37',
+        name: 'gradatum-studio: Vault Management Interface',
+        positioning:
+          'A local web interface for reading, searching, reviewing, and monitoring the vault — without exposing any API key or modifying the vault write path.',
+        howItWorks: [
+          'Five surfaces ship in the MVP: a dashboard (live vault metrics and recent activity), a note browser with inline markdown rendering, a search panel with score and section filters, a review queue (notes pending lifecycle validation), and a jobs monitor showing background task status.',
+          'Authentication is handled via a single API key injected at startup; no OAuth or user database is required for the single-user deployment.',
+          'A WHY scores panel surfaces the curator confidence and section classification for each note — making the reasoning behind search ranking visible and auditable.',
+          'The interface is read-only for vault content by design; writes still go through the standard API so the vault write path remains the sole source of truth.',
+        ],
+        whoItsFor:
+          'Developers and operators who want to inspect and monitor their vault through a browser rather than raw API calls, without adding infrastructure or weakening data sovereignty.',
+        status: 'planned',
+        version: 'v0.4.6',
+      },
+      {
         id: 'f-38',
         refLabel: 'F-38',
         name: 'gradatum-mcp: Native Model Context Protocol Server',
