@@ -1,0 +1,619 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import AgentLayerStack from '../components/AgentLayerStack.astro';
+import Footer from '../components/Footer.astro';
+import TweaksPanel from '../components/TweaksPanel.astro';
+---
+<Base
+  title="Gradatum — Agent Layer"
+  description="The agent layer for gradatum: compute backbone (gateway + engine fleet) live since v0.3.0. Agent runtime — context assembly, ReAct loop, skill selection — coming v0.6.0."
+>
+  <div class="site-wrap">
+    <Nav />
+
+    <main id="main-content" tabindex="-1">
+
+      <!-- ── Hero ── -->
+      <section class="agent-hero section-pad" aria-labelledby="agent-hero-title">
+        <div class="agent-hero-inner">
+          <div class="eyebrow">Gradatum · Agent Layer</div>
+          <h1 id="agent-hero-title" class="agent-hero-h1">
+            Foundations first.<br />
+            <em class="accent-italic">Runtime</em> next.
+          </h1>
+          <p class="agent-hero-desc">
+            Two of the three layers that make a self-hosted agent stack are already in place.
+            The memory store and the compute backbone are live — sovereign, embedded, no SaaS round-trip.
+            The agent runtime that orchestrates them comes with v0.6.0.
+          </p>
+          <div class="agent-hero-status">
+            <span class="status-chip status-chip-live">
+              <span class="chip-dot chip-dot-live" aria-hidden="true"></span>
+              Memory + Compute live
+            </span>
+            <span class="status-chip status-chip-coming">
+              <span class="chip-dot chip-dot-coming" aria-hidden="true"></span>
+              Runtime · v0.6.0
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <hr class="rule" />
+
+      <!-- ── Stack diagram ── -->
+      <AgentLayerStack />
+
+      <hr class="rule" />
+
+      <!-- ── Foundations deep-dive ── -->
+      <section class="foundations section-pad" aria-labelledby="foundations-title">
+        <div class="foundations-inner">
+          <div class="eyebrow">Live since v0.3.0</div>
+          <h2 id="foundations-title" class="foundations-h2">
+            Two foundations.<br />
+            <em class="accent-italic">Already in place.</em>
+          </h2>
+
+          <div class="foundation-grid">
+
+            <!-- Compute -->
+            <article class="foundation-card" aria-labelledby="foundation-compute-title">
+              <header class="fc-header">
+                <div class="fc-status">
+                  <span class="fstatus-dot fstatus-live" aria-hidden="true"></span>
+                  <span class="fstatus-label">LIVE</span>
+                </div>
+                <p class="fc-layer-tag">Compute</p>
+                <h3 id="foundation-compute-title" class="fc-title">Gateway + Engine fleet</h3>
+              </header>
+
+              <p class="fc-desc">
+                A single routing layer that dispatches every inference request by alias — no model
+                names hard-coded in your agents. Circuit-breaker, fallback chain, and MCP-native
+                dispatch keep the stack stable under load.
+              </p>
+
+              <div class="fc-flow" role="img" aria-label="Request flow: Agent → Gateway alias → Engine role → response">
+                <div class="flow-node flow-node-agent">Agent</div>
+                <div class="flow-arrow" aria-hidden="true">→</div>
+                <div class="flow-node flow-node-gateway">Gateway<br /><span class="flow-node-sub">alias routing</span></div>
+                <div class="flow-arrow" aria-hidden="true">→</div>
+                <div class="flow-node flow-node-engine">Engine<br /><span class="flow-node-sub">role-based</span></div>
+                <div class="flow-arrow" aria-hidden="true">→</div>
+                <div class="flow-node flow-node-resp">Response</div>
+              </div>
+
+              <ul class="fc-bullets">
+                <li>Alias routing — swap models without touching agent code</li>
+                <li>Circuit-breaker — automatic failover, no cascading failures</li>
+                <li>Engine roles — curator / embed / reasoning / vision, each purpose-built</li>
+                <li>Local inference only — Vulkan, zero-copy Markdown, no SaaS round-trip</li>
+                <li>MCP-native tool dispatch</li>
+              </ul>
+            </article>
+
+            <!-- Memory -->
+            <article class="foundation-card" aria-labelledby="foundation-memory-title">
+              <header class="fc-header">
+                <div class="fc-status">
+                  <span class="fstatus-dot fstatus-live" aria-hidden="true"></span>
+                  <span class="fstatus-label">LIVE</span>
+                </div>
+                <p class="fc-layer-tag">Memory</p>
+                <h3 id="foundation-memory-title" class="fc-title">Vault</h3>
+              </header>
+
+              <p class="fc-desc">
+                Sovereign knowledge store — embedded SQLite FTS5, bge-m3 dense embeddings,
+                cross-encoder reranker. Your agents read and write shared memory across sessions,
+                across machines, with no external service involved.
+              </p>
+
+              <div class="fc-vault-link">
+                <a href="/vault" class="vault-ref-link" aria-label="Explore the memory layer in depth on the Vault page">
+                  Full deep-dive on the memory layer →
+                </a>
+              </div>
+
+              <ul class="fc-bullets">
+                <li>BM25 + cosine similarity + cross-encoder reranker (RRF fusion)</li>
+                <li>Multi-signal scoring — recency × pagerank backlinks</li>
+                <li>MCP stdio + REST :19090 + auto-refresh JWT</li>
+                <li>Markdown on disk · embedded SQLite · single binary</li>
+                <li>Reads by the agent runtime at context-assembly time (v0.6.0)</li>
+              </ul>
+            </article>
+
+          </div>
+        </div>
+      </section>
+
+      <hr class="rule" />
+
+      <!-- ── Roadmap runtime ── -->
+      <section class="runtime-roadmap section-pad" aria-labelledby="runtime-roadmap-title">
+        <div class="runtime-roadmap-inner">
+          <div class="eyebrow">Roadmap · v0.6.0</div>
+          <h2 id="runtime-roadmap-title" class="runtime-h2">
+            The agent runtime.<br />
+            <em class="accent-italic">What comes next.</em>
+          </h2>
+          <p class="runtime-desc">
+            With the memory store and compute backbone already in place, v0.6.0 adds the orchestration
+            layer — the code that consumes both foundations to run autonomous agent loops.
+          </p>
+
+          <div class="runtime-items">
+
+            <div class="runtime-item">
+              <div class="ri-header">
+                <span class="ri-badge">coming</span>
+                <h3 class="ri-title">Context assembly</h3>
+              </div>
+              <p class="ri-desc">
+                Sliding-window continuity over the conversation, combined with proactive recall
+                from the Vault — relevant memories injected at the right moment, not on every turn.
+              </p>
+            </div>
+
+            <div class="runtime-item">
+              <div class="ri-header">
+                <span class="ri-badge">coming</span>
+                <h3 class="ri-title">ReAct runtime</h3>
+              </div>
+              <p class="ri-desc">
+                Agent loop with tool dispatch via MCP, built-in guards against runaway loops,
+                and structured observation → thought → action traces for auditability.
+              </p>
+            </div>
+
+            <div class="runtime-item">
+              <div class="ri-header">
+                <span class="ri-badge">coming</span>
+                <h3 class="ri-title">Skill selection</h3>
+              </div>
+              <p class="ri-desc">
+                MCP-native dispatch matched to agent intent. The gateway routes to the right
+                engine role; the skill layer decides which capability to invoke.
+              </p>
+            </div>
+
+          </div>
+
+          <p class="runtime-note">
+            All three components build on the foundations already LIVE.
+            No new storage engine, no new inference stack — the same discipline, extended upward.
+          </p>
+        </div>
+      </section>
+
+    </main>
+
+    <Footer />
+
+    <!-- Tweaks panel — island (JS enabled) -->
+    <TweaksPanel />
+  </div>
+
+  <!-- Skip to content link (accessibility) -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+</Base>
+
+<style>
+  .site-wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+    background: var(--paper);
+    box-shadow: 0 0 0 1px var(--rule);
+  }
+
+  /* ───── Hero ───── */
+  .agent-hero {
+    padding-top: 6rem;
+    padding-bottom: 5rem;
+  }
+
+  .agent-hero-inner {
+    max-width: 880px;
+  }
+
+  .agent-hero-h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin: 1.25rem 0 1.75rem;
+  }
+
+  .accent-italic {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .agent-hero-desc {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    max-width: 680px;
+    margin-bottom: 2.5rem;
+  }
+
+  .agent-hero-status {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .status-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.875rem;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .status-chip-live {
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--rule));
+    color: var(--ink);
+  }
+
+  .status-chip-coming {
+    color: var(--muted);
+    opacity: 0.8;
+  }
+
+  .chip-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .chip-dot-live {
+    background: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+  }
+
+  .chip-dot-coming {
+    background: transparent;
+    border: 1.5px dashed var(--muted);
+    opacity: 0.6;
+  }
+
+  /* ───── Foundations deep-dive ───── */
+  .foundations-inner {
+    max-width: 1080px;
+  }
+
+  .foundations-h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    margin: 1rem 0 3rem;
+  }
+
+  .foundation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+  }
+
+  .foundation-card {
+    border: 1px solid var(--accent);
+    background: color-mix(in srgb, var(--accent) 4%, var(--paper));
+    padding: 2.25rem;
+    border-radius: 2px;
+  }
+
+  .fc-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .fc-status {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .fstatus-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .fstatus-live {
+    background: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+  }
+
+  .fstatus-label {
+    color: var(--accent);
+  }
+
+  .fc-layer-tag {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .fc-title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  .fc-desc {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    margin-bottom: 1.5rem;
+  }
+
+  /* Request flow diagram — compute card */
+  .fc-flow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin: 1.25rem 0 1.5rem;
+    padding: 1rem 1.25rem;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+  }
+
+  .flow-node {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-align: center;
+    padding: 0.35rem 0.625rem;
+    border: 1px solid var(--rule);
+    background: var(--bg);
+    line-height: 1.3;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+
+  .flow-node-agent,
+  .flow-node-resp {
+    border-color: var(--rule);
+    color: var(--ink-soft);
+  }
+
+  .flow-node-gateway {
+    border-color: color-mix(in srgb, var(--accent) 50%, var(--rule));
+  }
+
+  .flow-node-engine {
+    border-color: color-mix(in srgb, var(--accent) 50%, var(--rule));
+  }
+
+  .flow-node-sub {
+    display: block;
+    font-size: 0.62rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    margin-top: 0.15rem;
+  }
+
+  .flow-arrow {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  .fc-vault-link {
+    margin: 1.25rem 0 1.5rem;
+  }
+
+  .vault-ref-link {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.15s ease;
+  }
+
+  .vault-ref-link:hover {
+    opacity: 0.75;
+  }
+
+  .vault-ref-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .fc-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  .fc-bullets li {
+    padding-left: 1.1rem;
+    position: relative;
+  }
+
+  .fc-bullets li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ───── Runtime roadmap ───── */
+  .runtime-roadmap {
+    background: var(--bg);
+    border-top: 1px solid var(--rule);
+  }
+
+  .runtime-roadmap-inner {
+    max-width: 1080px;
+  }
+
+  .runtime-h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    margin: 1rem 0 1.75rem;
+  }
+
+  .runtime-desc {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    max-width: 680px;
+    margin-bottom: 3rem;
+  }
+
+  .runtime-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .runtime-item {
+    border: 1px solid var(--rule);
+    border-top: 2px dashed var(--muted);
+    padding: 1.75rem;
+    background: var(--paper);
+    opacity: 0.85;
+  }
+
+  .ri-header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .ri-badge {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px dashed var(--muted);
+    padding: 0.15rem 0.5rem;
+    opacity: 0.75;
+    flex-shrink: 0;
+  }
+
+  .ri-title {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  .ri-desc {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+
+  .runtime-note {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 640px;
+    padding: 1rem 1.25rem;
+    border-left: 2px solid var(--rule);
+    letter-spacing: 0.03em;
+  }
+
+  /* ───── Skip link ───── */
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    background: var(--accent);
+    color: var(--paper);
+    padding: 0.75rem 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    z-index: 9999;
+    text-decoration: none;
+  }
+
+  .skip-link:focus {
+    top: 0.5rem;
+  }
+
+  /* ───── Responsive ───── */
+  @media (max-width: 768px) {
+    .foundation-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .runtime-items {
+      grid-template-columns: 1fr;
+    }
+
+    .fc-flow {
+      gap: 0.375rem;
+    }
+
+    .flow-node {
+      font-size: 0.68rem;
+      padding: 0.3rem 0.5rem;
+    }
+
+    .agent-hero-status {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .fc-flow {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .flow-arrow {
+      transform: rotate(90deg);
+    }
+  }
+</style>

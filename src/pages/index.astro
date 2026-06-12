@@ -2,7 +2,6 @@
 import Base from '../layouts/Base.astro';
 import NavUmbrella from '../components/NavUmbrella.astro';
 import Footer from '../components/Footer.astro';
-import AgentLayerStack from '../components/AgentLayerStack.astro';
 ---
 <Base
   title="Gradatum — A place for your agents."
@@ -24,9 +23,9 @@ import AgentLayerStack from '../components/AgentLayerStack.astro';
           </h1>
 
           <p class="hero-desc">
-            Gradatum is a self-hosted, embedded building block stack for multi-agent AI systems.
-            Memory is live. Compute backbone is live.
-            Agent runtime, identity, and coordination follow on the roadmap.
+            Gradatum is a self-hosted, embedded memory backbone for multi-agent AI systems.
+            Today: Vault — sovereign memory, queryable via MCP stub.
+            Tomorrow: identity, coordination, compute.
           </p>
 
           <div class="hero-meta">
@@ -76,10 +75,10 @@ import AgentLayerStack from '../components/AgentLayerStack.astro';
             </a>
 
             <!-- Agents Context layer — foundations live, runtime coming -->
-            <a href="#agent-layer" class="module-card module-foundation" aria-label="Agents Context layer — gateway and engine foundations live, runtime coming v0.6.0">
+            <a href="/agents" class="module-card module-foundation" aria-label="Agents Context layer — gateway and engine foundations live, runtime coming v0.6.0">
               <div class="module-status">
                 <span class="status-dot status-foundation" aria-hidden="true"></span>
-                <span class="status-label">foundations live · runtime v0.6.0</span>
+                <span class="status-label">FOUNDATIONS LIVE · RUNTIME v0.6.0</span>
               </div>
               <h3 class="module-name">Agents Context layer</h3>
               <p class="module-tag">Gateway + Engine · Context runtime</p>
@@ -94,16 +93,11 @@ import AgentLayerStack from '../components/AgentLayerStack.astro';
                 <li class="bullet-coming">Context assembly — sliding window, proactive recall</li>
                 <li class="bullet-coming">ReAct runtime — agent loop + guards</li>
               </ul>
-              <span class="module-cta">Explore the stack →</span>
+              <span class="module-cta">Explore the Agent Layer →</span>
             </a>
           </div>
         </div>
       </section>
-
-      <hr class="rule" />
-
-      <!-- Section : Agent Layer Stack — fondations gateway/engine LIVE + runtime coming -->
-      <AgentLayerStack />
 
       <hr class="rule" />
 
