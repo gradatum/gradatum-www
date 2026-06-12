@@ -1,0 +1,298 @@
+---
+// AgentLayerStack — Section "The Agent Layer" with layered SVG diagram
+// Foundations (memory + compute) are LIVE since v0.3.0.
+// Agent runtime (context assembly, ReAct loop) is coming v0.6.0.
+// Language: same SVG blueprint vocabulary as ArchDiagram.astro
+---
+<section id="agent-layer" class="agent-layer section-pad" aria-labelledby="agent-layer-title">
+  <div class="agent-layer-inner">
+    <div class="eyebrow">The Agent Layer</div>
+    <h2 id="agent-layer-title" class="agent-layer-h2">
+      Foundations first.<br />
+      <em class="hero-accent">Runtime</em> next.
+    </h2>
+    <p class="agent-layer-desc">
+      Two of the three layers that make a self-hosted agent stack are already in place.
+      The memory store and the compute backbone are LIVE — sovereign, embedded, no SaaS round-trip.
+      The agent runtime that orchestrates them comes with v0.6.0.
+    </p>
+
+    <!-- Layered diagram -->
+    <div
+      class="stack-diagram"
+      role="img"
+      aria-label="Agent layer stack: Agent runtime (coming v0.6.0) sits above two live foundations — Memory (Vault) and Compute (Gateway and Engine fleet)"
+    >
+      <svg
+        viewBox="0 0 820 340"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        focusable="false"
+        class="stack-svg"
+      >
+        <defs>
+          <marker id="al-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="var(--ink-soft)" />
+          </marker>
+          <marker id="al-arrow-accent" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="var(--accent)" />
+          </marker>
+        </defs>
+
+        <!-- ── Tier 1: Agent runtime (COMING) — dashed stroke, muted fill ── -->
+        <rect
+          x="10" y="10" width="800" height="88" rx="0"
+          fill="color-mix(in srgb, var(--rule) 12%, transparent)"
+          stroke="var(--muted)"
+          stroke-width="1.5"
+          stroke-dasharray="6 4"
+        />
+        <text x="24" y="30" class="svg-label-mono svg-label-muted">AGENT RUNTIME</text>
+        <text x="690" y="30" class="svg-label-badge-coming">COMING · v0.6.0</text>
+
+        <!-- Context assembly box -->
+        <rect x="30" y="40" width="260" height="44" rx="0"
+              fill="none"
+              stroke="var(--muted)"
+              stroke-width="1"
+              stroke-dasharray="4 3"
+        />
+        <text x="44" y="62" class="svg-box-main svg-text-muted">Context assembly</text>
+        <text x="44" y="76" class="svg-box-sub">sliding window · proactive recall</text>
+
+        <!-- ReAct loop box -->
+        <rect x="310" y="40" width="260" height="44" rx="0"
+              fill="none"
+              stroke="var(--muted)"
+              stroke-width="1"
+              stroke-dasharray="4 3"
+        />
+        <text x="324" y="62" class="svg-box-main svg-text-muted">ReAct runtime</text>
+        <text x="324" y="76" class="svg-box-sub">agent loop · tool dispatch · guards</text>
+
+        <!-- Skill selection box -->
+        <rect x="590" y="40" width="200" height="44" rx="0"
+              fill="none"
+              stroke="var(--muted)"
+              stroke-width="1"
+              stroke-dasharray="4 3"
+        />
+        <text x="604" y="62" class="svg-box-main svg-text-muted">Skill selection</text>
+        <text x="604" y="76" class="svg-box-sub">MCP-native dispatch</text>
+
+        <!-- Arrows from runtime down to foundations -->
+        <line x1="270" y1="98" x2="270" y2="154"
+              stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"
+              marker-end="url(#al-arrow)"/>
+        <line x1="550" y1="98" x2="550" y2="154"
+              stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"
+              marker-end="url(#al-arrow)"/>
+
+        <!-- ── Tier 2: Live foundations (2 columns) ── -->
+        <!-- Memory — Vault -->
+        <rect
+          x="10" y="158" width="390" height="116" rx="0"
+          fill="color-mix(in srgb, var(--accent) 6%, transparent)"
+          stroke="var(--accent)"
+          stroke-width="1.5"
+        />
+        <text x="24" y="178" class="svg-label-mono">MEMORY · VAULT</text>
+        <text x="310" y="178" class="svg-label-badge-live">LIVE</text>
+
+        <text x="24" y="200" class="svg-box-main">Sovereign knowledge store</text>
+        <text x="24" y="218" class="svg-box-sub">BM25 + cosine + cross-encoder reranker (RRF)</text>
+        <text x="24" y="234" class="svg-box-sub">MCP stdio · REST :19090 · auto-refresh JWT</text>
+        <text x="24" y="252" class="svg-box-sub">Markdown on disk · embedded SQLite · single binary</text>
+
+        <!-- Compute — Gateway + Engine fleet -->
+        <rect
+          x="420" y="158" width="390" height="116" rx="0"
+          fill="color-mix(in srgb, var(--accent) 6%, transparent)"
+          stroke="var(--accent)"
+          stroke-width="1.5"
+        />
+        <text x="434" y="178" class="svg-label-mono">COMPUTE · GATEWAY + ENGINE FLEET</text>
+        <text x="730" y="178" class="svg-label-badge-live">LIVE</text>
+
+        <text x="434" y="200" class="svg-box-main">Unified LLM routing by alias</text>
+        <text x="434" y="218" class="svg-box-sub">Circuit-breaker · no SaaS round-trip</text>
+        <text x="434" y="234" class="svg-box-sub">Engine roles: curator · embed · reasoning · vision</text>
+        <text x="434" y="252" class="svg-box-sub">Local inference · Vulkan · zero-copy Markdown</text>
+
+        <!-- Arrows from storage tier up to foundations -->
+        <line x1="205" y1="310" x2="205" y2="274"
+              stroke="var(--rule)" stroke-width="1"
+              marker-end="url(#al-arrow)"/>
+        <line x1="615" y1="310" x2="615" y2="274"
+              stroke="var(--rule)" stroke-width="1"
+              marker-end="url(#al-arrow)"/>
+
+        <!-- ── Tier 3: Storage (optional base) ── -->
+        <rect
+          x="10" y="314" width="800" height="16" rx="0"
+          fill="color-mix(in srgb, var(--rule) 20%, transparent)"
+          stroke="var(--rule)"
+          stroke-width="1"
+        />
+        <text x="24" y="326" class="svg-label-sm">SQLite WAL + Markdown on disk — single writer, N readers</text>
+      </svg>
+    </div>
+
+    <!-- Legend -->
+    <div class="stack-legend" aria-label="Diagram legend">
+      <div class="legend-item">
+        <span class="legend-dot legend-dot-live" aria-hidden="true"></span>
+        <span class="legend-label">Live since v0.3.0</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot legend-dot-coming" aria-hidden="true"></span>
+        <span class="legend-label">Coming · v0.6.0</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .agent-layer {
+    background: var(--bg);
+    border-top: 1px solid var(--rule);
+  }
+
+  .agent-layer-inner {
+    max-width: 1080px;
+  }
+
+  .agent-layer-h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    margin: 1rem 0 1.75rem;
+  }
+
+  .agent-layer-desc {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    max-width: 680px;
+    margin-bottom: 2.5rem;
+  }
+
+  /* Diagram container */
+  .stack-diagram {
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    padding: 1.5rem;
+    overflow-x: auto;
+  }
+
+  .stack-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    min-width: 480px;
+  }
+
+  /* SVG text classes — reuse ArchDiagram vocabulary */
+  .svg-label-mono {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    fill: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .svg-label-muted {
+    fill: var(--muted);
+    opacity: 0.7;
+  }
+
+  .svg-label-sm {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--ink-soft);
+  }
+
+  .svg-label-badge-live {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--accent);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .svg-label-badge-coming {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.75;
+  }
+
+  .svg-box-main {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--ink);
+    font-weight: 500;
+  }
+
+  .svg-text-muted {
+    fill: var(--muted);
+    opacity: 0.75;
+  }
+
+  .svg-box-sub {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    fill: var(--ink-soft);
+  }
+
+  /* Legend */
+  .stack-legend {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.06em;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .legend-dot-live {
+    background: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+  }
+
+  .legend-dot-coming {
+    background: transparent;
+    border: 1.5px dashed var(--muted);
+    opacity: 0.65;
+  }
+
+  @media (max-width: 768px) {
+    .stack-diagram {
+      padding: 0.5rem;
+    }
+
+    .stack-legend {
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+  }
+</style>

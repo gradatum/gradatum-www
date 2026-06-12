@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import NavUmbrella from '../components/NavUmbrella.astro';
 import Footer from '../components/Footer.astro';
+import AgentLayerStack from '../components/AgentLayerStack.astro';
 ---
 <Base
   title="Gradatum — A place for your agents."
@@ -23,9 +24,9 @@ import Footer from '../components/Footer.astro';
           </h1>
 
           <p class="hero-desc">
-            Gradatum is a self-hosted, embedded memory backbone for multi-agent AI systems.
-            Today: Vault — sovereign memory, queryable via MCP stub.
-            Tomorrow: identity, coordination, compute.
+            Gradatum is a self-hosted, embedded building block stack for multi-agent AI systems.
+            Memory is live. Compute backbone is live.
+            Agent runtime, identity, and coordination follow on the roadmap.
           </p>
 
           <div class="hero-meta">
@@ -74,28 +75,35 @@ import Footer from '../components/Footer.astro';
               <span class="module-cta">Explore Vault →</span>
             </a>
 
-            <!-- Placeholders future modules -->
-            <div class="module-card module-soon" aria-label="Agents Context layer — v0.6.0+, planned">
+            <!-- Agents Context layer — foundations live, runtime coming -->
+            <a href="#agent-layer" class="module-card module-foundation" aria-label="Agents Context layer — gateway and engine foundations live, runtime coming v0.6.0">
               <div class="module-status">
-                <span class="status-dot status-soon"></span>
-                <span class="status-label">roadmap · v0.6.0+</span>
+                <span class="status-dot status-foundation" aria-hidden="true"></span>
+                <span class="status-label">foundations live · runtime v0.6.0</span>
               </div>
-              <h3 class="module-name module-name-soon">Agents Context layer</h3>
-              <p class="module-tag">Coming with v0.6</p>
+              <h3 class="module-name">Agents Context layer</h3>
+              <p class="module-tag">Gateway + Engine · Context runtime</p>
               <p class="module-desc">
-                The layer that consumes the memory store autonomously — context assembly,
-                sliding-window continuity, proactive recall, skill selection.
-                Same discipline: self-hosted, embedded, Rust-first, MCP-native.
+                The layer that orchestrates memory and compute for your agents.
+                Two of three foundations are already in place — the runtime that ties them together
+                is the next milestone.
               </p>
-              <p class="module-chapter-teaser">
-                <span class="chapter-label">Memory layer</span> (today→v0.5) ·
-                <span class="chapter-label">Agents Context</span> (v0.6+)
-              </p>
-              <span class="module-cta-soon">See roadmap →</span>
-            </div>
+              <ul class="module-bullets module-bullets-mixed">
+                <li class="bullet-live">Gateway — unified LLM routing by alias, circuit-breaker</li>
+                <li class="bullet-live">Engine fleet — local inference, no SaaS round-trip</li>
+                <li class="bullet-coming">Context assembly — sliding window, proactive recall</li>
+                <li class="bullet-coming">ReAct runtime — agent loop + guards</li>
+              </ul>
+              <span class="module-cta">Explore the stack →</span>
+            </a>
           </div>
         </div>
       </section>
+
+      <hr class="rule" />
+
+      <!-- Section : Agent Layer Stack — fondations gateway/engine LIVE + runtime coming -->
+      <AgentLayerStack />
 
       <hr class="rule" />
 
@@ -233,6 +241,18 @@ import Footer from '../components/Footer.astro';
     cursor: default;
   }
 
+  /* Foundation state — between live (full accent border) and soon (fully muted) */
+  .module-foundation {
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--rule));
+    border-width: 1px;
+  }
+
+  .module-foundation:hover {
+    border-color: color-mix(in srgb, var(--accent) 70%, var(--rule));
+    transform: translateY(-1px);
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+  }
+
   .module-status {
     display: flex;
     align-items: center;
@@ -260,6 +280,13 @@ import Footer from '../components/Footer.astro';
   .status-soon {
     background: var(--ink-soft);
     opacity: 0.4;
+  }
+
+  /* Half-filled dot — foundations partially in place */
+  .status-foundation {
+    background: linear-gradient(90deg, var(--accent) 50%, transparent 50%);
+    border: 1.5px solid var(--accent);
+    opacity: 0.85;
   }
 
   .module-name {
@@ -321,6 +348,40 @@ import Footer from '../components/Footer.astro';
     color: var(--ink-soft);
     margin: 1.25rem 0 1.5rem;
     letter-spacing: 0.04em;
+  }
+
+  /* Reset the generic dot for mixed-bullets — specific rules below override it */
+  .module-bullets.module-bullets-mixed li::before {
+    content: none;
+  }
+
+  /* Mixed bullets — live (✓ accent) vs coming (○ muted) */
+  .module-bullets-mixed li.bullet-live::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.7rem;
+    font-family: var(--font-sans);
+    line-height: 1.4;
+  }
+
+  .module-bullets-mixed li.bullet-coming {
+    color: var(--muted);
+    opacity: 0.65;
+  }
+
+  .module-bullets-mixed li.bullet-coming::before {
+    content: '○';
+    position: absolute;
+    left: 0;
+    color: var(--muted);
+    font-weight: 400;
+    font-size: 0.65rem;
+    font-family: var(--font-sans);
+    line-height: 1.5;
+    opacity: 0.6;
   }
 
   .module-cta {
