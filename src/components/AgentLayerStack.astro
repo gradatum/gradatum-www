@@ -4,18 +4,8 @@
 // Agent runtime (context assembly, ReAct loop) is coming v0.6.0.
 // Language: same SVG blueprint vocabulary as ArchDiagram.astro
 ---
-<section id="agent-layer" class="agent-layer section-pad" aria-labelledby="agent-layer-title">
+<section id="agent-layer" class="agent-layer section-pad" aria-label="Agent layer stack diagram">
   <div class="agent-layer-inner">
-    <div class="eyebrow">The Agent Layer</div>
-    <h2 id="agent-layer-title" class="agent-layer-h2">
-      Foundations first.<br />
-      <em class="hero-accent">Runtime</em> next.
-    </h2>
-    <p class="agent-layer-desc">
-      Two of the three layers that make a self-hosted agent stack are already in place.
-      The memory store and the compute backbone are LIVE — sovereign, embedded, no SaaS round-trip.
-      The agent runtime that orchestrates them comes with v0.6.0.
-    </p>
 
     <!-- Layered diagram -->
     <div
@@ -111,13 +101,13 @@
           stroke="var(--accent)"
           stroke-width="1.5"
         />
-        <text x="434" y="178" class="svg-label-mono">COMPUTE · GATEWAY + ENGINE FLEET</text>
+        <text x="434" y="178" class="svg-label-mono">COMPUTE · GATEWAY + ENGINES</text>
         <text x="730" y="178" class="svg-label-badge-live">LIVE</text>
 
-        <text x="434" y="200" class="svg-box-main">Unified LLM routing by alias</text>
-        <text x="434" y="218" class="svg-box-sub">Circuit-breaker · no SaaS round-trip</text>
-        <text x="434" y="234" class="svg-box-sub">Engine roles: curator · embed · reasoning · vision</text>
-        <text x="434" y="252" class="svg-box-sub">Local inference · Vulkan · zero-copy Markdown</text>
+        <text x="434" y="200" class="svg-box-main">Unified LLM routing by alias · circuit-breaker</text>
+        <text x="434" y="218" class="svg-box-sub">local inference · no SaaS round-trip</text>
+        <text x="434" y="234" class="svg-box-sub">roles: curator · embed · reasoning · vision</text>
+        <text x="434" y="252" class="svg-box-sub">Bearer auth · Prometheus telemetry · TOML config</text>
 
         <!-- Arrows from storage tier up to foundations -->
         <line x1="205" y1="310" x2="205" y2="274"
@@ -160,23 +150,6 @@
 
   .agent-layer-inner {
     max-width: 1080px;
-  }
-
-  .agent-layer-h2 {
-    font-family: var(--font-serif);
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 500;
-    line-height: 1.1;
-    letter-spacing: -0.015em;
-    margin: 1rem 0 1.75rem;
-  }
-
-  .agent-layer-desc {
-    font-size: 1.05rem;
-    line-height: 1.7;
-    color: var(--ink-soft);
-    max-width: 680px;
-    margin-bottom: 2.5rem;
   }
 
   /* Diagram container */

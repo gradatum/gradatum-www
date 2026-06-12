@@ -55,78 +55,102 @@ import TweaksPanel from '../components/TweaksPanel.astro';
             Two foundations.<br />
             <em class="accent-italic">Already in place.</em>
           </h2>
+          <p class="foundations-intro">
+            The runtime coming in v0.6.0 builds on two live components — a compute layer for
+            inference routing, and a memory layer for persistent knowledge. Both are sovereign,
+            embedded, and running today.
+          </p>
 
-          <div class="foundation-grid">
-
-            <!-- Compute -->
-            <article class="foundation-card" aria-labelledby="foundation-compute-title">
-              <header class="fc-header">
-                <div class="fc-status">
-                  <span class="fstatus-dot fstatus-live" aria-hidden="true"></span>
-                  <span class="fstatus-label">LIVE</span>
-                </div>
-                <p class="fc-layer-tag">Compute</p>
-                <h3 id="foundation-compute-title" class="fc-title">Gateway + Engine fleet</h3>
-              </header>
-
-              <p class="fc-desc">
-                A single routing layer that dispatches every inference request by alias — no model
-                names hard-coded in your agents. Circuit-breaker, fallback chain, and MCP-native
-                dispatch keep the stack stable under load.
-              </p>
-
-              <div class="fc-flow" role="img" aria-label="Request flow: Agent → Gateway alias → Engine role → response">
-                <div class="flow-node flow-node-agent">Agent</div>
-                <div class="flow-arrow" aria-hidden="true">→</div>
-                <div class="flow-node flow-node-gateway">Gateway<br /><span class="flow-node-sub">alias routing</span></div>
-                <div class="flow-arrow" aria-hidden="true">→</div>
-                <div class="flow-node flow-node-engine">Engine<br /><span class="flow-node-sub">role-based</span></div>
-                <div class="flow-arrow" aria-hidden="true">→</div>
-                <div class="flow-node flow-node-resp">Response</div>
+          <!-- ── Foundation: Compute ── -->
+          <div class="compute-block">
+            <header class="block-header">
+              <div class="block-status-row">
+                <span class="fstatus-dot fstatus-live" aria-hidden="true"></span>
+                <span class="fstatus-label">LIVE</span>
+                <span class="block-layer-tag">Compute</span>
               </div>
+            </header>
 
-              <ul class="fc-bullets">
-                <li>Alias routing — swap models without touching agent code</li>
-                <li>Circuit-breaker — automatic failover, no cascading failures</li>
-                <li>Engine roles — curator / embed / reasoning / vision, each purpose-built</li>
-                <li>Local inference only — Vulkan, zero-copy Markdown, no SaaS round-trip</li>
-                <li>MCP-native tool dispatch</li>
-              </ul>
-            </article>
+            <div class="compute-sub-grid">
 
-            <!-- Memory -->
-            <article class="foundation-card" aria-labelledby="foundation-memory-title">
-              <header class="fc-header">
-                <div class="fc-status">
+              <!-- Bloc A — Gateway -->
+              <article class="compute-card" aria-labelledby="gateway-title">
+                <div class="cc-eyebrow">Gateway — unified LLM router</div>
+                <h3 id="gateway-title" class="cc-title">Gateway</h3>
+                <div class="cc-axes">
+
+                  <div class="cc-axis">
+                    <div class="cc-axis-label">Context</div>
+                    <p class="cc-axis-text">OpenAI-compatible Chat Completions — multi-turn, multimodal content (text + base64 images), tool-calling, SSE streaming. Semantic reranking and embeddings as native endpoints.</p>
+                  </div>
+
+                  <div class="cc-axis">
+                    <div class="cc-axis-label">Routing &amp; fallback</div>
+                    <p class="cc-axis-text">Each model alias maps to a primary backend with an optional configurable fallback. A per-provider circuit-breaker (closed / open / half-open) trips on transient errors, and a smart router applies per-context defaults or header-driven overrides.</p>
+                  </div>
+
+                  <div class="cc-axis">
+                    <div class="cc-axis-label">Logs</div>
+                    <p class="cc-axis-text">Every LLM call is recorded in an append-only journal — alias, effective provider, route, latency, tokens, HTTP code, role id — with 30-day retention, a 5M-event cap, and Prometheus export. Conversation content is never captured.</p>
+                  </div>
+
+                  <div class="cc-axis">
+                    <div class="cc-axis-label">Identity</div>
+                    <p class="cc-axis-text">Endpoints are guarded by Bearer token with constant-time comparison and an optional loopback bypass keyed on the real TCP address. Business-context ids (feature, agent) are propagated into telemetry — never exposed in logs.</p>
+                  </div>
+
+                </div>
+              </article>
+
+              <!-- Bloc B — Engine fleet -->
+              <article class="compute-card" aria-labelledby="engine-fleet-title">
+                <div class="cc-eyebrow">Engine fleet — local inference</div>
+                <h3 id="engine-fleet-title" class="cc-title">Engine fleet</h3>
+                <div class="cc-axes">
+
+                  <div class="cc-axis">
+                    <div class="cc-axis-label">Optimization</div>
+                    <p class="cc-axis-text">A native Rust supervisor runs inference processes directly — managing GPU, context window, slot parallelism and sampling per model instance, under strict execution-environment isolation and graceful shutdown.</p>
+                  </div>
+
+                  <div class="cc-axis">
+                    <div class="cc-axis-label">Monitoring</div>
+                    <p class="cc-axis-text">Each inference instance exposes a real-time health endpoint (starting / ok / unhealthy) and Prometheus metrics (requests, latencies), with automatic supervision under a bounded restart budget and flapping detection.</p>
+                  </div>
+
+                  <div class="cc-axis">
+                    <div class="cc-axis-label">Shared config &amp; logs</div>
+                    <p class="cc-axis-text">Per-instance configuration is declarative TOML with environment overrides. Every request emits an async, non-blocking telemetry event (route, model, latency, HTTP code, role id) to the central journal — engine and server share the same core types and auth handshake.</p>
+                  </div>
+
+                </div>
+              </article>
+
+            </div>
+          </div>
+
+          <!-- ── Foundation: Memory (compact) ── -->
+          <div class="memory-compact-block">
+            <div class="memory-compact-inner">
+              <div class="mcb-left">
+                <div class="block-status-row">
                   <span class="fstatus-dot fstatus-live" aria-hidden="true"></span>
                   <span class="fstatus-label">LIVE</span>
+                  <span class="block-layer-tag">Memory</span>
                 </div>
-                <p class="fc-layer-tag">Memory</p>
-                <h3 id="foundation-memory-title" class="fc-title">Vault</h3>
-              </header>
-
-              <p class="fc-desc">
-                Sovereign knowledge store — embedded SQLite FTS5, bge-m3 dense embeddings,
-                cross-encoder reranker. Your agents read and write shared memory across sessions,
-                across machines, with no external service involved.
-              </p>
-
-              <div class="fc-vault-link">
+                <h3 class="mcb-title">Vault</h3>
+                <p class="mcb-desc">
+                  Sovereign knowledge store — BM25 + cosine + RRF, MCP, history, temporal index.
+                </p>
+              </div>
+              <div class="mcb-right">
                 <a href="/vault" class="vault-ref-link" aria-label="Explore the memory layer in depth on the Vault page">
-                  Full deep-dive on the memory layer →
+                  the memory layer →&nbsp;/vault
                 </a>
               </div>
-
-              <ul class="fc-bullets">
-                <li>BM25 + cosine similarity + cross-encoder reranker (RRF fusion)</li>
-                <li>Multi-signal scoring — recency × pagerank backlinks</li>
-                <li>MCP stdio + REST :19090 + auto-refresh JWT</li>
-                <li>Markdown on disk · embedded SQLite · single binary</li>
-                <li>Reads by the agent runtime at context-assembly time (v0.6.0)</li>
-              </ul>
-            </article>
-
+            </div>
           </div>
+
         </div>
       </section>
 
@@ -300,36 +324,27 @@ import TweaksPanel from '../components/TweaksPanel.astro';
     font-weight: 500;
     line-height: 1.1;
     letter-spacing: -0.015em;
-    margin: 1rem 0 3rem;
+    margin: 1rem 0 1.25rem;
   }
 
-  .foundation-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 2rem;
+  .foundations-intro {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    max-width: 680px;
+    margin-bottom: 3.5rem;
   }
 
-  .foundation-card {
-    border: 1px solid var(--accent);
-    background: color-mix(in srgb, var(--accent) 4%, var(--paper));
-    padding: 2.25rem;
-    border-radius: 2px;
-  }
-
-  .fc-header {
-    margin-bottom: 1.5rem;
-  }
-
-  .fc-status {
+  /* ── Shared status row ── */
+  .block-status-row {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.45rem;
     font-family: var(--font-mono);
     font-size: 0.68rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
   }
 
   .fstatus-dot {
@@ -348,87 +363,129 @@ import TweaksPanel from '../components/TweaksPanel.astro';
     color: var(--accent);
   }
 
-  .fc-layer-tag {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
+  .block-layer-tag {
     color: var(--muted);
-    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+    border-left: 1px solid var(--rule);
+    margin-left: 0.25rem;
   }
 
-  .fc-title {
-    font-family: var(--font-serif);
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    font-weight: 500;
-    line-height: 1.15;
-    letter-spacing: -0.01em;
-    margin: 0;
-  }
-
-  .fc-desc {
-    font-size: 0.95rem;
-    line-height: 1.65;
-    color: var(--ink-soft);
+  /* ── Compute block ── */
+  .compute-block {
+    border: 1px solid var(--accent);
+    background: color-mix(in srgb, var(--accent) 3%, var(--paper));
+    padding: 2.25rem;
     margin-bottom: 1.5rem;
   }
 
-  /* Request flow diagram — compute card */
-  .fc-flow {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    margin: 1.25rem 0 1.5rem;
-    padding: 1rem 1.25rem;
+  .block-header {
+    margin-bottom: 2rem;
+  }
+
+  .compute-sub-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  /* ── Compute cards (Gateway / Engine fleet) ── */
+  .compute-card {
+    border: 1px solid var(--rule);
     background: var(--paper);
-    border: 1px solid var(--rule);
-    border-left: 3px solid var(--accent);
+    padding: 1.75rem;
   }
 
-  .flow-node {
+  .cc-eyebrow {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    text-align: center;
-    padding: 0.35rem 0.625rem;
-    border: 1px solid var(--rule);
-    background: var(--bg);
-    line-height: 1.3;
-    color: var(--ink);
-    white-space: nowrap;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
   }
 
-  .flow-node-agent,
-  .flow-node-resp {
-    border-color: var(--rule);
+  .cc-title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.25rem, 2.5vw, 1.625rem);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0 0 1.5rem;
+  }
+
+  /* ── Axes grid (2-col where space allows) ── */
+  .cc-axes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .cc-axis {
+    border-top: 2px solid var(--rule);
+    padding-top: 0.875rem;
+  }
+
+  .cc-axis-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .cc-axis-text {
+    font-size: 0.875rem;
+    line-height: 1.65;
     color: var(--ink-soft);
   }
 
-  .flow-node-gateway {
-    border-color: color-mix(in srgb, var(--accent) 50%, var(--rule));
+  /* Engine fleet — 3 axes: last one spans full width on 2-col */
+  .compute-card:last-child .cc-axes {
+    grid-template-columns: 1fr 1fr;
   }
 
-  .flow-node-engine {
-    border-color: color-mix(in srgb, var(--accent) 50%, var(--rule));
+  .compute-card:last-child .cc-axis:last-child {
+    grid-column: 1 / -1;
   }
 
-  .flow-node-sub {
-    display: block;
-    font-size: 0.62rem;
-    color: var(--muted);
-    letter-spacing: 0.06em;
-    margin-top: 0.15rem;
+  /* ── Memory compact block ── */
+  .memory-compact-block {
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    background: var(--paper);
+    padding: 1.75rem 2rem;
   }
 
-  .flow-arrow {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--muted);
+  .memory-compact-inner {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .mcb-left {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .mcb-title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.25rem, 2.5vw, 1.625rem);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin: 0.375rem 0 0.625rem;
+  }
+
+  .mcb-desc {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 520px;
+  }
+
+  .mcb-right {
     flex-shrink: 0;
-  }
-
-  .fc-vault-link {
-    margin: 1.25rem 0 1.5rem;
   }
 
   .vault-ref-link {
@@ -439,6 +496,7 @@ import TweaksPanel from '../components/TweaksPanel.astro';
     text-decoration: none;
     font-weight: 500;
     transition: opacity 0.15s ease;
+    white-space: nowrap;
   }
 
   .vault-ref-link:hover {
@@ -449,31 +507,6 @@ import TweaksPanel from '../components/TweaksPanel.astro';
     outline: 2px solid var(--accent);
     outline-offset: 3px;
     border-radius: 2px;
-  }
-
-  .fc-bullets {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    gap: 0.4rem;
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    color: var(--ink-soft);
-    line-height: 1.5;
-  }
-
-  .fc-bullets li {
-    padding-left: 1.1rem;
-    position: relative;
-  }
-
-  .fc-bullets li::before {
-    content: '·';
-    position: absolute;
-    left: 0;
-    color: var(--accent);
-    font-weight: 700;
   }
 
   /* ───── Runtime roadmap ───── */
@@ -582,38 +615,44 @@ import TweaksPanel from '../components/TweaksPanel.astro';
   }
 
   /* ───── Responsive ───── */
-  @media (max-width: 768px) {
-    .foundation-grid {
+  @media (max-width: 900px) {
+    .compute-sub-grid {
       grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .cc-axes {
+      grid-template-columns: 1fr;
+    }
+
+    .compute-card:last-child .cc-axis:last-child {
+      grid-column: auto;
     }
 
     .runtime-items {
       grid-template-columns: 1fr;
     }
 
-    .fc-flow {
-      gap: 0.375rem;
-    }
-
-    .flow-node {
-      font-size: 0.68rem;
-      padding: 0.3rem 0.5rem;
-    }
-
     .agent-hero-status {
       flex-direction: column;
       gap: 0.5rem;
     }
-  }
 
-  @media (max-width: 480px) {
-    .fc-flow {
+    .memory-compact-inner {
       flex-direction: column;
+      gap: 1.25rem;
       align-items: flex-start;
     }
 
-    .flow-arrow {
-      transform: rotate(90deg);
+    .compute-block {
+      padding: 1.5rem 1.25rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .cc-axes {
+      grid-template-columns: 1fr;
     }
   }
 </style>
