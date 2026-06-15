@@ -46,7 +46,7 @@ const groups: FeatureGroup[] = [
         positioning:
           "Defines four Rust traits that decouple gradatum's core logic from the underlying storage engine, making each backend independently replaceable.",
         howItWorks: [
-          "DocumentStore (note read/write), IndexStore (full-text search index using FTS5 — SQLite's built-in full-text engine), VectorStore (embeddings and Approximate Nearest Neighbor search), QueueStore (async job queue).",
+          "DocumentStore (note read/write), IndexStore (full-text search index using FTS5 — SQLite's built-in full-text engine), VectorStore (embeddings and semantic search (ANN planned v0.5.3)), QueueStore (async job queue).",
           "The default implementation targets SQLite.",
           'Optional alternative backends (LanceDB, remote libsql) are planned for later releases.',
         ],

@@ -42,7 +42,7 @@ const rawProperties = [
   {
     name: 'Hybrid search',
     description:
-      'BM25 (SQLite FTS5) + semantic search (cosine brute-force; ANN under consideration). PageRank graph + reranker abstraction (no-op by default; cross-encoder ONNX optional). Multi-signal fusion via RRF (Reciprocal Rank Fusion).',
+      'BM25 (SQLite FTS5) + semantic search (cosine brute-force; ANN (sqlite-vec) planned v0.5.3). PageRank graph + reranker abstraction (no-op by default; cross-encoder ONNX optional). Multi-signal fusion via RRF (Reciprocal Rank Fusion).',
   },
 ] satisfies typeof rawProperties;
 
