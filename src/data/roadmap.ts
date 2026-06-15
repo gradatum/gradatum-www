@@ -326,7 +326,7 @@ const versions: VersionPhase[] = [
       },
       {
         status: 'done',
-        title: 'Tag v0.5.2 — 30 crates workspace, source on GitHub (Apache-2.0), 1925 tests PASS',
+        title: 'Tag v0.5.2 — 31 crates workspace, source on GitHub (Apache-2.0), 1925 tests PASS',
         version: 'v0.5.2',
         date: '2026-06-15',
       },
