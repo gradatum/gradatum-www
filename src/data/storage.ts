@@ -13,45 +13,21 @@ const rawBackends = [
   },
   {
     name: 'S3 / R2',
-    tier: 'primary' as const,
+    tier: 'planned' as const,
     scheme: 's3',
-    notes: 'AWS S3, Cloudflare R2, MinIO, Backblaze B2. Any S3-compatible endpoint.',
+    notes: 'AWS S3, Cloudflare R2, MinIO, Backblaze B2. Any S3-compatible endpoint. Feature flag available; backend implementation pending.',
   },
   {
     name: 'Azure Blob',
-    tier: 'secondary' as const,
+    tier: 'planned' as const,
     scheme: 'azblob',
-    notes: 'Azure Blob Storage via OpenDAL azblob service.',
+    notes: 'Azure Blob Storage via OpenDAL azblob service. Feature flag available; backend implementation pending.',
   },
   {
     name: 'GCS',
-    tier: 'secondary' as const,
+    tier: 'planned' as const,
     scheme: 'gcs',
-    notes: 'Google Cloud Storage. Service account or ADC auth.',
-  },
-  {
-    name: 'WebDAV',
-    tier: 'secondary' as const,
-    scheme: 'webdav',
-    notes: 'Self-hosted WebDAV (Nextcloud, Nginx, Apache). HTTP-based.',
-  },
-  {
-    name: 'SFTP',
-    tier: 'secondary' as const,
-    scheme: 'sftp',
-    notes: 'SSH File Transfer Protocol. Useful for remote NAS with SSH access.',
-  },
-  {
-    name: 'HDFS',
-    tier: 'experimental' as const,
-    scheme: 'hdfs',
-    notes: 'Hadoop Distributed File System. Enterprise / data-lake scenarios.',
-  },
-  {
-    name: 'IPFS',
-    tier: 'experimental' as const,
-    scheme: 'ipfs',
-    notes: 'InterPlanetary File System. Decentralised, content-addressed storage.',
+    notes: 'Google Cloud Storage. Service account or ADC auth. Feature flag available; backend implementation pending.',
   },
 ];
 

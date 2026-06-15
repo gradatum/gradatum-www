@@ -32,7 +32,7 @@ const rawProperties = [
   {
     name: 'Multi-storage',
     description:
-      'OpenDAL abstraction — 8 backends: Local FS, S3/R2, Azure, GCS, WebDAV, SFTP, HDFS, IPFS. NFS explicitly rejected.',
+      'OpenDAL abstraction — Local filesystem available. S3/R2, Azure, GCS planned (feature flags available; backend implementations pending). NFS explicitly rejected.',
   },
   {
     name: 'Markdown truth',
@@ -42,7 +42,7 @@ const rawProperties = [
   {
     name: 'Hybrid search',
     description:
-      'BM25 (SQLite FTS5) + semantic search (cosine brute-force; ANN planned v0.4.4) + PageRank graph + cross-encoder reranker (ONNX, optional). Multi-signal fusion via RRF (Reciprocal Rank Fusion).',
+      'BM25 (SQLite FTS5) + semantic search (cosine brute-force; ANN under consideration). PageRank graph + reranker abstraction (no-op by default; cross-encoder ONNX optional). Multi-signal fusion via RRF (Reciprocal Rank Fusion).',
   },
 ] satisfies typeof rawProperties;
 

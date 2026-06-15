@@ -6,42 +6,18 @@ notes = "Default. NVMe local only — NFS rejected: POSIX lock incompatibility c
 
 [[backends]]
 name = "S3 / R2"
-tier = "primary"
+tier = "planned"
 scheme = "s3"
-notes = "AWS S3, Cloudflare R2, MinIO, Backblaze B2. Any S3-compatible endpoint."
+notes = "AWS S3, Cloudflare R2, MinIO, Backblaze B2. Any S3-compatible endpoint. Feature flag available; backend implementation pending."
 
 [[backends]]
 name = "Azure Blob"
-tier = "secondary"
+tier = "planned"
 scheme = "azblob"
-notes = "Azure Blob Storage via OpenDAL azblob service."
+notes = "Azure Blob Storage via OpenDAL azblob service. Feature flag available; backend implementation pending."
 
 [[backends]]
 name = "GCS"
-tier = "secondary"
+tier = "planned"
 scheme = "gcs"
-notes = "Google Cloud Storage. Service account or ADC auth."
-
-[[backends]]
-name = "WebDAV"
-tier = "secondary"
-scheme = "webdav"
-notes = "Self-hosted WebDAV (Nextcloud, Nginx, Apache). HTTP-based."
-
-[[backends]]
-name = "SFTP"
-tier = "secondary"
-scheme = "sftp"
-notes = "SSH File Transfer Protocol. Useful for remote NAS with SSH access."
-
-[[backends]]
-name = "HDFS"
-tier = "experimental"
-scheme = "hdfs"
-notes = "Hadoop Distributed File System. Enterprise / data-lake scenarios."
-
-[[backends]]
-name = "IPFS"
-tier = "experimental"
-scheme = "ipfs"
-notes = "InterPlanetary File System. Decentralised, content-addressed storage."
+notes = "Google Cloud Storage. Service account or ADC auth. Feature flag available; backend implementation pending."

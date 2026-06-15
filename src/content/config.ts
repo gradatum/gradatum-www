@@ -11,7 +11,7 @@
 import { z } from 'astro/zod';
 
 export const PHASE_STATUSES = ['pending', 'in-progress', 'done', 'live'] as const;
-export const STORAGE_TIERS = ['primary', 'secondary', 'experimental'] as const;
+export const STORAGE_TIERS = ['primary', 'secondary', 'experimental', 'planned'] as const;
 
 // ── Phase schema ──────────────────────────────────────────────────────────────
 

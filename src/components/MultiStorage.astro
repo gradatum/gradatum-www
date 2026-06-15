@@ -1,7 +1,7 @@
 ---
 interface Backend {
   name: string;
-  tier: 'primary' | 'secondary' | 'experimental';
+  tier: 'primary' | 'planned';
   scheme: string;
   notes: string;
 }
@@ -9,35 +9,26 @@ interface Backend {
 const backends: Backend[] = [
   { name: 'Local FS', tier: 'primary', scheme: 'fs',
     notes: 'Default. NVMe local only — NFS rejected: POSIX lock incompatibility causes data corruption under concurrent writers.' },
-  { name: 'S3 / R2', tier: 'primary', scheme: 's3',
-    notes: 'AWS S3, Cloudflare R2, MinIO, Backblaze B2.' },
-  { name: 'Azure Blob', tier: 'secondary', scheme: 'azblob',
-    notes: 'Azure Blob Storage via OpenDAL azblob service.' },
-  { name: 'GCS', tier: 'secondary', scheme: 'gcs',
-    notes: 'Google Cloud Storage. Service account or ADC auth.' },
-  { name: 'WebDAV', tier: 'secondary', scheme: 'webdav',
-    notes: 'Self-hosted WebDAV (Nextcloud, Nginx, Apache).' },
-  { name: 'SFTP', tier: 'secondary', scheme: 'sftp',
-    notes: 'SSH File Transfer Protocol. Useful for NAS with SSH.' },
-  { name: 'HDFS', tier: 'experimental', scheme: 'hdfs',
-    notes: 'Hadoop Distributed FS. Enterprise / data-lake.' },
-  { name: 'IPFS', tier: 'experimental', scheme: 'ipfs',
-    notes: 'InterPlanetary File System. Decentralised, content-addressed.' },
+  { name: 'S3 / R2', tier: 'planned', scheme: 's3',
+    notes: 'AWS S3, Cloudflare R2, MinIO, Backblaze B2. Feature flag available; backend implementation pending.' },
+  { name: 'Azure Blob', tier: 'planned', scheme: 'azblob',
+    notes: 'Azure Blob Storage via OpenDAL azblob service. Feature flag available; backend implementation pending.' },
+  { name: 'GCS', tier: 'planned', scheme: 'gcs',
+    notes: 'Google Cloud Storage. Service account or ADC auth. Feature flag available; backend implementation pending.' },
 ];
 
 const tierLabel: Record<Backend['tier'], string> = {
   primary: 'primary',
-  secondary: 'secondary',
-  experimental: 'experimental',
+  planned: 'planned',
 };
 ---
 <section class="storage section-pad section-gap" aria-labelledby="storage-title">
   <div class="storage-inner">
     <div class="eyebrow">V · Multi-storage</div>
-    <h2 id="storage-title" class="storage-h2">Eight backends. One abstraction.</h2>
+    <h2 id="storage-title" class="storage-h2">One backend today. More planned.</h2>
     <p class="storage-desc">
       Gradatum uses <a href="https://opendal.apache.org" target="_blank" rel="noopener noreferrer" class="storage-link">Apache OpenDAL</a>
-      as a unified storage abstraction layer. Switch backends without touching application code.
+      as a unified storage abstraction layer. Local filesystem is available today; S3, Azure, and GCS support is planned.
       NFS is explicitly rejected: POSIX lock incompatibility causes data corruption under concurrent writers.
     </p>
 
@@ -150,12 +141,7 @@ root    = "~/.gradatum/vaults/staging"  <span class="c"># local NVMe for testing
     color: var(--accent);
   }
 
-  .tier-badge-secondary {
-    background: color-mix(in srgb, var(--ink-soft) 15%, transparent);
-    color: var(--ink-soft);
-  }
-
-  .tier-badge-experimental {
+  .tier-badge-planned {
     background: color-mix(in srgb, var(--muted) 15%, transparent);
     color: var(--muted);
   }

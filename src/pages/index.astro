@@ -67,7 +67,7 @@ import Footer from '../components/Footer.astro';
               </p>
               <ul class="module-bullets">
                 <li>SQLite FTS5 (BM25) + bge-m3 1024d embeddings</li>
-                <li>BM25 + cosine + cross-encoder reranker (ONNX) — RRF (Reciprocal Rank Fusion)</li>
+                <li>BM25 + cosine + reranker (no-op by default, ONNX optional) — RRF (Reciprocal Rank Fusion)</li>
                 <li>Multi-signal scoring (recency × pagerank backlinks)</li>
                 <li>MCP stdio + REST :19090 + auto-refresh JWT</li>
               </ul>
