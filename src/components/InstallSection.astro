@@ -15,7 +15,7 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
 
     <!-- Installation — 3 voies -->
     <div class="install-oneliner">
-      <div class="eyebrow block-label">Get started — v0.4.3 · Linux x86_64</div>
+      <div class="eyebrow block-label">Get started — v0.5.2 · Linux x86_64</div>
 
       <div class="install-ways">
 
@@ -40,7 +40,7 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
                 Contains <code>gradatum-server</code>, <code>gradatum-worker</code>, <code>gradatum-admin</code>.
                 Core vault store, job queue, admin CLI.
               </p>
-              <pre class="install-pre install-archive-pre"><code>gradatum-server-v0.4.3-x86_64-unknown-linux-gnu.tar.gz</code></pre>
+              <pre class="install-pre install-archive-pre"><code>gradatum-server-v0.5.2-x86_64-unknown-linux-gnu.tar.gz</code></pre>
             </div>
 
             <div class="install-archive">
@@ -52,7 +52,7 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
                 Contains <code>gradatum-gateway</code> and <code>gradatum-engine</code>.
                 Router, circuit-breaker, llama-server supervisor. Required for local inference.
               </p>
-              <pre class="install-pre install-archive-pre"><code>gradatum-llm-v0.4.3-x86_64-unknown-linux-gnu.tar.gz</code></pre>
+              <pre class="install-pre install-archive-pre"><code>gradatum-llm-v0.5.2-x86_64-unknown-linux-gnu.tar.gz</code></pre>
             </div>
 
             <div class="install-archive">
@@ -64,7 +64,7 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
                 Contains <code>gradatum-mcp-stub</code>.
                 MCP bridge for agent clients (Claude Code, Claude Desktop, etc.).
               </p>
-              <pre class="install-pre install-archive-pre"><code>gradatum-mcp-v0.4.3-x86_64-unknown-linux-gnu.tar.gz</code></pre>
+              <pre class="install-pre install-archive-pre"><code>gradatum-mcp-v0.5.2-x86_64-unknown-linux-gnu.tar.gz</code></pre>
             </div>
           </div>
 
@@ -85,7 +85,7 @@ sha256sum -c SHA256SUMS --ignore-missing
 
 <span class="install-comment"># verify SLSA build provenance (GitHub native)</span>
 gh attestation verify \
-  gradatum-server-v0.4.3-x86_64-unknown-linux-gnu.tar.gz \
+  gradatum-server-v0.5.2-x86_64-unknown-linux-gnu.tar.gz \
   --repo gradatum/gradatum</code></pre>
           </div>
         </div>
@@ -93,20 +93,19 @@ gh attestation verify \
         <!-- Voies 2 + 3 en ligne -->
         <div class="install-ways-secondary">
 
-          <!-- Voie 2 — crates.io SDK -->
+          <!-- Voie 2 — crates.io (name reserved) -->
           <div class="install-way">
             <div class="install-way-header">
-              <div class="eyebrow install-way-label">Via crates.io</div>
-              <span class="install-way-badge install-way-badge--secondary">Rust SDK</span>
+              <div class="eyebrow install-way-label">crates.io (name reserved)</div>
+              <span class="install-way-badge install-way-badge--secondary">v1.0 library</span>
             </div>
             <p class="install-way-desc">
-              Embed gradatum as a library dependency in your Rust project.
-              28 crates in the workspace — <code>gradatum</code> is the umbrella entry point.
+              Source is open on GitHub (Apache-2.0). The crates.io name is reserved —
+              the full embeddable Rust library ships at v1.0 when the API is stable.
             </p>
-            <pre class="install-pre install-source-pre"><code>cargo add gradatum  <span class="install-comment"># umbrella SDK</span></code></pre>
             <p class="install-source-note">
               <a href="https://crates.io/crates/gradatum" target="_blank" rel="noopener noreferrer">crates.io/crates/gradatum</a>
-              · 28 crates · Apache-2.0
+              · name reserved · full library at v1.0 · Apache-2.0
             </p>
           </div>
 
@@ -133,7 +132,7 @@ cd gradatum &amp;&amp; cargo build --release --workspace</code></pre>
       </div>
 
       <p class="install-alpha-notice">
-        v0.4.3 · Linux x86_64 · API not stable before v1.0. See
+        v0.5.2 · Linux x86_64 · API not stable before v1.0. See
         <a href="https://github.com/gradatum/gradatum/blob/main/docs/DEPLOYMENT.md" target="_blank" rel="noopener noreferrer">docs/DEPLOYMENT.md</a>
         for the full deployment reference.
       </p>
