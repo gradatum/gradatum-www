@@ -333,18 +333,18 @@ const versions: VersionPhase[] = [
     ],
   },
   {
-    version: 'v0.5.0',
+    version: 'v0.6.0',
     grade: 'Silver',
     status: 'planned',
     theme: 'Queryable Memory Store — MCP-Native Backend',
     description:
-      'Turns the completed vault into a memory store any client can query directly through the Model Context Protocol (MCP) — a native MCP server with Streamable HTTP transport, multi-user isolation with OAuth-based remote access, write-time validation with automatic repair, and a vault audit & deduplication pass. This is a deliberate ordering: the memory store becomes a stable, externally consumable product first — usable today by any MCP client (Claude, IDEs, custom agents) — and only then does gradatum grow its own agent runtime (v0.6.0) on top of the exact same interface it already exposes to everyone else. The store earns its API by serving others before it serves itself.',
+      'Turns the completed vault into a memory store any client can query directly through the Model Context Protocol (MCP) — a native MCP server with Streamable HTTP transport, multi-user isolation with OAuth-based remote access, write-time validation with automatic repair, and a vault audit & deduplication pass. This is a deliberate ordering: the memory store becomes a stable, externally consumable product first — usable today by any MCP client (Claude, IDEs, custom agents) — and only then does gradatum grow its own agent runtime (v0.7.0) on top of the exact same interface it already exposes to everyone else. The store earns its API by serving others before it serves itself.',
     scopeTeaserItems: ['Native MCP server', 'Streamable HTTP transport', 'Multi-user + OAuth', 'Validation + auto-repair', 'Vault audit'],
     featureRefs: ['F-38', 'F-56', 'F-43', 'F-45', 'F-57', 'F-51', 'F-55'],
     showFeaturesLink: true,
   },
   {
-    version: 'v0.6.0',
+    version: 'v0.7.0',
     status: 'planned',
     theme: 'Context Builder + Agent Runtime',
     description:
@@ -354,7 +354,7 @@ const versions: VersionPhase[] = [
     showFeaturesLink: false,
   },
   {
-    version: 'v0.7.0',
+    version: 'v0.8.0',
     status: 'planned',
     theme: 'Serving + Composability',
     description:
