@@ -10,21 +10,21 @@ const milestoneIcon: Record<Milestone['status'], string> = {
 };
 
 const isExpandedByDefault = (v: string) =>
-  v === 'v0.2.0' || v === 'v0.3.0' || v === 'v0.4.0' || v === 'v0.5.0' || v === 'v1.0.0' || v === 'v2.0.0';
+  v === 'v0.2.0' || v === 'v0.3.0' || v === 'v0.4.0' || v === 'v0.5.2' || v === 'v1.0.0' || v === 'v2.0.0';
 
 const slugifyVersion = (v: string) => v.replace(/\./g, '-'); // v0.1.0 → v0-1-0
 
-// 2-chapter markers: inject narrative dividers before v0.4.0 and v0.6.0
+// 2-chapter markers: inject narrative dividers before v0.4.0 and v0.7.0
 const CHAPTER_MEMORY_START = 'v0.4.0';     // Memory layer begins
-const CHAPTER_AGENTS_START = 'v0.6.0';    // Agents Context layer begins
+const CHAPTER_AGENTS_START = 'v0.7.0';    // Context Assembly + Agent Runtime begins
 ---
 
 <section id="roadmap" class="roadmap section-pad section-gap" aria-labelledby="roadmap-title">
   <div class="roadmap-inner">
     <div class="eyebrow">VI · Status &amp; Roadmap</div>
-    <h2 id="roadmap-title" class="roadmap-h2">Roadmap — nine versions, four milestones</h2>
+    <h2 id="roadmap-title" class="roadmap-h2">Roadmap — ten versions, four milestones</h2>
     <p class="roadmap-meta">
-      <code>v0.5.2</code> · 31 crates workspace · Apache-2.0 · Rust 2021 · MSRV 1.88+ ·
+      <code>v0.5.2</code> · 31 crates workspace · Apache-2.0 · Rust 2024 · MSRV 1.88+ ·
       <a href="https://github.com/gradatum/gradatum" target="_blank" rel="noopener noreferrer" class="roadmap-meta-link">GitHub</a> ·
       <a href="https://crates.io/crates/gradatum" target="_blank" rel="noopener noreferrer" class="roadmap-meta-link">crates.io</a>
       <span class="roadmap-meta-note">(names reserved — full library at v1.0)</span>
@@ -49,14 +49,14 @@ const CHAPTER_AGENTS_START = 'v0.6.0';    // Agents Context layer begins
               </div>
             )}
             {phase.version === CHAPTER_AGENTS_START && (
-              <div class="chapter-divider" id="chapter-agents" aria-label="Chapter: Agents Context layer">
+              <div class="chapter-divider" id="chapter-agents" aria-label="Chapter: Context Assembly + Agent Runtime">
                 <span class="chapter-eyebrow eyebrow">Chapter II</span>
-                <h3 class="chapter-title">Agents Context layer</h3>
+                <h3 class="chapter-title">Context Assembly + Agent Runtime</h3>
                 <p class="chapter-desc">
-                  v0.6.0+ — The layer that consumes the memory store autonomously:
-                  context assembly, sliding-window continuity, proactive recall, skill selection,
-                  and a native ReAct agent runtime. gradatum stops serving only external agents
-                  and starts reasoning across sessions on its own.
+                  v0.7.0+ — The layer that consumes the memory store coherently across sessions:
+                  context assembly, sliding-window memory, proactive recall, skill selection,
+                  and a declarative user profile. gradatum stops treating queries as stateless
+                  and starts reasoning over accumulated knowledge.
                 </p>
               </div>
             )}
