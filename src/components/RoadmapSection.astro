@@ -48,15 +48,6 @@ const CHAPTER_AGENTS_START = 'v0.7.0';    // Context Assembly + Agent Runtime be
                 </p>
               </div>
             )}
-            {phase.version === CHAPTER_AGENTS_START && (
-              <div class="chapter-divider chapter-divider--link" id="chapter-agents" aria-label="Chapter: Agent Layer">
-                <span class="chapter-eyebrow eyebrow">Chapter II</span>
-                <h3 class="chapter-title">Agent Layer</h3>
-                <a href="/agents" class="chapter-agents-link">
-                  Context assembly, memory, runtime — explored in depth on the Agent Layer page →
-                </a>
-              </div>
-            )}
             <details
               id={`v-${slug}`}
               class={`version-phase state-${phase.status}${phase.grade ? ` grade-${phase.grade.toLowerCase()}` : ''}`}

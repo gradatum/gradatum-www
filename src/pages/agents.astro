@@ -4,6 +4,18 @@ import Nav from '../components/Nav.astro';
 import AgentLayerStack from '../components/AgentLayerStack.astro';
 import Footer from '../components/Footer.astro';
 import TweaksPanel from '../components/TweaksPanel.astro';
+import { versionPhases } from '../data/roadmap';
+
+const agentVersions = versionPhases.filter(p =>
+  ['v0.7.0', 'v0.8.0', 'v1.0.0', 'v2.0.0'].includes(p.version)
+);
+
+const statusLabel: Record<string, string> = {
+  done: 'shipped',
+  'in-progress': 'in progress',
+  next: 'next',
+  planned: 'planned',
+};
 ---
 <Base
   title="Gradatum — Agent Layer"
@@ -156,60 +168,48 @@ import TweaksPanel from '../components/TweaksPanel.astro';
 
       <hr class="rule" />
 
-      <!-- ── Roadmap runtime ── -->
-      <section class="runtime-roadmap section-pad" aria-labelledby="runtime-roadmap-title">
-        <div class="runtime-roadmap-inner">
-          <div class="eyebrow">Roadmap · v0.6.0</div>
-          <h2 id="runtime-roadmap-title" class="runtime-h2">
-            The agent runtime.<br />
-            <em class="accent-italic">What comes next.</em>
-          </h2>
-          <p class="runtime-desc">
-            With the memory store and compute backbone already in place, v0.6.0 adds the orchestration
-            layer — the code that consumes both foundations to run autonomous agent loops.
-          </p>
+      <!-- ── Chapter II + Roadmap ── -->
+      <section class="agent-roadmap section-pad" aria-labelledby="agent-roadmap-title">
+        <div class="agent-roadmap-inner">
 
-          <div class="runtime-items">
-
-            <div class="runtime-item">
-              <div class="ri-header">
-                <span class="ri-badge">coming</span>
-                <h3 class="ri-title">Context assembly</h3>
-              </div>
-              <p class="ri-desc">
-                Sliding-window continuity over the conversation, combined with proactive recall
-                from the Vault — relevant memories injected at the right moment, not on every turn.
-              </p>
-            </div>
-
-            <div class="runtime-item">
-              <div class="ri-header">
-                <span class="ri-badge">coming</span>
-                <h3 class="ri-title">ReAct runtime</h3>
-              </div>
-              <p class="ri-desc">
-                Agent loop with tool dispatch via MCP, built-in guards against runaway loops,
-                and structured observation → thought → action traces for auditability.
-              </p>
-            </div>
-
-            <div class="runtime-item">
-              <div class="ri-header">
-                <span class="ri-badge">coming</span>
-                <h3 class="ri-title">Skill selection</h3>
-              </div>
-              <p class="ri-desc">
-                MCP-native dispatch matched to agent intent. The gateway routes to the right
-                engine role; the skill layer decides which capability to invoke.
-              </p>
-            </div>
-
+          <div class="chapter-header">
+            <span class="eyebrow">Chapter II</span>
+            <h2 id="agent-roadmap-title" class="chapter-h2">
+              Agent Layer
+            </h2>
+            <p class="chapter-intro">
+              A store that answers queries on demand is still passive. The real value is a system
+              that knows what is relevant before you ask — one that remembers what you worked on
+              yesterday, surfaces the decision you forgot last month, and assembles exactly the
+              right context before sending anything to a model. Everything built in Chapter I
+              exists to make this layer possible.
+            </p>
           </div>
 
-          <p class="runtime-note">
-            All three components build on the foundations already LIVE.
-            No new storage engine, no new inference stack — the same discipline, extended upward.
-          </p>
+          <div class="agent-version-list">
+            {agentVersions.map((phase) => (
+              <article class={`agent-version agent-version--${phase.status}`}>
+                <header class="av-header">
+                  <div class="av-meta">
+                    <span class="av-version">{phase.version}</span>
+                    <span class={`av-status av-status--${phase.status}`}>
+                      {statusLabel[phase.status] ?? phase.status}
+                    </span>
+                  </div>
+                  <h3 class="av-theme">{phase.theme}</h3>
+                </header>
+                <p class="av-desc">{phase.description}</p>
+                {phase.scopeTeaserItems && phase.scopeTeaserItems.length > 0 && (
+                  <ul class="av-features">
+                    {phase.scopeTeaserItems.map((item) => (
+                      <li class="av-feature">{item}</li>
+                    ))}
+                  </ul>
+                )}
+              </article>
+            ))}
+          </div>
+
         </div>
       </section>
 
@@ -594,6 +594,135 @@ import TweaksPanel from '../components/TweaksPanel.astro';
     padding: 1rem 1.25rem;
     border-left: 2px solid var(--rule);
     letter-spacing: 0.03em;
+  }
+
+  /* ───── Chapter II + Agent Roadmap ───── */
+  .agent-roadmap {
+    background: var(--bg);
+    border-top: 1px solid var(--rule);
+  }
+
+  .agent-roadmap-inner {
+    max-width: 1080px;
+  }
+
+  .chapter-header {
+    margin-bottom: 3.5rem;
+  }
+
+  .chapter-h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    margin: 0.75rem 0 1.25rem;
+  }
+
+  .chapter-intro {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 68ch;
+    margin: 0;
+  }
+
+  .agent-version-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .agent-version {
+    border: 1px solid var(--rule);
+    padding: 2rem;
+    background: var(--paper);
+  }
+
+  .agent-version--done {
+    border-left: 3px solid var(--accent);
+  }
+
+  .agent-version--planned {
+    border-left: 3px dashed var(--muted);
+    opacity: 0.85;
+  }
+
+  .av-header {
+    margin-bottom: 1rem;
+  }
+
+  .av-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .av-version {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  .av-status {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border: 1px solid var(--rule);
+    color: var(--muted);
+  }
+
+  .av-status--done {
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--rule));
+    color: var(--accent);
+  }
+
+  .av-theme {
+    font-family: var(--font-serif);
+    font-size: clamp(1.125rem, 2vw, 1.375rem);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .av-desc {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 68ch;
+    margin: 0 0 1.25rem;
+  }
+
+  .av-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    border-top: 1px solid var(--rule);
+    padding-top: 1.125rem;
+  }
+
+  .av-feature {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .av-feature::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
   }
 
   /* ───── Skip link ───── */
