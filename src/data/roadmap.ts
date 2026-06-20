@@ -335,7 +335,7 @@ const versions: VersionPhase[] = [
   {
     version: 'v0.5.5',
     grade: 'Silver',
-    status: 'planned',
+    status: 'done',
     theme: 'Foundation Polish',
     description:
       'Before opening gradatum to external clients via MCP, the foundation needs to be verifiably clean. v0.5.5 closes that window: the health endpoint now reports the exact running version and real queue state so there is no ambiguity about what is deployed. No new user-facing features — the goal is a baseline you can audit and depend on before the next chapter begins.',
@@ -346,7 +346,7 @@ const versions: VersionPhase[] = [
   {
     version: 'v0.6.0',
     grade: 'Silver',
-    status: 'planned',
+    status: 'done',
     theme: 'Queryable Memory Store — MCP-Native Backend',
     description:
       'Until now, gradatum was only usable through its own agent. v0.6.0 opens the vault to any MCP-compatible client — Claude Code, IDEs, custom agents — over a standard HTTP connection, with no sidecar process or protocol shim. Notes are validated and auto-repaired on write so the vault stays consistent regardless of which client is writing. The deliberate choice here: make the store useful to others first, then build gradatum\'s own context layer (v0.7.0) on top of the same interface everyone else uses.',
