@@ -49,15 +49,12 @@ const CHAPTER_AGENTS_START = 'v0.7.0';    // Context Assembly + Agent Runtime be
               </div>
             )}
             {phase.version === CHAPTER_AGENTS_START && (
-              <div class="chapter-divider" id="chapter-agents" aria-label="Chapter: Context Assembly + Agent Runtime">
+              <div class="chapter-divider chapter-divider--link" id="chapter-agents" aria-label="Chapter: Agent Layer">
                 <span class="chapter-eyebrow eyebrow">Chapter II</span>
-                <h3 class="chapter-title">Context Assembly + Agent Runtime</h3>
-                <p class="chapter-desc">
-                  v0.7.0+ — The layer that consumes the memory store coherently across sessions:
-                  context assembly, sliding-window memory, proactive recall, skill selection,
-                  and a declarative user profile. gradatum stops treating queries as stateless
-                  and starts reasoning over accumulated knowledge.
-                </p>
+                <h3 class="chapter-title">Agent Layer</h3>
+                <a href="/agents" class="chapter-agents-link">
+                  Context assembly, memory, runtime — explored in depth on the Agent Layer page →
+                </a>
               </div>
             )}
             <details
@@ -211,6 +208,21 @@ const CHAPTER_AGENTS_START = 'v0.7.0';    // Context Assembly + Agent Runtime be
     color: var(--ink-soft);
     max-width: 64ch;
     margin: 0;
+  }
+
+  .chapter-agents-link {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 0.25rem;
+    transition: opacity 0.15s ease;
+  }
+
+  .chapter-agents-link:hover {
+    opacity: 0.7;
   }
 
   /* ── Version phases ───────────────────────────────────── */
