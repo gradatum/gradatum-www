@@ -355,6 +355,23 @@ const versions: VersionPhase[] = [
     showFeaturesLink: true,
   },
   {
+    version: 'v0.6.4',
+    grade: 'Silver',
+    status: 'done',
+    theme: 'Studio Hardening + Security Baseline',
+    description:
+      'Completes the v0.6.x release series with security hardening, multi-language code-map, and native MCP finalization. Studio auth migrated to localStorage with short-lived JWT (1h, scope human) and strict CSP. Body limits (512 KiB) on /mcp and embedding endpoint. X-Frame-Options DENY added. Twelve correctness and documentation fixes from the round-2 audit. 2337 tests PASS.',
+    scopeTeaserItems: [
+      'Studio JWT 1h (scope human) + CSP hardening',
+      'X-Frame-Options DENY',
+      'Body limit 512 KiB /mcp',
+      'Round-2 audit 12 fixes (delete_note, HttpEmbedder, VaultId private)',
+      'Multi-lang code-map (Rust/Bash/TS/TSX/Python)',
+      '2337 tests PASS',
+    ],
+    showFeaturesLink: false,
+  },
+  {
     version: 'v0.7.0',
     status: 'planned',
     theme: 'Memory Layer + Context Assembly',
