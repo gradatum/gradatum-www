@@ -16,7 +16,7 @@ const versions: VersionPhase[] = [
     status: 'done',
     theme: 'Architecture Foundation',
     description:
-      'Establishes the public architecture foundation — four persistence traits, a warden layer for note integrity, an install wizard for first-time setup, and smoke-test coverage so that early adopters can deploy a working knowledge store with confidence from the first release.',
+      'Before you can build a useful memory layer, you need a store that actually works. v0.1.0 ships a functioning knowledge base — write, read, search — accessible over HTTP and MCP from day one. It lays the structural foundations that every later version builds on: pluggable storage interfaces, note integrity guarantees, and enough test coverage to deploy with confidence.',
     showFeaturesLink: true,
     milestones: [
       {
@@ -87,7 +87,7 @@ const versions: VersionPhase[] = [
     status: 'done',
     theme: 'Job Infrastructure + Observability',
     description:
-      "Lays the foundation for gradatum's background job system and makes it fully observable. This release introduces the job queue layer built on Apalis (https://github.com/geofmureithi/apalis) — a type-safe, SQLite-backed Rust job framework — including the Job enum, JobRecord lifecycle tracking, and per-class worker configuration. On top of that foundation, it ships a Dead-Letter Queue (DLQ) for failed background jobs with configurable retry policies, timeout enforcement, and panic isolation, so jobs that fail definitively are captured rather than silently dropped. A /api/v1/jobs introspection endpoint surfaces job state over HTTP, with a Server-Sent Events (SSE) stream for real-time push updates and Prometheus metrics per job kind, giving operators full visibility into what the system is running and why without polling.",
+      'Gradatum processes notes asynchronously — curation, embedding, distillation all run in the background. Without a reliable job engine, these tasks would silently fail and leave the vault in an inconsistent state. v0.2.0 ships that engine: background jobs survive restarts, failures are captured and retried rather than dropped, and every running task is visible in real time. This infrastructure is what makes every subsequent feature safe to ship.',
     scopeTeaserItems: ['Background jobs that survive restarts', 'Failed jobs captured, never silently dropped', 'Live job status via HTTP + real-time stream'],
     featureRefs: ['F-15', 'F-16'],
     showFeaturesLink: true,
@@ -124,7 +124,7 @@ const versions: VersionPhase[] = [
     status: 'done',
     theme: 'Storage Traits + Event-Log + Secrets DI',
     description:
-      'Decomposes the monolithic storage trait into three granular, pluggable interfaces (DocumentStore, IndexStore, VectorStore), ships an append-only event-log table for LLM cost-attribution telemetry, adds an autonomous LLM gateway crate (proxy + reranker), introduces deterministic cognitive-kind tagging for notes (CoALA — Cognitive Architectures for Language Agents — episodic/semantic/procedural/reflective), and fixes a critical JWT signing-key persistence bug that caused every server restart to invalidate all live tokens. Patch releases v0.3.1–0.3.3 harden the multi-worker job queue.',
+      'A knowledge store that is locked to a single database is a dead end. v0.3.0 separates the document layer, the search index, and the vector store into independent, swappable components — you can replace any one of them without rewriting the rest. It also fixes a critical bug where every server restart would invalidate all live sessions, and introduces a built-in model proxy so LLM calls are routed, reranked, and fully cost-attributed without a separate service.',
     scopeTeaserItems: ['Pluggable storage (swap backend without rewriting)', 'Cost tracking per LLM call', 'Built-in LLM proxy + reranker', 'Notes tagged by cognitive type (episodic / semantic / procedural)', 'Auth key never hardcoded — injected at startup'],
     featureRefs: ['F-02', 'F-08', 'F-13', 'F-42'],
     showFeaturesLink: true,
@@ -202,7 +202,7 @@ const versions: VersionPhase[] = [
     status: 'done',
     theme: 'Vault Core — Durable Memory Layer',
     description:
-      'Completes the core knowledge store: structured ingest with content-aware chunking, copy-on-write note history with optimistic locking for safe concurrent writes, stable wikilink graph traversal, temporal decay scoring and provenance trust so retrieved content carries verifiable lineage, declarative lifecycle rules that keep the vault compact without losing traceability, scheduled distillation that compresses raw notes into reusable knowledge, and pluggable storage backends.',
+      'A store that only appends is not enough — you need to know what you can trust, recover from mistakes, and keep the vault from growing unbounded. v0.4.0 completes the memory layer: every note carries a trust score, a full edit history, and stable internal links that survive renames. Stale content decays automatically, raw notes are periodically distilled into reusable knowledge, and concurrent writes are always safe. This is the version that turns a write-only store into a durable, queryable memory.',
     scopeTeaserItems: ['Smart document ingestion (content-aware chunking)', 'Full version history — every edit preserved', 'Safe concurrent writes — no lost updates', 'Notes decay by age, sources carry verifiable lineage', 'Auto-compaction keeps the vault lean without losing traceability', 'Scheduled distillation — raw notes compressed into reusable knowledge'],
     featureRefs: ['F-06', 'F-39', 'F-40', 'F-41', 'F-47', 'F-17', 'F-19', 'F-09', 'F-36', 'F-31', 'F-32', 'F-44', 'F-55', 'F-22', 'F-25', 'F-26'],
     showFeaturesLink: true,
@@ -263,7 +263,7 @@ const versions: VersionPhase[] = [
     status: 'done',
     theme: 'Static Code Index + Observability',
     description:
-      'Adds a static code index built with tree-sitter (Rust, zero LLM) — symbols are derived deterministically from source, stored in a separate code vault, and queryable by symbol name, free-text, or file path with optional body extraction. Drift detection and incremental O(diff) updates keep the index fresh without full rebuilds. Also ships: vault_timeline for chronological note listing (as-of / valid_until), session-log Tier 1 for agent action tracing, corpus_match_count as a proof-of-absence search signal, native TLS termination (rustls, TLS 1.2+/1.3, fail-closed), and vault_write in-place update (optimistic-lock RMW, 409 on conflict).',
+      'Memory without code awareness is half the picture. v0.5.2 adds a code index built directly from source — no LLM, no hallucination — so gradatum can answer "where is this function?" as reliably as "what was decided last week?". The index updates in milliseconds when files change, and stays in a separate store so it never pollutes the knowledge vault. This version also ships encrypted connections natively and makes it possible to know for certain that a topic is absent, not just unranked.',
     scopeTeaserItems: [
       'Code index built from source — no LLM needed, zero hallucination',
       'Search your codebase by symbol, keyword, or file path',
@@ -338,7 +338,7 @@ const versions: VersionPhase[] = [
     status: 'planned',
     theme: 'Foundation Polish',
     description:
-      'Closes the v0.5.x foundation window before the MCP-native pivot: real-time health observability (queue depth with accurate oldest-message age, build SHA in /health for unambiguous version proof), Rust 2024 edition upgrade across the full workspace, and surface-hardening of the knowledge base (backfill, public API hygiene). No new capabilities — the goal is a clean, verifiable baseline to build on.',
+      'Before opening gradatum to external clients via MCP, the foundation needs to be verifiably clean. v0.5.5 closes that window: the health endpoint now reports the exact running version and real queue state so there is no ambiguity about what is deployed. No new user-facing features — the goal is a baseline you can audit and depend on before the next chapter begins.',
     scopeTeaserItems: ['Real-time health endpoint — queue depth + version proof', 'Codebase modernized to Rust 2024 edition', 'API surface cleaned and hardened before the MCP pivot'],
     featureRefs: [],
     showFeaturesLink: false,
@@ -349,7 +349,7 @@ const versions: VersionPhase[] = [
     status: 'planned',
     theme: 'Queryable Memory Store — MCP-Native Backend',
     description:
-      'Turns the completed vault into a memory store any client can query directly through the Model Context Protocol (MCP) — a native MCP server with Streamable HTTP transport, write-time schema validation with automatic repair, and a vault audit & deduplication pass. This is a deliberate ordering: the memory store becomes a stable, externally consumable product first — usable today by any MCP client (Claude, IDEs, custom agents) — and only then does gradatum grow its own context layer (v0.7.0) on top of the exact same interface it already exposes to everyone else. The store earns its API by serving others before it serves itself.',
+      'Until now, gradatum was only usable through its own agent. v0.6.0 opens the vault to any MCP-compatible client — Claude Code, IDEs, custom agents — over a standard HTTP connection, with no sidecar process or protocol shim. Notes are validated and auto-repaired on write so the vault stays consistent regardless of which client is writing. The deliberate choice here: make the store useful to others first, then build gradatum\'s own context layer (v0.7.0) on top of the same interface everyone else uses.',
     scopeTeaserItems: ['Connect Claude Code, IDEs, or any agent directly via MCP', 'Standard HTTP transport — no sidecar, no stdio pipe', 'Notes validated and auto-repaired on write', 'Vault audit — duplicates detected and cleaned'],
     featureRefs: ['F-38', 'F-56'],
     showFeaturesLink: true,
@@ -360,7 +360,7 @@ const versions: VersionPhase[] = [
     status: 'done',
     theme: 'Studio Hardening + Security Baseline',
     description:
-      'Closes the v0.6.x series with a focused security pass and a deep correctness audit. The admin UI now uses short-lived sessions (1 hour instead of 24), with a strict browser security policy that prevents script injection. The code index understands five languages. Twelve bugs found by the round-2 audit are fixed — including note deletion regressions and embedding edge cases. 2337 tests pass in optimized mode.',
+      'Before a first public release, you owe it to users to be honest about what you are shipping. v0.6.4 is that honesty pass: a deep correctness audit surfaced twelve real bugs — including a regression that made some notes undeletable — and a security review tightened the admin UI to short-lived sessions, a strict content policy, and proper request size limits. The code index now covers five languages. This is the version that earns the right to be called stable.',
     scopeTeaserItems: [
       'Admin UI sessions expire in 1 hour — shorter window if credentials are ever compromised',
       'Strict browser security policy (CSP) — no external scripts can run in the UI',
@@ -377,7 +377,7 @@ const versions: VersionPhase[] = [
     status: 'planned',
     theme: 'Memory Layer + Context Assembly',
     description:
-      'Adds the context-assembly layer that turns the vault from a passive store into an active participant: identity rendering, sliding-window memory, proactive recall, a declarative user profile, and skill selection that picks only relevant context before injection. gradatum can now consume its own memory store coherently across sessions — reasoning over accumulated knowledge rather than treating each query as stateless.',
+      'A store that answers queries on demand is still passive. The real value is a system that knows what is relevant before you ask — one that remembers what you worked on yesterday, surfaces the decision you forgot last month, and assembles exactly the right context before sending anything to a model. v0.7.0 is that layer: gradatum stops treating each session as stateless and starts reasoning over everything it has accumulated, on your hardware, across time.',
     scopeTeaserItems: ['Assembles relevant context before each query — not raw retrieval', 'Memory window slides with the conversation — no context cliff', 'Proactively surfaces what you forgot you knew', 'Declarative user profile — gradatum knows who it is talking to', 'Picks only the skills relevant to the current task'],
     featureRefs: ['F-35', 'F-30', 'F-46', 'F-50', 'F-58', 'F-29'],
     showFeaturesLink: false,
@@ -387,7 +387,7 @@ const versions: VersionPhase[] = [
     status: 'planned',
     theme: 'gradatum-code — Sovereign Terminal Agent',
     description:
-      'Ships the first version of gradatum-code: a terminal agent that reasons over the local codebase using the vault as its memory — symbol lookup, diff-aware context, project history recall, and task execution. gradatum-code runs entirely on local hardware, with no cloud dependency and no external code upload. Phase A covers the agentic core; later phases extend to IDE integration and collaborative workflows.',
+      'Every capability built so far — durable memory, code index, context assembly — exists to make this version possible. v0.8.0 ships gradatum-code: a terminal agent that reasons over your codebase using the vault as its memory. It finds the right symbol, understands what changed in the diff, recalls past decisions, and executes tasks end-to-end. It runs entirely on your hardware. Nothing leaves your machine. This is what sovereign software tooling looks like.',
     scopeTeaserItems: ['Terminal agent that reasons over your codebase', 'Finds the right symbol and understands what changed in the diff', 'Recalls past decisions and project history before acting', 'Runs entirely on local hardware — no code ever leaves your machine', 'Executes tasks end-to-end, not just suggestions'],
     featureRefs: [],
     showFeaturesLink: false,
@@ -398,7 +398,7 @@ const versions: VersionPhase[] = [
     status: 'planned',
     theme: 'Production Baseline',
     description:
-      'The first production-certified release — the point where gradatum becomes safe to build on. The public trait contracts freeze as stable (semver guarantees you can depend on), the privacy filter runs on a local ONNX (portable inference) path with no external LLM dependency, the system proves 30 days of continuous operation, and the full LongMemEval long-term-memory benchmark runs reproducibly. v1.0.0 adds no new API surface by design: it is a stability and certification milestone, not a feature drop — the moment the contracts stop moving.',
+      'API stability is a promise, not a feature. v1.0.0 is the version where gradatum makes that promise: the public contracts freeze, semver guarantees kick in, and anything built on top will not break without explicit notice. It also proves 30 days of continuous operation, runs the long-term memory benchmark reproducibly, and adds multi-user support with OAuth login. This is the milestone where gradatum becomes something you can safely build on.',
     scopeTeaserItems: ['API contracts frozen — safe to build on without breaking changes', 'Privacy filter runs locally — no data sent to external models', '30 days of continuous production operation proven', 'Long-term memory benchmark reproduced and published', 'Multi-user access + OAuth login'],
     featureRefs: ['F-45', 'F-57'],
     showFeaturesLink: false,
@@ -409,7 +409,7 @@ const versions: VersionPhase[] = [
     status: 'planned',
     theme: 'Multimodal + Consolidation',
     description:
-      "Extends the platform to multimodal inputs with a breaking-change chat API and long-horizon memory consolidation — completing gradatum's trajectory from local knowledge store to autonomous cognitive infrastructure.",
+      "Text was always just the starting point. v2.0.0 extends gradatum to images, audio, and documents — and introduces long-horizon memory consolidation, where the system compresses and learns from its own history over time. This is a breaking change by design: the chat API is rebuilt to handle multimodal input natively, completing gradatum's arc from a local knowledge store to a full cognitive infrastructure.",
     scopeTeaserItems: ['Images, audio, and documents understood alongside text', 'Long-horizon memory consolidation — the system learns from its own history'],
     featureRefs: ['F-49'],
     showFeaturesLink: false,
