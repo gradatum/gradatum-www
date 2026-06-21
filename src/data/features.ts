@@ -587,6 +587,128 @@ const groups: FeatureGroup[] = [
         status: 'planned',
         version: 'v0.5.1',
       },
+      {
+        id: 'f-02',
+        refLabel: 'F-02',
+        name: 'Gateway: Local LLM Proxy for Chat, Embeddings, and Reranking',
+        positioning:
+          'Provides a single local HTTP gateway in front of the LLM and embedding backends, so gradatum components talk to one stable endpoint instead of many provider-specific ones.',
+        howItWorks: [
+          'The gradatum-gateway crate exposes OpenAI-compatible routes — chat completions, embeddings, reranking, and model listing — over a local HTTP port.',
+          'Requests are routed to the configured local backends, decoupling gradatum from any specific inference server and keeping all traffic on the host.',
+        ],
+        whoItsFor:
+          'Operators running gradatum fully locally who want a single, stable inference endpoint that other components and tools can target without per-backend wiring.',
+        status: 'released',
+        version: 'v0.4.0',
+      },
+      {
+        id: 'f-15',
+        refLabel: 'F-15',
+        name: 'Dead Letter Queue and Job Resilience',
+        positioning:
+          'Captures jobs that exhaust their retries into a Dead Letter Queue instead of losing them, so failed background work is auditable and replayable.',
+        howItWorks: [
+          'Each job carries a retry budget; once exhausted, it is moved to a Dead Letter Queue (DLQ) rather than silently dropped.',
+          'Multiple workers coordinate through the shared queue with at-most-once execution per job, and a graceful 30-second drain on shutdown lets in-flight jobs finish before the process exits.',
+          'DLQ entries retain their failure context so operators can inspect the cause and requeue once the underlying issue is fixed.',
+        ],
+        whoItsFor:
+          'Operators running gradatum with background ingestion or distillation jobs who need guarantees that transient failures never result in silently lost work.',
+        status: 'released',
+        version: 'v0.2.0',
+      },
+      {
+        id: 'f-16',
+        refLabel: 'F-16',
+        name: 'Jobs Introspection API: Observable Background Work',
+        positioning:
+          'Exposes the async job queue over HTTP so callers can submit, track, and stream the progress of background work in real time.',
+        howItWorks: [
+          'Five HTTP endpoints cover the job lifecycle — submit, list, fetch a single job, stream progress, and inspect queue state.',
+          'Server-Sent Events (SSE) push live progress updates to clients without polling, and an Idempotency-Key header makes job submission safe to retry.',
+          'Queue depth and per-status counters are exported in Prometheus format for dashboards and alerting.',
+        ],
+        whoItsFor:
+          'Integrators who drive ingestion or maintenance jobs programmatically and need to observe their progress and outcome rather than firing blind.',
+        status: 'released',
+        version: 'v0.2.0',
+      },
+      {
+        id: 'f-08',
+        refLabel: 'F-08',
+        name: 'Cross-Encoder Reranking for Precise Retrieval',
+        positioning:
+          'Re-scores candidate search results with a cross-encoder model so the most relevant notes rise to the top, beyond first-pass keyword and vector ranking.',
+        howItWorks: [
+          'After the initial retrieval, the gradatum-gateway /v1/rerank endpoint scores each query-document pair with a BGE-reranker-v2-m3 cross-encoder running locally on ONNX Runtime.',
+          'The reranked order replaces the fused first-pass ranking, improving precision on the top results returned to the caller.',
+        ],
+        whoItsFor:
+          'Developers whose retrieval quality depends on surfacing the single best note for a query, where first-pass ranking alone is not precise enough.',
+        status: 'released',
+        version: 'v0.3.0',
+      },
+      {
+        id: 'f-13',
+        refLabel: 'F-13',
+        name: 'Secrets Dependency Injection: Provider-Backed Credentials',
+        positioning:
+          'Decouples gradatum from any single secret source through a SecretsProvider trait, so credentials can come from the environment, a file, or a future vault backend without code changes.',
+        howItWorks: [
+          'A SecretsProvider trait abstracts secret resolution, with EnvSecretsProvider and FileSecretsProvider implementations shipped by default.',
+          'Resolved secrets are wrapped in a SecretBytes type that zeroizes on drop and masks its Debug output, so credentials never leak into logs or memory dumps.',
+        ],
+        whoItsFor:
+          'Operators with strict credential-handling requirements who need secret sourcing to be configurable and auditable rather than hardcoded.',
+        status: 'released',
+        version: 'v0.3.0',
+      },
+      {
+        id: 'f-42',
+        refLabel: 'F-42',
+        name: 'Curator Confidence Ladder: Graded Note Admission',
+        positioning:
+          'Routes incoming notes through a confidence ladder so high-confidence content is admitted directly while uncertain content is held for review instead of polluting the index.',
+        howItWorks: [
+          'The curator classifies each note and assigns a confidence band; low-confidence notes are routed to a PendingReview state rather than going live immediately.',
+          'A dedicated curation kind (c_kind) column, added in migration 0008, records the classification decision so admission outcomes are queryable and auditable.',
+        ],
+        whoItsFor:
+          'Vault maintainers ingesting content from heterogeneous or noisy sources who want automatic triage to protect overall index quality.',
+        status: 'released',
+        version: 'v0.3.0',
+      },
+      {
+        id: 'f-29',
+        refLabel: 'F-29',
+        name: 'Reference-Language Memory: Pass-by-Reference Context',
+        positioning:
+          'Lets agents pass note references instead of full note bodies into the LLM context, keeping prompts compact while preserving the ability to resolve content on demand.',
+        howItWorks: [
+          'Context assembly passes stable note references rather than inlined bodies, and the referenced content is resolved only when the model actually needs it.',
+          'This reduces token pressure on long agent sessions while keeping every reference traceable back to its canonical note.',
+        ],
+        whoItsFor:
+          'Integrators building long-running agents that hit context-window limits and need to keep prompts lean without losing access to source notes.',
+        status: 'planned',
+        version: 'vX.Y.Z',
+      },
+      {
+        id: 'f-66',
+        refLabel: 'F-66',
+        name: 'Curator Threshold Tuning — continuation of F-42',
+        positioning:
+          'Completes the curator confidence ladder by finalizing the admission and review thresholds left open after the initial F-42 delivery.',
+        howItWorks: [
+          'Builds on the released curator ladder (F-42) to settle the remaining confidence cut-offs that govern direct admission versus held-for-review routing.',
+          'The candidate threshold values are still under architectural review, so this continuation tracks the tuning work separately from the shipped baseline.',
+        ],
+        whoItsFor:
+          'Vault maintainers who need the curator admission policy tuned to their own quality and noise profile rather than relying on the initial defaults.',
+        status: 'planned',
+        version: 'vX.Y.Z',
+      },
     ],
   },
   {
