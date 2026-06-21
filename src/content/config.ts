@@ -86,7 +86,8 @@ export const featureSchema = z.object({
   howItWorks: z.array(z.string()).min(1).max(4),
   whoItsFor: z.string().min(20).max(200),
   status: z.enum(['released', 'planned', 'roadmap']),
-  version: z.string().regex(/^v\d+\.\d+\.\d+$/),
+  // Version format: v#.#.# (concrete) or vX.Y.Z (sentinel for undefined/backlog versions per Règle A)
+  version: z.string().regex(/^v(?:\d+\.\d+\.\d+|X\.Y\.Z)$/),
 });
 
 export const featureGroupSchema = z.object({
