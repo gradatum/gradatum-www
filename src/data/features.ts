@@ -299,7 +299,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Operators who want the vault to self-regulate quality over time, and teams building multi-agent pipelines that need a formal quality gate between note production and retrieval.',
-        status: 'planned',
+        status: 'released',
         version: 'v0.4.3',
       },
       {
@@ -379,7 +379,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Developers building agents that process screenshots, diagrams, or documents alongside text, and operators who want multimodal inputs handled at the gateway layer without routing logic in each client.',
-        status: 'planned',
+        status: 'released',
         version: 'v0.4.3',
       },
       {
