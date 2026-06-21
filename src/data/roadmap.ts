@@ -258,22 +258,35 @@ const versions: VersionPhase[] = [
     ],
   },
   {
+    version: 'v0.4.3',
+    grade: 'Silver',
+    status: 'done',
+    theme: 'Addressing & Query Scoping — Multi-Vault Foundation',
+    description:
+      'Multi-vault deployments need a unified way to address data across vaults and agents without per-job coordination. v0.4.3 ships that abstraction: VaultScope gives every background job a composable, deterministic address; Semantic Forget completes the data lifecycle with intentional deletion and decay; and Temporal Index adds chronological querying so agents can reason about when events happened and in what order.',
+    scopeTeaserItems: ['VaultScope: address any locus across vaults and agents', 'Semantic Forget with mandatory dry-run and progressive decay', 'Temporal Index with before/after/around queries'],
+    featureRefs: ['F-31', 'F-32', 'F-44', 'F-55', 'F-60', 'F-61'],
+    showFeaturesLink: true,
+  },
+  {
     version: 'v0.5.2',
     grade: 'Silver',
     status: 'done',
-    theme: 'Static Code Index + Observability',
+    theme: 'Static Code Index + Temporal Queries + Observability',
     description:
-      'Memory without code awareness is half the picture. v0.5.2 adds a code index built directly from source — no LLM, no hallucination — so gradatum can answer "where is this function?" as reliably as "what was decided last week?". The index updates in milliseconds when files change, and stays in a separate store so it never pollutes the knowledge vault. This version also ships encrypted connections natively and makes it possible to know for certain that a topic is absent, not just unranked.',
+      'Memory without code awareness is half the picture. v0.5.2 adds a code index built directly from source — no LLM, no hallucination — so gradatum can answer "where is this function?" as reliably as "what was decided last week?". The index updates in milliseconds when files change, and stays in a separate store so it never pollutes the knowledge vault. A temporal index foundation enables time-aware queries: agents can reconstruct decision timelines and detect sequencing contradictions without external tools. This version also ships encrypted connections natively and makes it possible to know for certain that a topic is absent, not just unranked.',
     scopeTeaserItems: [
       'Code index built from source — no LLM needed, zero hallucination',
       'Search your codebase by symbol, keyword, or file path',
       'Index stays in sync automatically — only changed files are reprocessed',
       'Browse notes chronologically, filter by date range',
+      'Temporal queries: before/after/around/upcoming dates without a calendar database',
       'Agent action tracing — what ran, when, and why',
       'Know for certain if a topic exists in the vault, not just "nothing found"',
       'Encrypted connections out of the box (TLS 1.2+/1.3)',
       'Edit notes safely under concurrent load — conflicts detected, never silently overwritten',
     ],
+    featureRefs: ['F-55'],
     showFeaturesLink: false,
     milestones: [
       {

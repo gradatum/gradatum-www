@@ -33,6 +33,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Project-Map Gate
+        run: |
+          node scripts/project-map-gate.mjs
+        env:
+          VAULT_SERVER: http://127.0.0.1:19090
+          PMAP_GATE_SKIP: '0'
+
       - name: Build
         run: pnpm build
 

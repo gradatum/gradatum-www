@@ -140,7 +140,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Teams that need to import technical documentation, research papers, or meeting transcripts into the vault without losing the structural context that makes answers accurate.',
         status: 'planned',
-        version: 'v0.4.0',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-39',
@@ -252,7 +252,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers ingesting documents that may contain personal data — emails, transcripts, HR notes — and operators who need a compliance-friendly vault with no third-party data processing.',
         status: 'planned',
-        version: 'v0.4.1',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-36',
@@ -268,7 +268,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators running persistent agents whose identity notes must not change without explicit authorization — detecting accidental overwrites and adversarial prompt-injection attempts.',
         status: 'planned',
-        version: 'v0.4.1',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-31',
@@ -283,7 +283,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Developers building multi-agent systems where several agents share or exchange knowledge across isolated vaults, and need deterministic addressing for background jobs.',
-        status: 'planned',
+        status: 'released',
         version: 'v0.4.3',
       },
       {
@@ -315,7 +315,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Teams or individuals removing a project, topic, or person from the vault intentionally — with full visibility into what will be affected before committing, and a decay window to undo.',
-        status: 'planned',
+        status: 'released',
         version: 'v0.4.3',
       },
       {
@@ -331,8 +331,8 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Agents and developers who need to reconstruct decision timelines, detect sequencing contradictions, or surface upcoming-deadline notes — without adding a calendar or graph infrastructure.',
-        status: 'planned',
-        version: 'v0.4.3',
+        status: 'released',
+        version: 'v0.5.2',
       },
       {
         id: 'f-22',
@@ -381,6 +381,66 @@ const groups: FeatureGroup[] = [
           'Developers building agents that process screenshots, diagrams, or documents alongside text, and operators who want multimodal inputs handled at the gateway layer without routing logic in each client.',
         status: 'planned',
         version: 'v0.4.3',
+      },
+      {
+        id: 'f-62',
+        refLabel: 'F-62',
+        name: 'Code-Map: Multi-Language Source Indexing with Reverse-Dependency Graph',
+        positioning:
+          'Extends code search to multiple languages with a reverse-dependency graph — find every call site instantly without regex scanning.',
+        howItWorks: [
+          'Language-specific parsers extract definitions and call sites from source files; a unified code graph stores both forward dependencies (what a function calls) and reverse dependencies (what calls this function).',
+          'The reverse-dependency index powers questions like "every place this function is used" — no regex scanning required, instant query results on any codebase.',
+          'Symbol resolution is deterministic and language-aware: method names, free functions, imports, and exports are properly disambiguated without semantic analysis.',
+        ],
+        whoItsFor: 'Teams maintaining polyglot codebases needing call chain understanding across multiple languages.',
+        status: 'planned',
+        version: 'vX.Y.Z',
+      },
+      {
+        id: 'f-63',
+        refLabel: 'F-63',
+        name: 'VaultScope: Multi-Vault and Multi-Agent Addressing — suite F-31',
+        positioning:
+          'Extends multi-vault scope addressing to reach multiple agents in parallel with wildcards and role filters for flexible targeting.',
+        howItWorks: [
+          'Query scoping extends beyond single-agent addressing to reach multiple agents in parallel: scope definitions support wildcards and role filters so a distillation job can consolidate knowledge across all agents matching a pattern.',
+          'Audit and compaction jobs can target a vault region or agent role rather than hard-coded addresses, making deployments flexible without custom per-agent coordination.',
+          'Result merging respects agent boundaries so data stays isolated; a unified result set optionally labels which agent each note came from.',
+        ],
+        whoItsFor: 'Operators managing multi-agent deployments with distributed knowledge consolidation and querying.',
+        status: 'planned',
+        version: 'vX.Y.Z',
+      },
+      {
+        id: 'f-64',
+        refLabel: 'F-64',
+        name: 'Semantic Forget: Intentional Scoped Deletion — suite F-44',
+        positioning:
+          'Adds compliance modes with cryptographic proof of erasure, retention policies for regulated data, and graduated-decay.',
+        howItWorks: [
+          'Compliance mode writes a deletion record to an append-only audit log, cryptographically hashed against the previous entry, so erasure is verifiable and tamper-evident.',
+          'Retention policies are declarative: notes tagged with a retention_class are automatically forgotten when their retention window expires, without manual review.',
+          'Graduated decay supports GDPR right-to-be-forgotten: instead of immediate deletion, a configurable window allows recovery; after expiry, the note becomes unrecoverable but the deletion is logged.',
+        ],
+        whoItsFor: 'Teams handling regulated data requiring audit-trail deletion compliance.',
+        status: 'planned',
+        version: 'vX.Y.Z',
+      },
+      {
+        id: 'f-65',
+        refLabel: 'F-65',
+        name: 'Temporal Index Foundation: Chronological Memory Queries — suite F-55',
+        positioning:
+          'Extends temporal queries with causal chains, concurrent clusters, and historical trends for timeline reconstruction and anomaly detection.',
+        howItWorks: [
+          'A TemporalGraph models temporal relationships between events — not just individual timestamps but causal chains (A caused B) and concurrent clusters (A, B, C happened at the same time).',
+          'Historical trend queries reconstruct how a quantity changed over time: "what was the decision at date X" becomes "show me the decision, how it evolved, and what triggered each change".',
+          'Anomaly detection over the temporal index flags notes with temporal contradictions (event A claims to happen after B, but the timestamps say B happened later) — surfaced to the validation pipeline automatically.',
+        ],
+        whoItsFor: 'Researchers and analysts needing to reconstruct event timelines and detect temporal contradictions.',
+        status: 'planned',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-25',
