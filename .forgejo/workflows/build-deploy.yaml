@@ -38,7 +38,10 @@ jobs:
           node scripts/project-map-gate.mjs
         env:
           VAULT_SERVER: http://127.0.0.1:19090
-          PMAP_GATE_SKIP: '0'
+          # TODO: créer le secret Forgejo GRADATUM_API_KEY dans les Settings > Secrets du dépôt
+          # (Settings → Secrets → New secret → Name: GRADATUM_API_KEY → valeur: clé ak_* gradatum).
+          # Sans ce secret, le gate sort en exit 2 (fail-closed) — comportement attendu en CI.
+          GRADATUM_API_KEY: ${{ secrets.GRADATUM_API_KEY }}
 
       - name: Build
         run: pnpm build

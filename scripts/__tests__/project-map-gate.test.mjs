@@ -3,73 +3,277 @@
 /**
  * project-map-gate.test.mjs
  *
- * Manual test fixtures for the gate logic
- * Run: node scripts/__tests__/project-map-gate.test.mjs
+ * Tests unitaires pour la logique de gate (fonctions pures).
+ * Utilise node:test + node:assert — aucune dépendance externe.
+ *
+ * Run : node --test scripts/__tests__/project-map-gate.test.mjs
  */
 
-console.log('=== PROJECT-MAP GATE TEST FIXTURES ===\n');
+import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
 
-// Test 1: Conformance case
-console.log('TEST 1: Conformance (PASS expected)');
-console.log('Master: F-31 released v0.4.3');
-console.log('Site:   F-31 released v0.4.3');
-console.log('Roadmap: v0.4.3.featureRefs includes F-31');
-console.log('Expected: PASS');
-console.log('Status: ✓ PASS\n');
+// Import des fonctions pures exportées par le gate
+import {
+  mapToSiteStatus,
+  computeDrift,
+} from '../project-map-gate.mjs';
 
-// Test 2: Status mismatch
-console.log('TEST 2: Status mismatch (FAIL expected)');
-console.log('Master: F-31 released v0.4.3');
-console.log('Site:   F-31 planned v0.4.3 (wrong status)');
-console.log('Expected: FAIL with STATUS_MISMATCH');
-console.log('Status: ✓ Detected\n');
+// ---------------------------------------------------------------------------
+// mapToSiteStatus — Règle A
+// ---------------------------------------------------------------------------
 
-// Test 3: Version mismatch
-console.log('TEST 3: Version mismatch (FAIL expected)');
-console.log('Master: F-31 released v0.4.3');
-console.log('Site:   F-31 released v0.4.0 (wrong version)');
-console.log('Expected: FAIL with VERSION_MISMATCH');
-console.log('Status: ✓ Detected\n');
+describe('mapToSiteStatus (Règle A)', () => {
+  it('released → "released"', () => {
+    assert.equal(mapToSiteStatus('released'), 'released');
+  });
 
-// Test 4: Dropped still visible
-console.log('TEST 4: Dropped feature visible on site (FAIL expected)');
-console.log('Master: F-99 dropped v0.5.0');
-console.log('Site:   F-99 planned v0.5.0 (should not be visible)');
-console.log('Expected: FAIL with DROPPED_VISIBLE');
-console.log('Status: ✓ Detected\n');
+  it('planned → "planned"', () => {
+    assert.equal(mapToSiteStatus('planned'), 'planned');
+  });
 
-// Test 5: Roadmap ref missing
-console.log('TEST 5: Feature not in roadmap featureRefs (FAIL expected)');
-console.log('Master: F-31 released v0.4.3');
-console.log('Site:   F-31 released v0.4.3 (present)');
-console.log('Roadmap: v0.4.3.featureRefs = [] (F-31 missing)');
-console.log('Expected: FAIL with ROADMAP_REF_MISSING');
-console.log('Status: ✓ Detected\n');
+  it('roadmap → "planned" (backlog remonte comme planned, Règle A)', () => {
+    assert.equal(mapToSiteStatus('roadmap'), 'planned');
+  });
 
-// Test 6: Orphan feature on site
-console.log('TEST 6: Orphan feature on site (FAIL expected)');
-console.log('Master: [does not contain F-99]');
-console.log('Site:   F-99 planned v0.5.0 (orphan)');
-console.log('Expected: FAIL with ORPHAN');
-console.log('Status: ✓ Detected\n');
+  it('dropped → null (absent du site)', () => {
+    assert.equal(mapToSiteStatus('dropped'), null);
+  });
 
-// Test 7: Backlog feature
-console.log('TEST 7: Backlog feature (PASS expected)');
-console.log('Master: F-62 roadmap gradatum/backlog');
-console.log('Site:   F-62 planned vX.Y.Z (mapped from backlog)');
-console.log('Roadmap: v0.5.2.featureRefs (ignored per spec)');
-console.log('Expected: PASS (backlog-on-site per Règle A)');
-console.log('Status: ✓ PASS\n');
+  it('inconnu → "UNMAPPABLE"', () => {
+    assert.equal(mapToSiteStatus('whatever'), 'UNMAPPABLE');
+  });
+});
 
-console.log('=== INTEGRATION TEST ===\n');
-console.log('Scenario: 45 features in master (41 pre-existing + 4 new)');
-console.log('Site: 45 features in features.ts');
-console.log('Roadmap: v0.4.3 (new), v0.5.2 updated with F-55');
-console.log('Expected: PASS');
-console.log('Status: ✓ (Ready for live test via gradatum-www CI)\n');
+// ---------------------------------------------------------------------------
+// computeDrift — vérification PASS
+// ---------------------------------------------------------------------------
 
-console.log('=== EXPORT UNAVAILABLE (FAIL-CLOSED) ===\n');
-console.log('Scenario: Vault :19090 is down');
-console.log('Gate behavior: Exit code 2 (fail-closed)');
-console.log('Override: PMAP_GATE_SKIP=1 logs warning and passes');
-console.log('Status: ✓ Implemented\n');
+describe('computeDrift — PASS en conformance', () => {
+  it('(a) PASS : master et site parfaitement synchronisés', () => {
+    const master = [
+      { feature: 'F-01', release: 'released', version: 'v0.1.0', title: 'Warden' },
+      { feature: 'F-10', release: 'planned', version: 'v0.5.0', title: 'Feature planifiée' },
+    ];
+    const siteFeatures = [
+      { refLabel: 'F-01', status: 'released', version: 'v0.1.0' },
+      { refLabel: 'F-10', status: 'planned', version: 'v0.5.0' },
+    ];
+    const siteRoadmap = {
+      'v0.1.0': { featureRefs: ['F-01'] },
+      'v0.5.0': { featureRefs: ['F-10'] },
+    };
+    const { errors } = computeDrift(master, siteFeatures, siteRoadmap);
+    assert.deepEqual(errors, []);
+  });
+
+  it('(a-bis) PASS : dropped absent du site = correct', () => {
+    const master = [
+      { feature: 'F-01', release: 'released', version: 'v0.1.0', title: 'A' },
+      { feature: 'F-99', release: 'dropped', version: 'v0.5.0', title: 'Dropped' },
+    ];
+    const siteFeatures = [{ refLabel: 'F-01', status: 'released', version: 'v0.1.0' }];
+    const siteRoadmap = { 'v0.1.0': { featureRefs: ['F-01'] } };
+    const { errors } = computeDrift(master, siteFeatures, siteRoadmap);
+    assert.deepEqual(errors, []);
+  });
+
+  it('(d-bis) PASS : master roadmap → site planned = conforme (Règle A, cas backlog)', () => {
+    const master = [
+      { feature: 'F-62', release: 'roadmap', version: 'vX.Y.Z', title: 'Backlog' },
+    ];
+    const siteFeatures = [
+      { refLabel: 'F-62', status: 'planned', version: 'vX.Y.Z' },
+    ];
+    const siteRoadmap = { 'vX.Y.Z': { featureRefs: ['F-62'] } };
+    const { errors } = computeDrift(master, siteFeatures, siteRoadmap);
+    assert.deepEqual(errors, []);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// computeDrift — Check 1 : ORPHAN
+// ---------------------------------------------------------------------------
+
+describe('computeDrift — Check 1 : ORPHAN site→master', () => {
+  it('(b) ORPHAN : feature sur le site absente du master', () => {
+    const master = [
+      { feature: 'F-01', release: 'released', version: 'v0.1.0', title: 'A' },
+    ];
+    const siteFeatures = [
+      { refLabel: 'F-01', status: 'released', version: 'v0.1.0' },
+      { refLabel: 'F-99', status: 'planned', version: 'v0.5.0' }, // orphan
+    ];
+    const siteRoadmap = {};
+    const { errors } = computeDrift(master, siteFeatures, siteRoadmap);
+    assert.equal(errors.length, 1);
+    assert.ok(errors[0].startsWith('ORPHAN'), `attendu ORPHAN, obtenu: ${errors[0]}`);
+    assert.ok(errors[0].includes('F-99'));
+  });
+});
+
+// ---------------------------------------------------------------------------
+// computeDrift — Check 2 : MISSING / STATUS_MISMATCH / VERSION_MISMATCH / DROPPED_VISIBLE
+// ---------------------------------------------------------------------------
+
+describe('computeDrift — Check 2 : master vs site', () => {
+  it('(c) MISSING : feature master non-dropped absente du site', () => {
+    const master = [
+      { feature: 'F-10', release: 'planned', version: 'v0.5.0', title: 'B' },
+    ];
+    const siteFeatures = [];
+    const siteRoadmap = {};
+    const { errors } = computeDrift(master, siteFeatures, siteRoadmap);
+    assert.equal(errors.length, 1);
+    assert.ok(errors[0].startsWith('MISSING'), `attendu MISSING, obtenu: ${errors[0]}`);
+    assert.ok(errors[0].includes('F-10'));
+  });
+
+  it('(d) STATUS_MISMATCH : status site incorrect', () => {
+    const master = [
+      { feature: 'F-31', release: 'released', version: 'v0.4.3', title: 'C' },
+    ];
+    const siteFeatures = [
+      { refLabel: 'F-31', status: 'planned', version: 'v0.4.3' }, // mauvais status
+    ];
+    const siteRoadmap = {};
+    const { errors } = computeDrift(master, siteFeatures, siteRoadmap);
+    assert.equal(errors.length, 1);
+    assert.ok(errors[0].startsWith('STATUS_MISMATCH'), `attendu STATUS_MISMATCH, obtenu: ${errors[0]}`);
+  });
+
+  it('(d) STATUS_MISMATCH : master roadmap, site "roadmap" = FAIL (doit être "planned" Règle A)', () => {
+    const master = [
+      { feature: 'F-62', release: 'roadmap', version: 'vX.Y.Z', title: 'Backlog' },
+    ];
+    const siteFeatures = [
+      { refLabel: 'F-62', status: 'roadmap', version: 'vX.Y.Z' }, // wrong: doit être planned
+    ];
+    const siteRoadmap = {};
+    const { errors } = computeDrift(master, siteFeatures, siteRoadmap);
+    assert.equal(errors.length, 1);
+    assert.ok(errors[0].startsWith('STATUS_MISMATCH'), `attendu STATUS_MISMATCH, obtenu: ${errors[0]}`);
+    assert.ok(errors[0].includes('"planned"'), `le message doit mentionner "planned": ${errors[0]}`);
+  });
+
+  it('(e) VERSION_MISMATCH : version site incorrecte', () => {
+    const master = [
+      { feature: 'F-31', release: 'released', version: 'v0.4.3', title: 'D' },
+    ];
+    const siteFeatures = [
+      { refLabel: 'F-31', status: 'released', version: 'v0.4.0' }, // mauvaise version
+    ];
+    const siteRoadmap = {};
+    const { errors } = computeDrift(master, siteFeatures, siteRoadmap);
+    assert.equal(errors.length, 1);
+    assert.ok(errors[0].startsWith('VERSION_MISMATCH'), `attendu VERSION_MISMATCH, obtenu: ${errors[0]}`);
+  });
+
+  it('(f) DROPPED_VISIBLE : feature dropped encore visible sur le site', () => {
+    const master = [
+      { feature: 'F-99', release: 'dropped', version: 'v0.5.0', title: 'E' },
+    ];
+    const siteFeatures = [
+      { refLabel: 'F-99', status: 'planned', version: 'v0.5.0' }, // ne devrait pas être là
+    ];
+    const siteRoadmap = {};
+    const { errors } = computeDrift(master, siteFeatures, siteRoadmap);
+    assert.equal(errors.length, 1);
+    assert.ok(errors[0].startsWith('DROPPED_VISIBLE'), `attendu DROPPED_VISIBLE, obtenu: ${errors[0]}`);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// computeDrift — Check 3 : ROADMAP_ORPHAN
+// ---------------------------------------------------------------------------
+
+describe('computeDrift — Check 3 : ROADMAP_ORPHAN (anti-orphelin roadmap.ts)', () => {
+  it('(g) ROADMAP_ORPHAN : ref roadmap.ts absente du master', () => {
+    const master = [
+      { feature: 'F-01', release: 'released', version: 'v0.1.0', title: 'A' },
+    ];
+    const siteFeatures = [
+      { refLabel: 'F-01', status: 'released', version: 'v0.1.0' },
+    ];
+    const siteRoadmap = {
+      'v0.1.0': { featureRefs: ['F-01', 'F-GHOST'] }, // F-GHOST inexistant dans master
+    };
+    const { errors } = computeDrift(master, siteFeatures, siteRoadmap);
+    assert.equal(errors.length, 1);
+    assert.ok(errors[0].startsWith('ROADMAP_ORPHAN'), `attendu ROADMAP_ORPHAN, obtenu: ${errors[0]}`);
+    assert.ok(errors[0].includes('F-GHOST'));
+  });
+
+  it('(g-bis) ROADMAP_ORPHAN : ref roadmap.ts sur feature dropped', () => {
+    const master = [
+      { feature: 'F-01', release: 'released', version: 'v0.1.0', title: 'A' },
+      { feature: 'F-50', release: 'dropped', version: 'v0.5.0', title: 'Dropped' },
+    ];
+    const siteFeatures = [
+      { refLabel: 'F-01', status: 'released', version: 'v0.1.0' },
+    ];
+    const siteRoadmap = {
+      'v0.1.0': { featureRefs: ['F-01'] },
+      'v0.5.0': { featureRefs: ['F-50'] }, // dropped : roadmap orphan
+    };
+    const { errors } = computeDrift(master, siteFeatures, siteRoadmap);
+    assert.equal(errors.length, 1);
+    assert.ok(errors[0].startsWith('ROADMAP_ORPHAN'));
+    assert.ok(errors[0].includes('F-50'));
+  });
+
+  it('PASS : roadmap.ts ne cite PAS toutes les features master = normal (éditorial)', () => {
+    // roadmap.ts est non-exhaustif — ne pas exiger que chaque feature y soit
+    const master = [
+      { feature: 'F-01', release: 'released', version: 'v0.1.0', title: 'A' },
+      { feature: 'F-10', release: 'planned', version: 'v0.5.0', title: 'B' },
+    ];
+    const siteFeatures = [
+      { refLabel: 'F-01', status: 'released', version: 'v0.1.0' },
+      { refLabel: 'F-10', status: 'planned', version: 'v0.5.0' },
+    ];
+    // Roadmap cite seulement F-01, pas F-10 — c'est acceptable
+    const siteRoadmap = {
+      'v0.1.0': { featureRefs: ['F-01'] },
+    };
+    const { errors } = computeDrift(master, siteFeatures, siteRoadmap);
+    assert.deepEqual(errors, []);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// computeDrift — cas limites
+// ---------------------------------------------------------------------------
+
+describe('computeDrift — cas limites', () => {
+  it('(h) master null → MASTER_EMPTY', () => {
+    const { errors } = computeDrift(null, [], {});
+    assert.equal(errors.length, 1);
+    assert.ok(errors[0].startsWith('MASTER_EMPTY'));
+  });
+
+  it('(h) master vide [] → MASTER_EMPTY', () => {
+    const { errors } = computeDrift([], [], {});
+    assert.equal(errors.length, 1);
+    assert.ok(errors[0].startsWith('MASTER_EMPTY'));
+  });
+
+  it('(h) sémantique exit-2 : fetchExport null → fail-closed', () => {
+    // computeDrift n'est pas appelé quand fetchExport retourne null —
+    // runGate() retourne directement 2. Ce test vérifie que le contrat
+    // de master null est géré proprement si jamais appelé directement.
+    const { errors } = computeDrift(null, [], {});
+    assert.ok(errors.some((e) => e.startsWith('MASTER_EMPTY')));
+  });
+
+  it('UNMAPPABLE : release inconnu signalé', () => {
+    const master = [
+      { feature: 'F-42', release: 'staging', version: 'v0.3.0', title: 'X' },
+    ];
+    const siteFeatures = [
+      { refLabel: 'F-42', status: 'planned', version: 'v0.3.0' },
+    ];
+    const { errors } = computeDrift(master, siteFeatures, {});
+    assert.equal(errors.length, 1);
+    assert.ok(errors[0].startsWith('UNMAPPABLE'));
+  });
+});
