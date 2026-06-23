@@ -403,13 +403,24 @@ const versions: VersionPhase[] = [
     showFeaturesLink: false,
   },
   {
+    version: 'v0.6.6',
+    grade: 'Silver',
+    status: 'planned',
+    theme: 'Anthropic-Compatible Local Endpoint',
+    description:
+      'Claude Code and other Anthropic-API agents expect a /v1/messages endpoint. v0.6.6 ships exactly that — a local gateway that speaks the Anthropic Messages API and routes every call to a model running on your own hardware. The point is concrete: point Claude Code at gradatum and it runs end-to-end locally, with no request ever leaving your machine.',
+    scopeTeaserItems: ['Serves the Anthropic /v1/messages API locally', 'Routes Claude Code (and any Anthropic-API agent) to a local model on your hardware', 'No request ever leaves your machine'],
+    featureRefs: ['F-75'],
+    showFeaturesLink: false,
+  },
+  {
     version: 'v0.7.0',
     status: 'planned',
     theme: 'Memory Layer + Context Assembly',
     description:
       'A store that answers queries on demand is still passive. The real value is a system that knows what is relevant before you ask — one that remembers what you worked on yesterday, surfaces the decision you forgot last month, and assembles exactly the right context before sending anything to a model. v0.7.0 is that layer: gradatum stops treating each session as stateless and starts reasoning over everything it has accumulated, on your hardware, across time.',
     scopeTeaserItems: ['Assembles relevant context before each query — not raw retrieval', 'Memory window slides with the conversation — no context cliff', 'Proactively surfaces what you forgot you knew', 'Declarative user profile — gradatum knows who it is talking to', 'Picks only the skills relevant to the current task'],
-    featureRefs: ['F-35', 'F-30', 'F-46', 'F-50', 'F-58', 'F-29', 'F-75'],
+    featureRefs: ['F-35', 'F-30', 'F-46', 'F-50', 'F-58', 'F-29', 'F-17', 'F-65', 'F-68', 'F-36'],
     showFeaturesLink: false,
   },
   {
@@ -419,7 +430,7 @@ const versions: VersionPhase[] = [
     description:
       'Every capability built so far — durable memory, code index, context assembly — exists to make this version possible. v0.8.0 ships gradatum-code: a terminal agent that reasons over your codebase using the vault as its memory. It finds the right symbol, understands what changed in the diff, recalls past decisions, and executes tasks end-to-end. It runs entirely on your hardware. Nothing leaves your machine. This is what sovereign software tooling looks like.',
     scopeTeaserItems: ['Terminal agent that reasons over your codebase', 'Finds the right symbol and understands what changed in the diff', 'Recalls past decisions and project history before acting', 'Runs entirely on local hardware — no code ever leaves your machine', 'Executes tasks end-to-end, not just suggestions'],
-    featureRefs: ['F-76', 'F-77', 'F-78', 'F-79'],
+    featureRefs: ['F-76', 'F-77', 'F-78', 'F-79', 'F-70'],
     showFeaturesLink: false,
   },
   {
@@ -430,7 +441,7 @@ const versions: VersionPhase[] = [
     description:
       'API stability is a promise, not a feature. v1.0.0 is the version where gradatum makes that promise: the public contracts freeze, semver guarantees kick in, and anything built on top will not break without explicit notice. It also proves 30 days of continuous operation, runs the long-term memory benchmark reproducibly, and adds multi-user support with OAuth login. This is the milestone where gradatum becomes something you can safely build on.',
     scopeTeaserItems: ['API contracts frozen — safe to build on without breaking changes', 'Privacy filter runs locally — no data sent to external models', '30 days of continuous production operation proven', 'Long-term memory benchmark reproduced and published', 'Multi-user access + OAuth login'],
-    featureRefs: ['F-09', 'F-45', 'F-57'],
+    featureRefs: ['F-09', 'F-45', 'F-57', 'F-67', 'F-51', 'F-66', 'F-63', 'F-64', 'F-25'],
     showFeaturesLink: false,
   },
   {
@@ -441,7 +452,7 @@ const versions: VersionPhase[] = [
     description:
       "Text was always just the starting point. v2.0.0 extends gradatum to images, audio, and documents — and introduces long-horizon memory consolidation, where the system compresses and learns from its own history over time. This is a breaking change by design: the chat API is rebuilt to handle multimodal input natively, completing gradatum's arc from a local knowledge store to a full cognitive infrastructure.",
     scopeTeaserItems: ['Images, audio, and documents understood alongside text', 'Long-horizon memory consolidation — the system learns from its own history'],
-    featureRefs: ['F-49'],
+    featureRefs: ['F-49', 'F-06', 'F-69', 'F-26'],
     showFeaturesLink: false,
   },
 ];

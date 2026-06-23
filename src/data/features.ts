@@ -140,7 +140,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Teams that need to import technical documentation, research papers, or meeting transcripts into the vault without losing the structural context that makes answers accurate.',
         status: 'planned',
-        version: 'vX.Y.Z',
+        version: 'v2.0.0',
       },
       {
         id: 'f-39',
@@ -220,7 +220,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Agents and search clients that need results biased toward current knowledge — particularly useful for decision logs, meeting notes, and time-sensitive technical documentation.',
         status: 'planned',
-        version: 'vX.Y.Z',
+        version: 'v0.7.0',
       },
       {
         id: 'f-19',
@@ -268,7 +268,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators running persistent agents whose identity notes must not change without explicit authorization — detecting accidental overwrites and adversarial prompt-injection attempts.',
         status: 'planned',
-        version: 'vX.Y.Z',
+        version: 'v0.7.0',
       },
       {
         id: 'f-31',
@@ -410,7 +410,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor: 'Operators managing multi-agent deployments with distributed knowledge consolidation and querying.',
         status: 'planned',
-        version: 'vX.Y.Z',
+        version: 'v1.0.0',
       },
       {
         id: 'f-64',
@@ -425,7 +425,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor: 'Teams handling regulated data requiring audit-trail deletion compliance.',
         status: 'planned',
-        version: 'vX.Y.Z',
+        version: 'v1.0.0',
       },
       {
         id: 'f-65',
@@ -440,7 +440,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor: 'Researchers and analysts needing to reconstruct event timelines and detect temporal contradictions.',
         status: 'planned',
-        version: 'vX.Y.Z',
+        version: 'v0.7.0',
       },
       {
         id: 'f-25',
@@ -456,7 +456,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators who need vault data replicated across machines or want read replicas for high-read workloads, without migrating to a heavier database engine.',
         status: 'planned',
-        version: 'vX.Y.Z',
+        version: 'v1.0.0',
       },
       {
         id: 'f-26',
@@ -472,7 +472,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers with vaults exceeding tens of thousands of notes who find SQLite ANN performance insufficient, and contributors who want to benchmark retrieval quality across storage backends.',
         status: 'planned',
-        version: 'vX.Y.Z',
+        version: 'v2.0.0',
       },
       {
         id: 'f-37',
@@ -585,7 +585,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators maintaining long-lived vaults where notes accumulate from multiple agents or ingestion pipelines, and who need a systematic quality baseline rather than ad-hoc manual review.',
         status: 'planned',
-        version: 'vX.Y.Z',
+        version: 'v1.0.0',
       },
       {
         id: 'f-02',
@@ -707,7 +707,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Vault maintainers who need the curator admission policy tuned to their own quality and noise profile rather than relying on the initial defaults.',
         status: 'planned',
-        version: 'vX.Y.Z',
+        version: 'v1.0.0',
       },
       {
         id: 'f-67',
@@ -723,7 +723,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators and cost analysts who need granular visibility into where vault LLM spend is going, and developers building cost-attribution dashboards.',
         status: 'planned',
-        version: 'vX.Y.Z',
+        version: 'v1.0.0',
       },
       {
         id: 'f-68',
@@ -739,7 +739,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers building agents where automatic access to prior lessons before acting is critical — reducing repeated mistakes and accelerating decision quality.',
         status: 'planned',
-        version: 'vX.Y.Z',
+        version: 'v0.7.0',
       },
       {
         id: 'f-69',
@@ -755,7 +755,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators running multi-session vaults where automatic extraction of learning patterns and behavior profiles becomes valuable as the vault matures.',
         status: 'planned',
-        version: 'vX.Y.Z',
+        version: 'v2.0.0',
       },
       {
         id: 'f-70',
@@ -771,7 +771,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Code maintainers and refactoring tools where knowing the exact implementation that a method call targets is critical to safety and correctness.',
         status: 'planned',
-        version: 'vX.Y.Z',
+        version: 'v0.8.0',
       },
       {
         id: 'f-71',
@@ -836,6 +836,54 @@ const groups: FeatureGroup[] = [
           'Operators deploying gradatum on private networks who need encryption without adding a reverse proxy or external gateway.',
         status: 'released',
         version: 'v0.5.2',
+      },
+      {
+        id: 'f-80',
+        refLabel: 'F-80',
+        name: 'gradatum-as-channel: Proactive MCP Push',
+        positioning:
+          'Lets gradatum initiate — push a relevant memory to your agent before you ask, instead of only answering when queried.',
+        howItWorks: [
+          'Exposes gradatum as an MCP channel capable of server-initiated notifications, not just request/response.',
+          'When a trigger fires (a new note, a scheduled recall), gradatum pushes the relevant context to the connected agent.',
+          'The agent receives proactively surfaced memory without polling the vault.',
+        ],
+        whoItsFor:
+          'Agent builders who want a memory layer that volunteers relevant context proactively, rather than only on explicit retrieval.',
+        status: 'planned',
+        version: 'vX.Y.Z',
+      },
+      {
+        id: 'f-81',
+        refLabel: 'F-81',
+        name: 'HippoRAG-2 Associative Recall: PPR over Wikilink Graph',
+        positioning:
+          'Associative recall that follows the wikilink graph — surfacing notes connected to your query, not just lexically or semantically similar ones.',
+        howItWorks: [
+          'Seeds Personalized PageRank (PPR) from the notes that match a query, then propagates over the note wikilink graph.',
+          'Implements the HippoRAG-2 associative-memory approach: graph propagation surfaces indirectly-linked but relevant notes.',
+          'Complements lexical and semantic search with structural, relationship-aware recall.',
+        ],
+        whoItsFor:
+          'Users with densely interlinked vaults who want recall to follow connections that a keyword or embedding match alone would miss.',
+        status: 'planned',
+        version: 'vX.Y.Z',
+      },
+      {
+        id: 'f-82',
+        refLabel: 'F-82',
+        name: 'Arbor HTR: Research Spike',
+        positioning:
+          'An exploratory research track evaluating Arbor for handwritten-text recognition (HTR) as a possible future ingest path — framed as a spike, not a commitment.',
+        howItWorks: [
+          'A time-boxed research spike, not a planned deliverable: evaluates the Arbor approach to handwritten / document-image text recognition.',
+          'Probes the feasibility of turning handwritten or structured documents into vault-ingestible notes.',
+          'The outcome decides whether this graduates into a committed feature or is shelved.',
+        ],
+        whoItsFor:
+          'Forward-looking users curious about gradatum ingesting handwritten or document-image sources; explicitly exploratory.',
+        status: 'planned',
+        version: 'vX.Y.Z',
       },
     ],
   },
@@ -939,7 +987,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers using Claude Code, custom agents, or tools that natively speak the Anthropic Messages API who want to run entirely on local hardware without cloud LLM dependencies.',
         status: 'planned',
-        version: 'v0.7.0',
+        version: 'v0.6.6',
       },
       {
         id: 'f-76',
