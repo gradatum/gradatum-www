@@ -220,7 +220,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Agents and search clients that need results biased toward current knowledge — particularly useful for decision logs, meeting notes, and time-sensitive technical documentation.',
         status: 'planned',
-        version: 'v0.4.4',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-19',
@@ -235,8 +235,8 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Operators who need to understand which vault features drive LLM spend, and developers building cost-attribution dashboards or budget-alert workflows on top of the vault.',
-        status: 'planned',
-        version: 'v0.4.4',
+        status: 'released',
+        version: 'v0.3.0',
       },
       {
         id: 'f-09',
@@ -252,7 +252,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers ingesting documents that may contain personal data — emails, transcripts, HR notes — and operators who need a compliance-friendly vault with no third-party data processing.',
         status: 'planned',
-        version: 'vX.Y.Z',
+        version: 'v1.0.0',
       },
       {
         id: 'f-36',
@@ -347,8 +347,8 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Developers running long-lived agent sessions who want raw notes compressed into searchable knowledge automatically — and teams building shared knowledge stores that grow in quality over time.',
-        status: 'planned',
-        version: 'v0.4.4',
+        status: 'released',
+        version: 'v0.5.2',
       },
       {
         id: 'f-60',
@@ -363,8 +363,8 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Developers and agents who want past mistakes and validated patterns surfaced automatically before acting — not just stored somewhere and manually searched.',
-        status: 'planned',
-        version: 'v0.4.4',
+        status: 'released',
+        version: 'v0.5.2',
       },
       {
         id: 'f-61',
@@ -394,8 +394,8 @@ const groups: FeatureGroup[] = [
           'Symbol resolution is deterministic and language-aware: method names, free functions, imports, and exports are properly disambiguated without semantic analysis.',
         ],
         whoItsFor: 'Teams maintaining polyglot codebases needing call chain understanding across multiple languages.',
-        status: 'planned',
-        version: 'vX.Y.Z',
+        status: 'released',
+        version: 'v0.6.4',
       },
       {
         id: 'f-63',
@@ -456,7 +456,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators who need vault data replicated across machines or want read replicas for high-read workloads, without migrating to a heavier database engine.',
         status: 'planned',
-        version: 'v0.4.4',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-26',
@@ -472,7 +472,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers with vaults exceeding tens of thousands of notes who find SQLite ANN performance insufficient, and contributors who want to benchmark retrieval quality across storage backends.',
         status: 'planned',
-        version: 'v0.4.4',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-37',
@@ -488,8 +488,8 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Developers and operators who want to inspect and monitor their vault through a browser rather than raw API calls, without adding infrastructure or weakening data sovereignty.',
-        status: 'planned',
-        version: 'v0.4.6',
+        status: 'released',
+        version: 'v0.5.2',
       },
       {
         id: 'f-38',
@@ -504,8 +504,8 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Developers using MCP-compatible LLM clients (Claude Desktop, Cursor, custom agents) who want direct vault access without installing a local proxy stub.',
-        status: 'planned',
-        version: 'v0.5.0',
+        status: 'released',
+        version: 'v0.6.4',
       },
       {
         id: 'f-56',
@@ -520,8 +520,8 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Operators deploying gradatum behind a reverse proxy or in a containerized environment, and mobile MCP clients (Claude for iOS/Android) that require a stateless HTTP transport.',
-        status: 'planned',
-        version: 'v0.5.0',
+        status: 'released',
+        version: 'v0.6.4',
       },
       {
         id: 'f-43',
@@ -537,7 +537,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Teams where distillation quality is critical — RAG pipelines, shared knowledge bases, long-running agents — who cannot afford hallucinated or contradictory notes accumulating in the vault.',
         status: 'planned',
-        version: 'v0.5.0',
+        version: 'v0.7.0',
       },
       {
         id: 'f-45',
@@ -553,7 +553,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Teams and households who want to run one gradatum instance shared across multiple people or agents, each with their own private memory and optionally contributing to shared knowledge.',
         status: 'planned',
-        version: 'v0.5.1',
+        version: 'v1.0.0',
       },
       {
         id: 'f-57',
@@ -569,7 +569,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators who want to reach their vault from a mobile MCP client or ChatGPT without a VPN, and who want token rotation, explicit consent, and centralized revocation instead of static bearer tokens.',
         status: 'planned',
-        version: 'v0.5.1',
+        version: 'v1.0.0',
       },
       {
         id: 'f-51',
@@ -585,7 +585,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators maintaining long-lived vaults where notes accumulate from multiple agents or ingestion pipelines, and who need a systematic quality baseline rather than ad-hoc manual review.',
         status: 'planned',
-        version: 'v0.5.1',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-02',
@@ -692,7 +692,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Integrators building long-running agents that hit context-window limits and need to keep prompts lean without losing access to source notes.',
         status: 'planned',
-        version: 'vX.Y.Z',
+        version: 'v0.7.0',
       },
       {
         id: 'f-66',
@@ -708,6 +708,134 @@ const groups: FeatureGroup[] = [
           'Vault maintainers who need the curator admission policy tuned to their own quality and noise profile rather than relying on the initial defaults.',
         status: 'planned',
         version: 'vX.Y.Z',
+      },
+      {
+        id: 'f-67',
+        refLabel: 'F-67',
+        name: 'Event-Log Cost Breakdown Query API — suite F-19',
+        positioning:
+          'Completes event-log cost attribution by adding a query API that surfaces cost breakdowns per feature, per model, and per time window.',
+        howItWorks: [
+          'Builds on the released F-19 event log infrastructure (QaEvent struct, append-only storage, 90-day retention) to expose a dedicated cost-breakdown endpoint.',
+          'Queries span multiple dimensions: cost_per_feature (rolls up all LLM calls tagged with a feature_id), cost_per_model (aggregates by model identifier), and cost_per_day (trends over time).',
+          'Results include estimated cost, token usage, and call frequency, enabling operators to identify cost-optimization opportunities and track spend trends over weeks.',
+        ],
+        whoItsFor:
+          'Operators and cost analysts who need granular visibility into where vault LLM spend is going, and developers building cost-attribution dashboards.',
+        status: 'planned',
+        version: 'vX.Y.Z',
+      },
+      {
+        id: 'f-68',
+        refLabel: 'F-68',
+        name: 'Lessons Recall Pre-Action Hook — suite F-60',
+        positioning:
+          'Completes lessons recall by adding an automatic pre-action hook that fires before the agent starts a new task, injecting relevant prior lessons into the context.',
+        howItWorks: [
+          'Builds on the released F-60 endpoint and MCP tool to add the remaining pre-action hook surface.',
+          'When the agent is about to start a new task, the hook automatically queries the lessons-learned corpus with semantic search, retrieves the top-3 matching lessons, and injects them into Zone A of the context before the first response.',
+          'Configuration allows operators to tune the hook sensitivity, lesson count, and filters (by domain, role, or tag) so lessons are contextually relevant and not overwhelming.',
+        ],
+        whoItsFor:
+          'Developers building agents where automatic access to prior lessons before acting is critical — reducing repeated mistakes and accelerating decision quality.',
+        status: 'planned',
+        version: 'vX.Y.Z',
+      },
+      {
+        id: 'f-69',
+        refLabel: 'F-69',
+        name: 'Distill Learn/Peer/Rationale Modes — suite F-22',
+        positioning:
+          'Completes the distillation pipeline by shipping the Learn, Peer, and Rationale modes deferred from the F-22 Semantic-only release.',
+        howItWorks: [
+          'Builds on the released F-22 Semantic distillation mode to add three additional modes: Learn (extracts cost and quality patterns from QaEvents), Peer (builds user behavior profiles from session interactions), and Rationale (preserves the reasoning chain behind distilled decisions).',
+          'Each mode runs as a background Job::Distill variant with its own criteria, frequency, and output format.',
+          'All modes integrate with F-17 (trust scoring) and F-55 (temporal index) so distilled notes inherit verifiable lineage and can be queried by time.',
+        ],
+        whoItsFor:
+          'Operators running multi-session vaults where automatic extraction of learning patterns and behavior profiles becomes valuable as the vault matures.',
+        status: 'planned',
+        version: 'vX.Y.Z',
+      },
+      {
+        id: 'f-70',
+        refLabel: 'F-70',
+        name: 'Code-Map Qualified Method-Call Resolution — suite F-62',
+        positioning:
+          'Completes the code index by adding qualified method-call resolution, so "Type::method()" is correctly resolved to the specific implementation without ambiguity.',
+        howItWorks: [
+          'Builds on the released F-62 code-map reverse-dependency graph to handle the partial case: self.method() calls and qualified calls like Type::method() that require type inference.',
+          'Language-specific type resolution is added per language (Rust trait resolution, TypeScript class hierarchies, Python method resolution order).',
+          'Results include the resolved target implementation, qualified with its module and defining type, so call chains are fully traceable.',
+        ],
+        whoItsFor:
+          'Code maintainers and refactoring tools where knowing the exact implementation that a method call targets is critical to safety and correctness.',
+        status: 'planned',
+        version: 'vX.Y.Z',
+      },
+      {
+        id: 'f-71',
+        refLabel: 'F-71',
+        name: 'Queue DAG: Job Dependency Chains',
+        positioning:
+          'Lets background jobs depend on each other — a job can declare that it waits for one or more prior jobs, and the queue ensures the dependency chain is respected.',
+        howItWorks: [
+          'Each job carries an optional await_jobs list of ULID references to prior jobs that must complete before this one can run.',
+          'QueueStore::find_awaiting(job_id) queries for predecessors using LIKE-based locus prefix matching to avoid collision; QueueStore::set_pending(job_id) idempotently promotes a job from Waiting to Pending once all its dependencies are satisfied.',
+          'When a job completes, the queue runs a cascade promotion sweep to identify newly unblocked dependents; if promotion fails, a recovery sweep runs on the next worker cycle.',
+        ],
+        whoItsFor:
+          'Operators running complex background pipelines where one job must wait for another to finish — ingestion triggering distillation, or distillation triggering validation.',
+        status: 'released',
+        version: 'v0.6.4',
+      },
+      {
+        id: 'f-72',
+        refLabel: 'F-72',
+        name: 'Agent Action Tracing',
+        positioning:
+          'Records every agent action — what ran, when, what it touched, and why — in an append-only log queryable for 90 days without external storage.',
+        howItWorks: [
+          'POST /api/v1/session-log/trace accepts agent action events (fire-and-forget, no update or delete) with fields: agent_id (stable server identifier from JWT sub), session_id, tenant_id, ts_ms (millisecond timestamp), action_type (enum), target (resource affected), intent (what the agent was trying to do), outcome (success/failure), marker (link to decision), and ref (pointer to related note).',
+          'Storage is append-only; retention is configurable via [session_trace] retention_days (default 90).',
+          'Queries via vault_timeline can reconstruct what an agent did in a session without storing personally identifiable data.',
+        ],
+        whoItsFor:
+          'Operators who need an audit trail of agent activity without relying on external logging infrastructure, and teams building compliance or security workflows.',
+        status: 'released',
+        version: 'v0.5.2',
+      },
+      {
+        id: 'f-73',
+        refLabel: 'F-73',
+        name: 'Proof-of-Absence Search Signal',
+        positioning:
+          'Adds a signal to search results that distinguishes "the topic is truly absent from the vault" from "the topic is present but not ranked high enough".',
+        howItWorks: [
+          'vault_search now accepts an optional include_corpus_count parameter (opt-in, zero overhead by default).',
+          'When enabled, results include corpus_count: the total number of notes in the vault that matched the query at any score level (even below the ranking threshold).',
+          'A corpus_count of 0 proves the topic is absent; a corpus_count > len(results) proves the topic exists but was filtered or re-ranked below the top-K.',
+        ],
+        whoItsFor:
+          'Developers building workflows where it is critical to know whether information is truly missing versus just not highly ranked.',
+        status: 'released',
+        version: 'v0.5.2',
+      },
+      {
+        id: 'f-74',
+        refLabel: 'F-74',
+        name: 'Native TLS Termination',
+        positioning:
+          'Adds native TLS 1.2+/1.3 support to the gradatum server, eliminating the need for a reverse proxy just to enable encryption.',
+        howItWorks: [
+          'The gradatum-server binary accepts [tls] configuration: cert_path (PKCS#8 certificate), key_path (private key), and optional min_tls_version (default 1.2).',
+          'TLS termination happens at the socket layer; the HTTP API and MCP surface both run over the same encrypted connection.',
+          'No external proxy, no sidecar — encryption is built in.',
+        ],
+        whoItsFor:
+          'Operators deploying gradatum on private networks who need encryption without adding a reverse proxy or external gateway.',
+        status: 'released',
+        version: 'v0.5.2',
       },
     ],
   },
@@ -731,7 +859,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers building agent runtimes or custom tool integrations who need programmatic control over what vault content enters the LLM context and in what order.',
         status: 'planned',
-        version: 'v0.6.0',
+        version: 'v0.7.0',
       },
       {
         id: 'f-30',
@@ -747,7 +875,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers running long coding sessions, extended research tasks, or multi-turn agent workflows where context overflow today means losing the earlier part of the conversation.',
         status: 'planned',
-        version: 'v0.6.0',
+        version: 'v0.7.0',
       },
       {
         id: 'f-46',
@@ -763,7 +891,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers building agents that should surface past decisions or prior solutions automatically — without the user having to remember to ask and without scanning the full vault on every turn.',
         status: 'planned',
-        version: 'v0.6.0',
+        version: 'v0.7.0',
       },
       {
         id: 'f-50',
@@ -779,7 +907,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Individuals and teams who want to give every agent a reliable baseline understanding of who they are and how they work — without relying entirely on inferred behavior profiles.',
         status: 'planned',
-        version: 'v0.6.0',
+        version: 'v0.7.0',
       },
       {
         id: 'f-58',
@@ -795,7 +923,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers managing large skill libraries who want agents to receive only the skills they need for the current task — reducing context noise and enabling community-contributed skill catalogs.',
         status: 'planned',
-        version: 'v0.6.0',
+        version: 'v0.7.0',
       },
     ],
   },

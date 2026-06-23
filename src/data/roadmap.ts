@@ -202,9 +202,9 @@ const versions: VersionPhase[] = [
     status: 'done',
     theme: 'Vault Core — Durable Memory Layer',
     description:
-      'A store that only appends is not enough — you need to know what you can trust, recover from mistakes, and keep the vault from growing unbounded. v0.4.0 completes the memory layer: every note carries a trust score, a full edit history, and stable internal links that survive renames. Stale content decays automatically, raw notes are periodically distilled into reusable knowledge, and concurrent writes are always safe. This is the version that turns a write-only store into a durable, queryable memory.',
-    scopeTeaserItems: ['Smart document ingestion (content-aware chunking)', 'Full version history — every edit preserved', 'Safe concurrent writes — no lost updates', 'Notes decay by age, sources carry verifiable lineage', 'Auto-compaction keeps the vault lean without losing traceability', 'Scheduled distillation — raw notes compressed into reusable knowledge'],
-    featureRefs: ['F-06', 'F-39', 'F-40', 'F-41', 'F-47', 'F-17', 'F-19', 'F-09', 'F-36', 'F-31', 'F-32', 'F-44', 'F-55', 'F-22', 'F-25', 'F-26'],
+      'A store that only appends is not enough — you need to know what you can trust, recover from mistakes, and keep the vault from growing unbounded. v0.4.0 completes the memory layer: every note carries a trust score, a full edit history, and stable internal links that survive renames. Notes can be intentionally forgotten with progressive decay, and concurrent writes are always safe. This is the version that turns a write-only store into a durable, queryable memory.',
+    scopeTeaserItems: ['Stable internal links — rename a note without breaking references', 'Full version history — every edit preserved', 'Safe concurrent writes — no lost updates', 'Sources carry verifiable lineage', 'Notes can be intentionally forgotten', 'Chronological memory queries'],
+    featureRefs: ['F-39', 'F-40', 'F-41', 'F-47'],
     showFeaturesLink: true,
     milestones: [
       {
@@ -265,7 +265,7 @@ const versions: VersionPhase[] = [
     description:
       'Multi-vault deployments need a unified way to address data across vaults and agents without per-job coordination. v0.4.3 ships that abstraction: VaultScope gives every background job a composable, deterministic address; Semantic Forget completes the data lifecycle with intentional deletion and decay; and Temporal Index adds chronological querying so agents can reason about when events happened and in what order.',
     scopeTeaserItems: ['VaultScope: address any locus across vaults and agents', 'Semantic Forget with mandatory dry-run and progressive decay', 'Temporal Index with before/after/around queries'],
-    featureRefs: ['F-31', 'F-32', 'F-44', 'F-55', 'F-60', 'F-61'],
+    featureRefs: ['F-31', 'F-32', 'F-44', 'F-55', 'F-61'],
     showFeaturesLink: true,
   },
   {
@@ -286,7 +286,7 @@ const versions: VersionPhase[] = [
       'Encrypted connections out of the box (TLS 1.2+/1.3)',
       'Edit notes safely under concurrent load — conflicts detected, never silently overwritten',
     ],
-    featureRefs: ['F-55'],
+    featureRefs: ['F-22', 'F-37', 'F-60', 'F-72', 'F-73', 'F-74'],
     showFeaturesLink: false,
     milestones: [
       {
@@ -362,8 +362,8 @@ const versions: VersionPhase[] = [
     status: 'done',
     theme: 'Queryable Memory Store — MCP-Native Backend',
     description:
-      'Until now, gradatum was only usable through its own agent. v0.6.0 opens the vault to any MCP-compatible client — Claude Code, IDEs, custom agents — over a standard HTTP connection, with no sidecar process or protocol shim. Notes are validated and auto-repaired on write so the vault stays consistent regardless of which client is writing. The deliberate choice here: make the store useful to others first, then build gradatum\'s own context layer (v0.7.0) on top of the same interface everyone else uses.',
-    scopeTeaserItems: ['Connect Claude Code, IDEs, or any agent directly via MCP', 'Standard HTTP transport — no sidecar, no stdio pipe', 'Notes validated and auto-repaired on write', 'Vault audit — duplicates detected and cleaned'],
+      'Until now, gradatum was only usable through its own agent. v0.6.0 opens the vault to any MCP-compatible client — Claude Code, IDEs, custom agents — over a standard HTTP connection, with no sidecar process or protocol shim. The deliberate choice here: make the store useful to others first, then build gradatum\'s own context layer (v0.7.0) on top of the same interface everyone else uses.',
+    scopeTeaserItems: ['Connect Claude Code, IDEs, or any agent directly via MCP', 'Standard HTTP transport — no sidecar, no stdio pipe'],
     featureRefs: ['F-38', 'F-56'],
     showFeaturesLink: true,
   },
@@ -383,6 +383,7 @@ const versions: VersionPhase[] = [
       '12 correctness bugs fixed (note deletion, embedding index validation, internal API encapsulation)',
       '2337 tests pass',
     ],
+    featureRefs: ['F-62', 'F-71'],
     showFeaturesLink: false,
   },
   {
@@ -413,7 +414,7 @@ const versions: VersionPhase[] = [
     description:
       'API stability is a promise, not a feature. v1.0.0 is the version where gradatum makes that promise: the public contracts freeze, semver guarantees kick in, and anything built on top will not break without explicit notice. It also proves 30 days of continuous operation, runs the long-term memory benchmark reproducibly, and adds multi-user support with OAuth login. This is the milestone where gradatum becomes something you can safely build on.',
     scopeTeaserItems: ['API contracts frozen — safe to build on without breaking changes', 'Privacy filter runs locally — no data sent to external models', '30 days of continuous production operation proven', 'Long-term memory benchmark reproduced and published', 'Multi-user access + OAuth login'],
-    featureRefs: ['F-45', 'F-57'],
+    featureRefs: ['F-09', 'F-45', 'F-57'],
     showFeaturesLink: false,
   },
   {
