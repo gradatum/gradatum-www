@@ -925,6 +925,86 @@ const groups: FeatureGroup[] = [
         status: 'planned',
         version: 'v0.7.0',
       },
+      {
+        id: 'f-75',
+        refLabel: 'F-75',
+        name: 'Gateway: Anthropic Messages API for Local-LLM Agents',
+        positioning:
+          'Adds native Anthropic Messages API support to the gateway, enabling Claude Code and any Anthropic-API client to run 100% locally without cloud dependencies.',
+        howItWorks: [
+          'The gateway adds native support for the Anthropic Messages API alongside the existing OpenAI routes (/v1/chat/completions, /v1/embeddings, /v1/rerank).',
+          'Incoming Messages API calls are translated to the configured local LLM backend, preserving full API semantics (system prompts, tools, streaming, response formats).',
+          'Clients like Claude Code and custom Anthropic-native tools can now target a local gateway endpoint instead of api.anthropic.com, keeping all inference on-machine.',
+        ],
+        whoItsFor:
+          'Developers using Claude Code, custom agents, or tools that natively speak the Anthropic Messages API who want to run entirely on local hardware without cloud LLM dependencies.',
+        status: 'planned',
+        version: 'v0.7.0',
+      },
+      {
+        id: 'f-76',
+        refLabel: 'F-76',
+        name: 'gradatum-code: Terminal Agent Core',
+        positioning:
+          'Terminal agent that reasons over code using vault memory — finds symbols, understands diffs, recalls decisions, and executes tasks end-to-end, entirely local.',
+        howItWorks: [
+          'gradatum-code is an agent runtime built on top of the context assembly layer (F-35), the code index (F-62), vault storage, and decision recall from accumulated project history.',
+          'It uses the vault as durable memory across sessions so it recalls what it did yesterday, what decisions were made, and what patterns worked or failed before.',
+          'Execution is fully deterministic and auditable: every action is logged, every decision is traceable back to the vault.',
+        ],
+        whoItsFor:
+          'Developers who want a terminal agent that understands their codebase deeply, remembers project history, and executes tasks end-to-end — not just suggest changes — entirely on their own machine.',
+        status: 'planned',
+        version: 'v0.8.0',
+      },
+      {
+        id: 'f-77',
+        refLabel: 'F-77',
+        name: 'Diff-Aware Code Reasoning',
+        positioning:
+          'Understands code changes via diffs and code index, letting the agent reason about changes before acting.',
+        howItWorks: [
+          'The agent receives a diff and queries the code index (F-62) to understand the symbol context before and after the change.',
+          'Side-by-side reasoning resolves what was modified, deleted, or added — feeding into decision logic for the next action.',
+          'Integration with the vault surfaces prior decisions that touched the same symbols, allowing the agent to learn from past handling of similar code.',
+        ],
+        whoItsFor:
+          'Developers working on large refactorings or incremental changes where understanding the exact code delta is critical to making the right next decision.',
+        status: 'planned',
+        version: 'v0.8.0',
+      },
+      {
+        id: 'f-78',
+        refLabel: 'F-78',
+        name: 'Vault-Backed Decision Recall',
+        positioning:
+          'Recalls past decisions and project history from vault before executing tasks, ensuring reasoning is grounded in prior work.',
+        howItWorks: [
+          'Before acting on a new request, the agent queries the vault with the task description and retrieves the top-K decisions, past attempts, and lessons learned on similar work.',
+          'The recalled context is injected into the agent context (via the context assembly layer) so decision-making is informed by project history, not just the current task.',
+          'If a similar task succeeded or failed before, that knowledge is available to the agent without it having to rediscover it.',
+        ],
+        whoItsFor:
+          'Teams and individuals who want their agent to build on prior work rather than starting from scratch, reducing repeated mistakes and accelerating task execution.',
+        status: 'planned',
+        version: 'v0.8.0',
+      },
+      {
+        id: 'f-79',
+        refLabel: 'F-79',
+        name: 'End-to-End Local Task Execution',
+        positioning:
+          'Executes complete tasks on local hardware — not suggestions, but finished work with commits and full auditability.',
+        howItWorks: [
+          'The agent is given permission to execute file operations, run builds, commit changes, and push to a configured local or remote repo, all under auditable logging.',
+          'Execution is bounded: the agent defines a task scope, estimates effort, and reports both success and failure with full context so humans can audit decisions.',
+          'All actions are reversible: commits are traced, branches can be reset, and every change is logged in the vault for post-mortem analysis if needed.',
+        ],
+        whoItsFor:
+          'Developers who want their agent to go beyond analysis and actually complete work end-to-end, with full auditability and control.',
+        status: 'planned',
+        version: 'v0.8.0',
+      },
     ],
   },
   {
