@@ -393,7 +393,7 @@ const versions: VersionPhase[] = [
     description:
       'A store that answers queries on demand is still passive. The real value is a system that knows what is relevant before you ask — one that remembers what you worked on yesterday, surfaces the decision you forgot last month, and assembles exactly the right context before sending anything to a model. v0.7.0 is that layer: gradatum stops treating each session as stateless and starts reasoning over everything it has accumulated, on your hardware, across time.',
     scopeTeaserItems: ['Assembles relevant context before each query — not raw retrieval', 'Memory window slides with the conversation — no context cliff', 'Proactively surfaces what you forgot you knew', 'Declarative user profile — gradatum knows who it is talking to', 'Picks only the skills relevant to the current task'],
-    featureRefs: ['F-35', 'F-30', 'F-46', 'F-50', 'F-58', 'F-29'],
+    featureRefs: ['F-35', 'F-30', 'F-46', 'F-50', 'F-58', 'F-29', 'F-75'],
     showFeaturesLink: false,
   },
   {
@@ -403,7 +403,7 @@ const versions: VersionPhase[] = [
     description:
       'Every capability built so far — durable memory, code index, context assembly — exists to make this version possible. v0.8.0 ships gradatum-code: a terminal agent that reasons over your codebase using the vault as its memory. It finds the right symbol, understands what changed in the diff, recalls past decisions, and executes tasks end-to-end. It runs entirely on your hardware. Nothing leaves your machine. This is what sovereign software tooling looks like.',
     scopeTeaserItems: ['Terminal agent that reasons over your codebase', 'Finds the right symbol and understands what changed in the diff', 'Recalls past decisions and project history before acting', 'Runs entirely on local hardware — no code ever leaves your machine', 'Executes tasks end-to-end, not just suggestions'],
-    featureRefs: [],
+    featureRefs: ['F-76', 'F-77', 'F-78', 'F-79'],
     showFeaturesLink: false,
   },
   {
