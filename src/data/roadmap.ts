@@ -387,6 +387,22 @@ const versions: VersionPhase[] = [
     showFeaturesLink: false,
   },
   {
+    version: 'v0.6.5',
+    grade: 'Silver',
+    status: 'done',
+    theme: 'Project-Map Management Stabilization',
+    description:
+      'The project-map feature (structured feature lifecycle tracking with typed wikilinks as a canonical vault section) is now stabilized. v0.6.5 ships the complete feature cycle — release axis (roadmap / planned / released), deterministic duplicate detection, and a fail-closed CI gate. The public roadmap is reconciled to code ground-truth: CHANGELOG and git tags are now the authority, not separate documents. No new user-facing features — hardening and tooling before the context layer arrives in v0.7.0.',
+    scopeTeaserItems: [
+      'Feature lifecycle tracking — release axis (roadmap / planned / released)',
+      'Public roadmap reconciled to code ground-truth',
+      'Project-map validator + fail-closed CI gate',
+      'Deterministic card detection — no duplicate drift',
+    ],
+    featureRefs: [],
+    showFeaturesLink: false,
+  },
+  {
     version: 'v0.7.0',
     status: 'planned',
     theme: 'Memory Layer + Context Assembly',
