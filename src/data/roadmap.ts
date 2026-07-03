@@ -428,7 +428,7 @@ const versions: VersionPhase[] = [
     status: 'done',
     theme: 'Active Recall',
     description:
-      'Memory is only useful if you can retrieve it. v0.7.1 adds proactive retrieval: gradatum autonomously surfaces relevant notes before you ask, learning what matters to your workflow and bringing those decisions into context automatically.',
+      'Memory is only useful if you can retrieve it. v0.7.1 adds proactive retrieval: gradatum autonomously surfaces relevant notes before you ask, recording which surfaced notes are actually used and bringing those decisions into context automatically.',
     scopeTeaserItems: ['Proactive note suggestions based on workflow', 'Surface forgotten decisions in real time'],
     featureRefs: [],
     showFeaturesLink: false,
@@ -458,7 +458,7 @@ const versions: VersionPhase[] = [
     status: 'done',
     theme: 'Temporal Search & Decay',
     description:
-      'Memory fades over time — and sometimes intentionally. v0.7.4 adds temporal search with from/to filters so agents can reason about what happened before or after a specific date. Decay functions fade away irrelevant notes automatically, keeping the vault focused on what still matters.',
+      'Memory fades over time — and sometimes intentionally. v0.7.4 adds temporal search with from/to filters so agents can reason about what happened before or after a specific date. Recency decay down-weights stale notes in relevance scoring, keeping the vault focused on what still matters.',
     scopeTeaserItems: ['Temporal filters: search between two dates', 'Configurable decay functions', 'Chronological queries without external calendars'],
     featureRefs: ['F-65', 'F-17'],
     showFeaturesLink: false,
@@ -468,8 +468,8 @@ const versions: VersionPhase[] = [
     status: 'done',
     theme: 'Studio Observability',
     description:
-      'You cannot improve what you cannot see. v0.7.5 ships three observability features: a distillation quality dashboard showing how well notes are being compressed, a task health endpoint tracking background job status in real time, and request metrics visible directly in the admin UI. Operations are now transparent.',
-    scopeTeaserItems: ['Distillation quality metrics', 'Real-time background job health', 'Request performance graphs in admin studio'],
+      'You cannot improve what you cannot see. v0.7.5 ships three observability features: real-time background task health, operational metrics charts, and a session activity trace browser — all in the admin studio. Operations are now transparent.',
+    scopeTeaserItems: ['Real-time background job health', 'Operational metrics graphs in admin studio', 'Session activity trace browser'],
     featureRefs: ['F-85'],
     showFeaturesLink: false,
   },
@@ -486,11 +486,11 @@ const versions: VersionPhase[] = [
   {
     version: 'v0.8.0',
     status: 'planned',
-    theme: 'gradatum-code — Sovereign Terminal Agent',
+    theme: 'Enrichment — Ingest & OCR Groundwork',
     description:
-      'Every capability built so far — durable memory, code index, context assembly — exists to make this version possible. v0.8.0 ships gradatum-code: a terminal agent that reasons over your codebase using the vault as its memory. It finds the right symbol, understands what changed in the diff, recalls past decisions, and executes tasks end-to-end. It runs entirely on your hardware. Nothing leaves your machine. This is what sovereign software tooling looks like.',
-    scopeTeaserItems: ['Terminal agent that reasons over your codebase', 'Finds the right symbol and understands what changed in the diff', 'Recalls past decisions and project history before acting', 'Runs entirely on local hardware — no code ever leaves your machine', 'Executes tasks end-to-end, not just suggestions'],
-    featureRefs: ['F-76', 'F-77', 'F-78', 'F-79', 'F-70'],
+      'Good memory requires rich sources. v0.8.0 extends the ingest pipeline to handle external documents — PDF, HTML, DOCX, Markdown — with structure-guided chunking that preserves section and table boundaries instead of splitting arbitrarily. On the code side, the index gains qualified method-call resolution, completing accurate call-chain tracing. Together these prepare the groundwork for OCR-backed ingestion in later versions.',
+    scopeTeaserItems: ['Structure-guided document chunking — PDF, HTML, DOCX, Markdown', 'Tables converted to indexed sentences, noise filtered at ingest', 'Qualified method-call resolution in the code index', 'Groundwork for OCR-backed document ingestion'],
+    featureRefs: ['F-06', 'F-70'],
     showFeaturesLink: false,
   },
   {
@@ -508,11 +508,11 @@ const versions: VersionPhase[] = [
     version: 'v2.0.0',
     grade: 'Platinum',
     status: 'planned',
-    theme: 'Multimodal + Consolidation',
+    theme: 'Multimodal, Consolidation & Sovereign Agent Runtime',
     description:
-      "Text was always just the starting point. v2.0.0 extends gradatum to images, audio, and documents — and introduces long-horizon memory consolidation, where the system compresses and learns from its own history over time. This is a breaking change by design: the chat API is rebuilt to handle multimodal input natively, completing gradatum's arc from a local knowledge store to a full cognitive infrastructure.",
-    scopeTeaserItems: ['Images, audio, and documents understood alongside text', 'Long-horizon memory consolidation — the system learns from its own history'],
-    featureRefs: ['F-49', 'F-06', 'F-69', 'F-26'],
+      "Text was always just the starting point. v2.0.0 extends gradatum to images, audio, and documents — and introduces long-horizon memory consolidation, where the system compresses and learns from its own history over time. This version also ships gradatum-code: a terminal agent that reasons over your codebase using vault memory, recalls past decisions, and executes tasks end-to-end on local hardware — nothing leaves your machine. This is a breaking change by design: the chat API is rebuilt to handle multimodal input natively, completing gradatum's arc from a local knowledge store to a full cognitive infrastructure.",
+    scopeTeaserItems: ['Images, audio, and documents understood alongside text', 'Long-horizon memory consolidation — the system learns from its own history', 'Sovereign terminal agent — reasons over your codebase and executes tasks end-to-end', 'Runs entirely on local hardware — nothing leaves your machine'],
+    featureRefs: ['F-49', 'F-69', 'F-26', 'F-76', 'F-77', 'F-78', 'F-79'],
     showFeaturesLink: false,
   },
 ];

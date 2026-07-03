@@ -93,8 +93,8 @@ const groups: FeatureGroup[] = [
         positioning:
           'Each agent can store a soul note — invariants, gates, narrative — in a protected identity section.',
         howItWorks: [
-          'Enumeration of identity sections is hidden from non-privileged callers, preventing unauthorized discovery of agent identities.',
-          'Reads and writes to identity sections are guarded per-agent with JWT-based access control, ensuring only the authorized agent can modify its own identity.',
+          'Enumeration of identity notes is hidden from non-privileged callers, preventing unauthorized discovery of agent identities.',
+          'Reads and writes to identity notes are guarded per-agent with JWT-based access control, ensuring only the authorized agent can modify its own identity.',
           'The MCP server automatically injects an agent\'s own identity at initialize time, making agent context immediately available without requiring explicit retrieval.',
         ],
         whoItsFor:

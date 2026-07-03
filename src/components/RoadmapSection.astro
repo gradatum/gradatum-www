@@ -26,8 +26,8 @@ const CHAPTER_AGENTS_START = 'v0.7.0';    // Context Assembly + Agent Runtime be
     <p class="roadmap-meta">
       <code>v0.7.6</code> · 31 crates workspace · Apache-2.0 · Rust 2024 · MSRV 1.88+ ·
       <a href="https://github.com/gradatum/gradatum" target="_blank" rel="noopener noreferrer" class="roadmap-meta-link">GitHub</a> ·
-      <a href="https://crates.io/crates/gradatum" target="_blank" rel="noopener noreferrer" class="roadmap-meta-link">crates.io</a>
-      <span class="roadmap-meta-note">(names reserved — full library at v1.0)</span>
+      full workspace (27 crates) on <a href="https://crates.io/crates/gradatum" target="_blank" rel="noopener noreferrer" class="roadmap-meta-link">crates.io</a>
+      <span class="roadmap-meta-note">— source releases; API stable at v1.0</span>
     </p>
 
     <div class="version-phases" role="list">
@@ -45,6 +45,17 @@ const CHAPTER_AGENTS_START = 'v0.7.0';    // Context Assembly + Agent Runtime be
                   note history, temporal decay, distillation, MCP-native querying, multi-user
                   isolation, and OAuth-based remote access. The queryable, sovereign memory
                   store that other systems — and eventually gradatum itself — will build on.
+                </p>
+              </div>
+            )}
+            {phase.version === CHAPTER_AGENTS_START && (
+              <div class="chapter-divider" id="chapter-agents" aria-label="Chapter: Context and recall">
+                <span class="chapter-eyebrow eyebrow">Chapter II</span>
+                <h3 class="chapter-title">Context &amp; recall</h3>
+                <p class="chapter-desc">
+                  v0.7.0 → v0.7.6 — Context assembly, proactive recall, identity, temporal
+                  search, and studio observability. v0.7.1–v0.7.5 are internal development
+                  milestones, published together as v0.7.6.
                 </p>
               </div>
             )}
