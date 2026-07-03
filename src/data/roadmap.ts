@@ -459,7 +459,7 @@ const versions: VersionPhase[] = [
     theme: 'Temporal Search & Decay',
     description:
       'Memory fades over time — and sometimes intentionally. v0.7.4 adds temporal search with from/to filters so agents can reason about what happened before or after a specific date. Recency decay down-weights stale notes in relevance scoring, keeping the vault focused on what still matters.',
-    scopeTeaserItems: ['Temporal filters: search between two dates', 'Configurable decay functions', 'Chronological queries without external calendars'],
+    scopeTeaserItems: ['Temporal filters: search between two dates', 'Recency decay in relevance scoring', 'Chronological queries without external calendars'],
     featureRefs: ['F-65', 'F-17'],
     showFeaturesLink: false,
   },
