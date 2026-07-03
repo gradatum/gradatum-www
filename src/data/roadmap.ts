@@ -415,12 +415,72 @@ const versions: VersionPhase[] = [
   },
   {
     version: 'v0.7.0',
-    status: 'planned',
+    status: 'done',
     theme: 'Memory Layer + Context Assembly',
     description:
       'A store that answers queries on demand is still passive. The real value is a system that knows what is relevant before you ask — one that remembers what you worked on yesterday, surfaces the decision you forgot last month, and assembles exactly the right context before sending anything to a model. v0.7.0 is that layer: gradatum stops treating each session as stateless and starts reasoning over everything it has accumulated, on your hardware, across time.',
     scopeTeaserItems: ['Assembles relevant context before each query — not raw retrieval', 'Memory window slides with the conversation — no context cliff', 'Proactively surfaces what you forgot you knew', 'Declarative user profile — gradatum knows who it is talking to', 'Picks only the skills relevant to the current task'],
     featureRefs: ['F-35', 'F-30', 'F-46', 'F-50', 'F-58', 'F-29', 'F-17', 'F-65', 'F-68', 'F-36'],
+    showFeaturesLink: false,
+  },
+  {
+    version: 'v0.7.1',
+    status: 'done',
+    theme: 'Active Recall',
+    description:
+      'Memory is only useful if you can retrieve it. v0.7.1 adds proactive retrieval: gradatum autonomously surfaces relevant notes before you ask, learning what matters to your workflow and bringing those decisions into context automatically.',
+    scopeTeaserItems: ['Proactive note suggestions based on workflow', 'Surface forgotten decisions in real time'],
+    featureRefs: [],
+    showFeaturesLink: false,
+  },
+  {
+    version: 'v0.7.2',
+    status: 'done',
+    theme: 'Context Efficiency',
+    description:
+      'More context is not always better. v0.7.2 optimizes what gets included in each decision: only the most relevant notes are assembled, irrelevant context is pruned, and the quality of assembled memory improves measurably. This is where the vault stops being verbose and starts being precise.',
+    scopeTeaserItems: ['Intelligent context pruning', 'Relevance-scored memory assembly', 'Reduced token usage without losing accuracy'],
+    featureRefs: [],
+    showFeaturesLink: false,
+  },
+  {
+    version: 'v0.7.3',
+    status: 'done',
+    theme: 'Identity — Soul Notes & ACL',
+    description:
+      'Each agent has its own identity: a soul note that captures its invariants, operational gates, and personality. v0.7.3 ships this as a protected vault section. Every agent can store and retrieve its own identity; enumeration is hidden from unprivileged callers; reads and writes are guarded by per-agent JWT binding. This is the foundation for multi-agent reasoning.',
+    scopeTeaserItems: ['Soul notes for agent identity', 'Per-agent identity sections protected by ACL', 'MCP server injects agent identity at initialize time', 'Identity enumeration hidden from unprivileged access'],
+    featureRefs: ['F-34', 'F-36'],
+    showFeaturesLink: false,
+  },
+  {
+    version: 'v0.7.4',
+    status: 'done',
+    theme: 'Temporal Search & Decay',
+    description:
+      'Memory fades over time — and sometimes intentionally. v0.7.4 adds temporal search with from/to filters so agents can reason about what happened before or after a specific date. Decay functions fade away irrelevant notes automatically, keeping the vault focused on what still matters.',
+    scopeTeaserItems: ['Temporal filters: search between two dates', 'Configurable decay functions', 'Chronological queries without external calendars'],
+    featureRefs: ['F-65', 'F-17'],
+    showFeaturesLink: false,
+  },
+  {
+    version: 'v0.7.5',
+    status: 'done',
+    theme: 'Studio Observability',
+    description:
+      'You cannot improve what you cannot see. v0.7.5 ships three observability features: a distillation quality dashboard showing how well notes are being compressed, a task health endpoint tracking background job status in real time, and request metrics visible directly in the admin UI. Operations are now transparent.',
+    scopeTeaserItems: ['Distillation quality metrics', 'Real-time background job health', 'Request performance graphs in admin studio'],
+    featureRefs: ['F-85'],
+    showFeaturesLink: false,
+  },
+  {
+    version: 'v0.7.6',
+    status: 'done',
+    theme: 'Memory Validation — Deterministic Quality Gates',
+    description:
+      'Good memory requires good judgment. v0.7.6 ships a deterministic distillation quality gate: every note summary is scored on grounding (cosine similarity to source), importance factors, and penalty functions. Low-quality summaries are tagged and degraded, never silently dropped. Identity ACL is hardened with privilege checks on every read and write.',
+    scopeTeaserItems: ['Deterministic distill quality scoring (0.0–1.0)', 'Grounding-based penalty for poor summaries', 'Quality tagging for low-score notes', 'Hardened identity ACL enforcement'],
+    featureRefs: ['F-43'],
     showFeaturesLink: false,
   },
   {
