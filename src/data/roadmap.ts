@@ -512,7 +512,7 @@ const versions: VersionPhase[] = [
     description:
       "Text was always just the starting point. v2.0.0 extends gradatum to images, audio, and documents — and introduces long-horizon memory consolidation, where the system compresses and learns from its own history over time. This version also ships gradatum-code: a terminal agent that reasons over your codebase using vault memory, recalls past decisions, and executes tasks end-to-end on local hardware — nothing leaves your machine. This is a breaking change by design: the chat API is rebuilt to handle multimodal input natively, completing gradatum's arc from a local knowledge store to a full cognitive infrastructure.",
     scopeTeaserItems: ['Images, audio, and documents understood alongside text', 'Long-horizon memory consolidation — the system learns from its own history', 'Sovereign terminal agent — reasons over your codebase and executes tasks end-to-end', 'Runs entirely on local hardware — nothing leaves your machine'],
-    featureRefs: ['F-49', 'F-69', 'F-26', 'F-76', 'F-77', 'F-78', 'F-79'],
+    featureRefs: ['F-49', 'F-69', 'F-26', 'F-76', 'F-77', 'F-79'],
     showFeaturesLink: false,
   },
 ];

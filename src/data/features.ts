@@ -100,7 +100,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Teams running persistent agents that need isolated, protected identity markers (invariants, gates, narrative) hidden from unauthorized callers.',
         status: 'released',
-        version: 'v0.7.6',
+        version: 'v0.7.3',
       },
       {
         id: 'f-53',
@@ -140,7 +140,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Teams that need to import technical documentation, research papers, or meeting transcripts into the vault without losing the structural context that makes answers accurate.',
         status: 'planned',
-        version: 'v2.0.0',
+        version: 'v0.8.0',
       },
       {
         id: 'f-39',
@@ -219,8 +219,8 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Agents and search clients that need results biased toward current knowledge — particularly useful for decision logs, meeting notes, and time-sensitive technical documentation.',
-        status: 'planned',
-        version: 'v0.7.0',
+        status: 'released',
+        version: 'v0.7.4',
       },
       {
         id: 'f-19',
@@ -267,8 +267,8 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Operators running persistent agents whose identity notes must not change without explicit authorization — detecting accidental overwrites and adversarial prompt-injection attempts.',
-        status: 'planned',
-        version: 'v0.7.0',
+        status: 'released',
+        version: 'v0.7.3',
       },
       {
         id: 'f-31',
@@ -425,7 +425,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor: 'Teams handling regulated data requiring audit-trail deletion compliance.',
         status: 'planned',
-        version: 'v1.0.0',
+        version: 'v0.9.0',
       },
       {
         id: 'f-65',
@@ -439,8 +439,8 @@ const groups: FeatureGroup[] = [
           'Anomaly detection over the temporal index flags notes with temporal contradictions (event A claims to happen after B, but the timestamps say B happened later) — surfaced to the validation pipeline automatically.',
         ],
         whoItsFor: 'Researchers and analysts needing to reconstruct event timelines and detect temporal contradictions.',
-        status: 'planned',
-        version: 'v0.7.0',
+        status: 'released',
+        version: 'v0.7.4',
       },
       {
         id: 'f-25',
@@ -472,7 +472,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers with vaults exceeding tens of thousands of notes who find SQLite ANN performance insufficient, and contributors who want to benchmark retrieval quality across storage backends.',
         status: 'planned',
-        version: 'v2.0.0',
+        version: 'v1.0.0',
       },
       {
         id: 'f-37',
@@ -536,8 +536,8 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Teams where distillation quality is critical — RAG pipelines, shared knowledge bases, long-running agents — who cannot afford hallucinated or contradictory notes accumulating in the vault.',
-        status: 'planned',
-        version: 'v0.7.0',
+        status: 'released',
+        version: 'v0.7.6',
       },
       {
         id: 'f-45',
@@ -585,7 +585,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators maintaining long-lived vaults where notes accumulate from multiple agents or ingestion pipelines, and who need a systematic quality baseline rather than ad-hoc manual review.',
         status: 'planned',
-        version: 'v1.0.0',
+        version: 'v0.9.0',
       },
       {
         id: 'f-02',
@@ -691,8 +691,8 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Integrators building long-running agents that hit context-window limits and need to keep prompts lean without losing access to source notes.',
-        status: 'planned',
-        version: 'v0.7.0',
+        status: 'released',
+        version: 'v0.7.2',
       },
       {
         id: 'f-66',
@@ -707,7 +707,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Vault maintainers who need the curator admission policy tuned to their own quality and noise profile rather than relying on the initial defaults.',
         status: 'planned',
-        version: 'v1.0.0',
+        version: 'v0.9.0',
       },
       {
         id: 'f-67',
@@ -738,8 +738,8 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Developers building agents where automatic access to prior lessons before acting is critical — reducing repeated mistakes and accelerating decision quality.',
-        status: 'planned',
-        version: 'v0.7.0',
+        status: 'released',
+        version: 'v0.7.1',
       },
       {
         id: 'f-69',
@@ -755,7 +755,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators running multi-session vaults where automatic extraction of learning patterns and behavior profiles becomes valuable as the vault matures.',
         status: 'planned',
-        version: 'v2.0.0',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-70',
@@ -851,7 +851,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Agent builders who want a memory layer that volunteers relevant context proactively, rather than only on explicit retrieval.',
         status: 'planned',
-        version: 'vX.Y.Z',
+        version: 'v0.9.0',
       },
       {
         id: 'f-81',
@@ -885,6 +885,111 @@ const groups: FeatureGroup[] = [
         status: 'planned',
         version: 'vX.Y.Z',
       },
+      {
+        id: 'f-05',
+        refLabel: 'F-05',
+        name: 'Router Dispatch: SmartRouter Capacity',
+        positioning:
+          'Routes incoming requests to the appropriate local backend based on task type and available inference capacity.',
+        howItWorks: [
+          'SmartRouter evaluates the request type and current backend load, then forwards the request to the best-available local model or API endpoint.',
+          'Routing decisions are transparent to callers: the same endpoint handles all request types, and selection logic is configurable without application changes.',
+        ],
+        whoItsFor:
+          'Backend operators running multiple local backends who need transparent routing without client-side dispatch logic.',
+        status: 'released',
+        version: 'v0.4.0',
+      },
+      {
+        id: 'f-07',
+        refLabel: 'F-07',
+        name: 'Engine HTTP Supervisor: llama-server Lifecycle Manager',
+        positioning:
+          'Manages the llama-server process lifecycle, exposing stable model inference over a local HTTP endpoint.',
+        howItWorks: [
+          'A supervisor process starts, monitors, and restarts llama-server on failure, presenting a stable HTTP endpoint regardless of engine restarts.',
+          'Health probes detect stalls and trigger a clean restart without dropping the listening socket from the caller\'s perspective.',
+        ],
+        whoItsFor:
+          'Local deployments where stable inference availability across process restarts and crashes is required.',
+        status: 'released',
+        version: 'v0.3.0',
+      },
+      {
+        id: 'f-14',
+        refLabel: 'F-14',
+        name: 'Job Enum and JobRecord: Five-Block Apalis Worker',
+        positioning:
+          'Defines the structured job taxonomy and typed execution blocks for the Apalis background worker.',
+        howItWorks: [
+          'Five typed job blocks (Ingest, Distill, Validate, Embed, Expire) map to Apalis job workers, each with its own error handling and retry policy.',
+          'JobRecord persists job identity, status, and failure context so the queue is introspectable without external logging.',
+        ],
+        whoItsFor:
+          'Backend operators who need to inspect, extend, or audit the background job processing pipeline.',
+        status: 'released',
+        version: 'v0.3.0',
+      },
+      {
+        id: 'f-83',
+        refLabel: 'F-83',
+        name: 'Doc-Map: Reference Documentation Index',
+        positioning:
+          'Maintains a queryable index of reference documentation to reduce token cost and prevent stale content from degrading recall.',
+        howItWorks: [
+          'A scheduled job walks configured documentation sources, extracts structural headings, and persists a lightweight doc-map note per source.',
+          'Queries against the map surface the canonical section rather than re-ingesting entire documents, keeping token overhead low.',
+        ],
+        whoItsFor:
+          'Teams importing large reference materials who want fast targeted retrieval without redundant full-text overhead.',
+        status: 'planned',
+        version: 'vX.Y.Z',
+      },
+      {
+        id: 'f-84',
+        refLabel: 'F-84',
+        name: 'OKF Interop: Open Knowledge Format Export',
+        positioning:
+          'Exports the vault as an Open Knowledge Format bundle for interop with external knowledge management tools.',
+        howItWorks: [
+          'An export command serialises vault notes, wikilinks, and metadata into a standards-compliant OKF bundle.',
+          'The bundle can be imported into compatible tools or archived as a portable, documented knowledge backup.',
+        ],
+        whoItsFor:
+          'Users who want to migrate their vault, share it with collaborators on other tools, or archive it in a portable format.',
+        status: 'planned',
+        version: 'vX.Y.Z',
+      },
+      {
+        id: 'f-100',
+        refLabel: 'F-100',
+        name: 'Hard-Delete On-Demand: Physical Note Erasure',
+        positioning:
+          'Permanently removes a note from the vault by id, bypassing the soft-delete retention layer for compliance-driven erasure.',
+        howItWorks: [
+          'A privileged DELETE endpoint accepts a note id and immediately removes the record from both the FTS index and the embedding store.',
+          'The operation requires an explicit confirmation header and is irreversible; an audit entry is written before deletion for traceability.',
+        ],
+        whoItsFor:
+          'Privacy-sensitive deployments where regulatory requirements mandate permanent removal rather than soft-delete.',
+        status: 'planned',
+        version: 'v0.9.0',
+      },
+      {
+        id: 'f-101',
+        refLabel: 'F-101',
+        name: 'Memory Self-Healing: LLM Drift Validation (F-43 child)',
+        positioning:
+          'Extends the deterministic quality gate with an LLM-powered healing phase that rewrites low-quality summaries.',
+        howItWorks: [
+          'Notes tagged quality-low by the deterministic gate (F-43) are queued for a healing job that rewrites the summary against the source body using an LLM.',
+          'The healed note is re-scored; if the new score clears the threshold it is promoted to live status. Healing runs asynchronously and is fully auditable.',
+        ],
+        whoItsFor:
+          'Vaults where automated ingestion produces many low-quality summaries and manual curation is not practical at scale.',
+        status: 'planned',
+        version: 'vX.Y.Z',
+      },
     ],
   },
   {
@@ -906,7 +1011,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Developers building agent runtimes or custom tool integrations who need programmatic control over what vault content enters the LLM context and in what order.',
-        status: 'planned',
+        status: 'released',
         version: 'v0.7.0',
       },
       {
@@ -922,8 +1027,8 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Developers running long coding sessions, extended research tasks, or multi-turn agent workflows where context overflow today means losing the earlier part of the conversation.',
-        status: 'planned',
-        version: 'v0.7.0',
+        status: 'released',
+        version: 'v0.7.2',
       },
       {
         id: 'f-46',
@@ -938,8 +1043,8 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Developers building agents that should surface past decisions or prior solutions automatically — without the user having to remember to ask and without scanning the full vault on every turn.',
-        status: 'planned',
-        version: 'v0.7.0',
+        status: 'released',
+        version: 'v0.7.1',
       },
       {
         id: 'f-50',
@@ -955,7 +1060,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Individuals and teams who want to give every agent a reliable baseline understanding of who they are and how they work — without relying entirely on inferred behavior profiles.',
         status: 'planned',
-        version: 'v0.7.0',
+        version: 'v0.7.3',
       },
       {
         id: 'f-58',
@@ -970,7 +1075,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Developers managing large skill libraries who want agents to receive only the skills they need for the current task — reducing context noise and enabling community-contributed skill catalogs.',
-        status: 'planned',
+        status: 'released',
         version: 'v0.7.0',
       },
       {
@@ -986,8 +1091,8 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Developers using Claude Code, custom agents, or tools that natively speak the Anthropic Messages API who want to run entirely on local hardware without cloud LLM dependencies.',
-        status: 'planned',
-        version: 'v0.6.6',
+        status: 'released',
+        version: 'v0.6.8',
       },
       {
         id: 'f-76',
@@ -1003,7 +1108,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers who want a terminal agent that understands their codebase deeply, remembers project history, and executes tasks end-to-end — not just suggest changes — entirely on their own machine.',
         status: 'planned',
-        version: 'v0.8.0',
+        version: 'v2.0.0',
       },
       {
         id: 'f-77',
@@ -1019,7 +1124,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers working on large refactorings or incremental changes where understanding the exact code delta is critical to making the right next decision.',
         status: 'planned',
-        version: 'v0.8.0',
+        version: 'v2.0.0',
       },
       {
         id: 'f-78',
@@ -1035,7 +1140,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Teams and individuals who want their agent to build on prior work rather than starting from scratch, reducing repeated mistakes and accelerating task execution.',
         status: 'planned',
-        version: 'v0.8.0',
+        version: 'v0.9.0',
       },
       {
         id: 'f-79',
@@ -1051,7 +1156,67 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers who want their agent to go beyond analysis and actually complete work end-to-end, with full auditability and control.',
         status: 'planned',
-        version: 'v0.8.0',
+        version: 'v2.0.0',
+      },
+      {
+        id: 'f-85',
+        refLabel: 'F-85',
+        name: 'Studio Observability: Task Health, Metrics, and Activity Trace',
+        positioning:
+          'Surfaces real-time background task health, operational metrics, and session activity in the admin studio.',
+        howItWorks: [
+          'Three panels expose: scheduled-job health with per-task status and last-run timing; curated metrics charts (request rates, latencies) rendered via uPlot; and a session activity trace browser showing per-session MCP call sequences.',
+          'All data is served from existing gradatum endpoints — no external monitoring infrastructure is required.',
+        ],
+        whoItsFor:
+          'Operators who need to understand what gradatum is doing in real time without leaving the admin studio.',
+        status: 'released',
+        version: 'v0.7.5',
+      },
+      {
+        id: 'f-18',
+        refLabel: 'F-18',
+        name: 'Multi-Vault Init: Coordinated Vault Bootstrap',
+        positioning:
+          'Initialises and coordinates multiple isolated vault instances under a single gradatum deployment.',
+        howItWorks: [
+          'A bootstrap command provisions each named vault with its own SQLite database, schema, and configuration namespace.',
+          'Routing between vaults is transparent to callers via VaultScope — no per-call routing logic is required in client code.',
+        ],
+        whoItsFor:
+          'Teams running multiple isolated knowledge bases — one per project, team, or security boundary — on a single gradatum instance.',
+        status: 'planned',
+        version: 'v1.0.0',
+      },
+      {
+        id: 'f-54',
+        refLabel: 'F-54',
+        name: 'Service Registry: Register, Heartbeat, and TTL',
+        positioning:
+          'Lets gradatum services discover each other dynamically at runtime without hardcoded addresses or manual configuration.',
+        howItWorks: [
+          'Each service registers itself with a name, address, and TTL on startup; heartbeat pings refresh the TTL and services that stop responding are removed automatically.',
+          'Callers query the registry to resolve the current address of any named component, making deployments resilient to address changes between restarts.',
+        ],
+        whoItsFor:
+          'Multi-process deployments where worker, gateway, and engine addresses change between restarts or deployments.',
+        status: 'planned',
+        version: 'v1.0.0',
+      },
+      {
+        id: 'f-86',
+        refLabel: 'F-86',
+        name: 'Cloud Storage Backends: S3, GCS, Azure via OpenDAL',
+        positioning:
+          'Replaces local-only storage with pluggable cloud backends (S3, GCS, Azure) using the OpenDAL abstraction layer.',
+        howItWorks: [
+          'An OpenDAL operator is configured per storage tier (notes, embeddings, artifacts); the same trait interface used for local storage maps transparently to cloud providers.',
+          'No application code changes are required — the swap is a configuration-level choice between local and cloud backend variants.',
+        ],
+        whoItsFor:
+          'Teams that need off-node durability or cross-machine vault access without migrating to a fully hosted product.',
+        status: 'planned',
+        version: 'v1.0.0',
       },
     ],
   },
@@ -1075,7 +1240,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Long-term gradatum users — six months or more of active knowledge accumulation — who want their agent to reason from a compressed model of their thinking rather than raw notes.',
         status: 'planned',
-        version: 'v2.0.0',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-03',
@@ -1122,6 +1287,36 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Enterprise teams and cloud operators who need gradatum running at scale across multiple regions, with their own compute infrastructure, while retaining full data sovereignty.',
+        status: 'planned',
+        version: 'v2.0.0',
+      },
+      {
+        id: 'f-21',
+        refLabel: 'F-21',
+        name: 'NATS HubMQ Bridge: Vault Event Streaming',
+        positioning:
+          'Publishes vault events to a NATS JetStream subject, enabling reactive pipelines and multi-service subscriptions without polling.',
+        howItWorks: [
+          'A bridge crate subscribes to vault write events and publishes structured payloads to a configurable NATS subject on each note addition, update, or deletion.',
+          'Subscribers receive events without polling the vault HTTP API, enabling event-driven automation and cross-service coordination.',
+        ],
+        whoItsFor:
+          'Homelab deployments with services that need to react to vault changes for automation triggers or notification flows.',
+        status: 'planned',
+        version: 'v2.0.0',
+      },
+      {
+        id: 'f-52',
+        refLabel: 'F-52',
+        name: 'Pipeline Orchestration: Dynamic Job DAG',
+        positioning:
+          'Composes background jobs into directed acyclic graphs, enabling multi-step memory pipelines without coupling individual workers.',
+        howItWorks: [
+          'A DAG runtime dispatches jobs in dependency order: an ingest job can automatically trigger embedding, then distillation, then validation — each in its own Apalis worker with full retry semantics.',
+          'Dependencies are declared per-job rather than hardcoded in worker logic, making pipeline topology configurable without code changes.',
+        ],
+        whoItsFor:
+          'Advanced deployments where note lifecycle spans multiple processing stages and job sequencing must be explicit and auditable.',
         status: 'planned',
         version: 'v2.0.0',
       },
