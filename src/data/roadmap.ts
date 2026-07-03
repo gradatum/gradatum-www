@@ -415,7 +415,7 @@ const versions: VersionPhase[] = [
   },
   {
     version: 'v0.7.0',
-    status: 'planned',
+    status: 'done',
     theme: 'Memory Layer + Context Assembly',
     description:
       'A store that answers queries on demand is still passive. The real value is a system that knows what is relevant before you ask — one that remembers what you worked on yesterday, surfaces the decision you forgot last month, and assembles exactly the right context before sending anything to a model. v0.7.0 is that layer: gradatum stops treating each session as stateless and starts reasoning over everything it has accumulated, on your hardware, across time.',
@@ -424,13 +424,73 @@ const versions: VersionPhase[] = [
     showFeaturesLink: false,
   },
   {
+    version: 'v0.7.1',
+    status: 'done',
+    theme: 'Active Recall',
+    description:
+      'Memory is only useful if you can retrieve it. v0.7.1 adds proactive retrieval: gradatum autonomously surfaces relevant notes before you ask, recording which surfaced notes are actually used and bringing those decisions into context automatically.',
+    scopeTeaserItems: ['Proactive note suggestions based on workflow', 'Surface forgotten decisions in real time'],
+    featureRefs: [],
+    showFeaturesLink: false,
+  },
+  {
+    version: 'v0.7.2',
+    status: 'done',
+    theme: 'Context Efficiency',
+    description:
+      'More context is not always better. v0.7.2 optimizes what gets included in each decision: only the most relevant notes are assembled, irrelevant context is pruned, and the quality of assembled memory improves measurably. This is where the vault stops being verbose and starts being precise.',
+    scopeTeaserItems: ['Intelligent context pruning', 'Relevance-scored memory assembly', 'Reduced token usage without losing accuracy'],
+    featureRefs: [],
+    showFeaturesLink: false,
+  },
+  {
+    version: 'v0.7.3',
+    status: 'done',
+    theme: 'Identity — Soul Notes & ACL',
+    description:
+      'Each agent has its own identity: a soul note that captures its invariants, operational gates, and personality. v0.7.3 ships this as a protected vault section. Every agent can store and retrieve its own identity; enumeration is hidden from unprivileged callers; reads and writes are guarded by per-agent JWT binding. This is the foundation for multi-agent reasoning.',
+    scopeTeaserItems: ['Soul notes for agent identity', 'Per-agent identity sections protected by ACL', 'MCP server injects agent identity at initialize time', 'Identity enumeration hidden from unprivileged access'],
+    featureRefs: ['F-34', 'F-36'],
+    showFeaturesLink: false,
+  },
+  {
+    version: 'v0.7.4',
+    status: 'done',
+    theme: 'Temporal Search & Decay',
+    description:
+      'Memory fades over time — and sometimes intentionally. v0.7.4 adds temporal search with from/to filters so agents can reason about what happened before or after a specific date. Recency decay down-weights stale notes in relevance scoring, keeping the vault focused on what still matters.',
+    scopeTeaserItems: ['Temporal filters: search between two dates', 'Recency decay in relevance scoring', 'Chronological queries without external calendars'],
+    featureRefs: ['F-65', 'F-17'],
+    showFeaturesLink: false,
+  },
+  {
+    version: 'v0.7.5',
+    status: 'done',
+    theme: 'Studio Observability',
+    description:
+      'You cannot improve what you cannot see. v0.7.5 ships three observability features: real-time background task health, operational metrics charts, and a session activity trace browser — all in the admin studio. Operations are now transparent.',
+    scopeTeaserItems: ['Real-time background job health', 'Operational metrics graphs in admin studio', 'Session activity trace browser'],
+    featureRefs: ['F-85'],
+    showFeaturesLink: false,
+  },
+  {
+    version: 'v0.7.6',
+    status: 'done',
+    theme: 'Memory Validation — Deterministic Quality Gates',
+    description:
+      'Good memory requires good judgment. v0.7.6 ships a deterministic distillation quality gate: every note summary is scored on grounding (cosine similarity to source), importance factors, and penalty functions. Low-quality summaries are tagged and degraded, never silently dropped. Identity ACL is hardened with privilege checks on every read and write.',
+    scopeTeaserItems: ['Deterministic distill quality scoring (0.0–1.0)', 'Grounding-based penalty for poor summaries', 'Quality tagging for low-score notes', 'Hardened identity ACL enforcement'],
+    featureRefs: ['F-43'],
+    showFeaturesLink: false,
+  },
+  {
     version: 'v0.8.0',
     status: 'planned',
-    theme: 'gradatum-code — Sovereign Terminal Agent',
+    theme: 'Enrichment — Ingest & OCR Groundwork',
     description:
-      'Every capability built so far — durable memory, code index, context assembly — exists to make this version possible. v0.8.0 ships gradatum-code: a terminal agent that reasons over your codebase using the vault as its memory. It finds the right symbol, understands what changed in the diff, recalls past decisions, and executes tasks end-to-end. It runs entirely on your hardware. Nothing leaves your machine. This is what sovereign software tooling looks like.',
-    scopeTeaserItems: ['Terminal agent that reasons over your codebase', 'Finds the right symbol and understands what changed in the diff', 'Recalls past decisions and project history before acting', 'Runs entirely on local hardware — no code ever leaves your machine', 'Executes tasks end-to-end, not just suggestions'],
-    featureRefs: ['F-76', 'F-77', 'F-78', 'F-79', 'F-70'],
+      'Good memory requires rich sources. v0.8.0 extends the ingest pipeline to handle external documents — PDF, HTML, DOCX, Markdown — with structure-guided chunking that preserves section and table boundaries instead of splitting arbitrarily. On the code side, the index gains qualified method-call resolution, completing accurate call-chain tracing. Together these prepare the groundwork for OCR-backed ingestion in later versions.',
+    scopeTeaserItems: ['Structure-guided document chunking — PDF, HTML, DOCX, Markdown', 'Tables converted to indexed sentences, noise filtered at ingest', 'Qualified method-call resolution in the code index', 'Groundwork for OCR-backed document ingestion'],
+    featureRefs: ['F-06', 'F-70'],
     showFeaturesLink: false,
   },
   {
@@ -448,11 +508,11 @@ const versions: VersionPhase[] = [
     version: 'v2.0.0',
     grade: 'Platinum',
     status: 'planned',
-    theme: 'Multimodal + Consolidation',
+    theme: 'Multimodal, Consolidation & Sovereign Agent Runtime',
     description:
-      "Text was always just the starting point. v2.0.0 extends gradatum to images, audio, and documents — and introduces long-horizon memory consolidation, where the system compresses and learns from its own history over time. This is a breaking change by design: the chat API is rebuilt to handle multimodal input natively, completing gradatum's arc from a local knowledge store to a full cognitive infrastructure.",
-    scopeTeaserItems: ['Images, audio, and documents understood alongside text', 'Long-horizon memory consolidation — the system learns from its own history'],
-    featureRefs: ['F-49', 'F-06', 'F-69', 'F-26'],
+      "Text was always just the starting point. v2.0.0 extends gradatum to images, audio, and documents — and introduces long-horizon memory consolidation, where the system compresses and learns from its own history over time. This version also ships gradatum-code: a terminal agent that reasons over your codebase using vault memory, recalls past decisions, and executes tasks end-to-end on local hardware — nothing leaves your machine. This is a breaking change by design: the chat API is rebuilt to handle multimodal input natively, completing gradatum's arc from a local knowledge store to a full cognitive infrastructure.",
+    scopeTeaserItems: ['Images, audio, and documents understood alongside text', 'Long-horizon memory consolidation — the system learns from its own history', 'Sovereign terminal agent — reasons over your codebase and executes tasks end-to-end', 'Runs entirely on local hardware — nothing leaves your machine'],
+    featureRefs: ['F-49', 'F-69', 'F-26', 'F-76', 'F-77', 'F-78', 'F-79'],
     showFeaturesLink: false,
   },
 ];

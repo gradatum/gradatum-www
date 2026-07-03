@@ -1,7 +1,7 @@
 ---
 // AgentLayerStack — Section "The Agent Layer" with layered SVG diagram
 // Foundations (memory + compute) are LIVE since v0.3.0.
-// Agent runtime (context assembly, ReAct loop) is coming v0.6.0.
+// Agent runtime (context assembly, ReAct loop) is planned v2.0.
 // Language: same SVG blueprint vocabulary as ArchDiagram.astro
 ---
 <section id="agent-layer" class="agent-layer section-pad" aria-label="Agent layer stack diagram">
@@ -11,7 +11,7 @@
     <div
       class="stack-diagram"
       role="img"
-      aria-label="Agent layer stack: Agent runtime (coming v0.7.0) sits above two live foundations — Memory (Vault) and Compute (Gateway and Engine fleet)"
+      aria-label="Agent layer stack: Agent runtime (planned v2.0) sits above two live foundations — Memory (Vault) and Compute (Gateway and Engine fleet)"
     >
       <svg
         viewBox="0 0 820 340"
@@ -38,7 +38,7 @@
           stroke-dasharray="6 4"
         />
         <text x="24" y="30" class="svg-label-mono svg-label-muted">AGENT RUNTIME</text>
-        <text x="690" y="30" class="svg-label-badge-coming">COMING · v0.7.0</text>
+        <text x="690" y="30" class="svg-label-badge-coming">PLANNED · v2.0</text>
 
         <!-- Context assembly box -->
         <rect x="30" y="40" width="260" height="44" rx="0"
@@ -107,7 +107,7 @@
         <text x="434" y="200" class="svg-box-main">Unified LLM routing by alias · circuit-breaker</text>
         <text x="434" y="218" class="svg-box-sub">local inference · no SaaS round-trip</text>
         <text x="434" y="234" class="svg-box-sub">roles: curator · embed · reasoning · vision</text>
-        <text x="434" y="252" class="svg-box-sub">Bearer auth · Prometheus telemetry · TOML config</text>
+        <text x="434" y="252" class="svg-box-sub">Bearer auth · Prometheus metrics (local, no external telemetry) · TOML config</text>
 
         <!-- Arrows from storage tier up to foundations -->
         <line x1="205" y1="310" x2="205" y2="274"
@@ -136,7 +136,7 @@
       </div>
       <div class="legend-item">
         <span class="legend-dot legend-dot-coming" aria-hidden="true"></span>
-        <span class="legend-label">Coming · v0.7.0</span>
+        <span class="legend-label">Planned · v2.0</span>
       </div>
     </div>
   </div>

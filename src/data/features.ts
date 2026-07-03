@@ -89,18 +89,18 @@ const groups: FeatureGroup[] = [
       {
         id: 'f-34',
         refLabel: 'F-34',
-        name: 'Agent Identity Persistence (Phase A)',
+        name: 'Agent identity, protected',
         positioning:
-          'Gives an LLM agent a persistent, immutable identity across sessions, stored in a dedicated, access-controlled section of the vault.',
+          'Each agent can store a soul note — invariants, gates, narrative — in a protected identity section.',
         howItWorks: [
-          'A dedicated identity/ locus in the vault holds four sections for each agent: rules, capabilities, constitution, and identity.',
-          'This locus is read-only for the agent itself; writes require administrative credentials.',
-          "The identity bundle is injected into the agent's context at the start of every session via the rendering pipeline (Phase A covers static injection). Phases B through D will add dynamic rendering and identity distillation.",
+          'Enumeration of identity notes is hidden from non-privileged callers, preventing unauthorized discovery of agent identities.',
+          'Reads and writes to identity notes are guarded per-agent with JWT-based access control, ensuring only the authorized agent can modify its own identity.',
+          'The MCP server automatically injects an agent\'s own identity at initialize time, making agent context immediately available without requiring explicit retrieval.',
         ],
         whoItsFor:
-          'Integrators deploying agents with fixed roles — assistant, reviewer, summarizer — who need stable baseline behavior across restarts and context resets.',
+          'Teams running persistent agents that need isolated, protected identity markers (invariants, gates, narrative) hidden from unauthorized callers.',
         status: 'released',
-        version: 'v0.1.0',
+        version: 'v0.7.6',
       },
       {
         id: 'f-53',
