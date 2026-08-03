@@ -59,7 +59,7 @@ const modes: InstallMode[] = [
     level: 'L2',
     tagline: 'Sovereign remote access — connect from any client without a local stub.',
     useCase:
-      'Operator managing a multi-user deployment where mobile and desktop clients connect directly via OAuth, without installing a local binary.',
+      'Operator managing a multi-user deployment where mobile and desktop clients reach the vault over HTTPS, with authentication fronted by a reverse proxy and an external identity provider.',
     command: 'gradatum-admin install --level gold',
     services: [
       'gradatum-server (+ /mcp StreamableHTTP)',
@@ -67,11 +67,11 @@ const modes: InstallMode[] = [
       'gradatum-gateway',
       'gradatum-engine',
       'NATS',
-      'Identity Provider',
+      'Reverse proxy + external identity provider (e.g. Traefik + Authentik)',
     ],
     llm: 'Local or cloud',
     mcpAccess: 'both',
-    status: 'planned-v0.5',
+    status: 'planned-v1.0',
   },
   {
     id: 'remote',

@@ -19,7 +19,7 @@ const statusLabel: Record<string, string> = {
 ---
 <Base
   title="Gradatum — Agent Layer"
-  description="The agent layer for gradatum: compute backbone (gateway + engine fleet) live since v0.3.0. Agent runtime — context assembly, ReAct loop, skill selection — planned v2.0."
+  description="The agent layer for gradatum: compute backbone (gateway + engine fleet) live since v0.3.0, formalised at v1.0.0 as install components with Docker and multi-tenant isolation. Agent runtime — context assembly, ReAct loop, skill selection — planned v2.0."
 >
   <div class="site-wrap">
     <Nav />
@@ -37,12 +37,18 @@ const statusLabel: Record<string, string> = {
           <p class="agent-hero-desc">
             Two of the three layers that make a self-hosted agent stack are already in place.
             The memory store and the compute backbone are live — sovereign, embedded, no SaaS round-trip.
-            The agent runtime that orchestrates them is planned for v2.0.
+            At v1.0.0 the agent layer reached production form: the engine and gateway are formalised
+            install components, the full stack ships in Docker, and multi-tenant isolation is hardened
+            on the production queue path. The agent runtime that orchestrates them is planned for v2.0.
           </p>
           <div class="agent-hero-status">
             <span class="status-chip status-chip-live">
               <span class="chip-dot chip-dot-live" aria-hidden="true"></span>
               Memory + Compute live
+            </span>
+            <span class="status-chip status-chip-live">
+              <span class="chip-dot chip-dot-live" aria-hidden="true"></span>
+              Agent Layer formalised · v1.0.0
             </span>
             <span class="status-chip status-chip-coming">
               <span class="chip-dot chip-dot-coming" aria-hidden="true"></span>
@@ -62,7 +68,7 @@ const statusLabel: Record<string, string> = {
       <!-- ── Foundations deep-dive ── -->
       <section class="foundations section-pad" aria-labelledby="foundations-title">
         <div class="foundations-inner">
-          <div class="eyebrow">Live since v0.3.0</div>
+          <div class="eyebrow">Live since v0.3.0 · formalised at v1.0.0</div>
           <h2 id="foundations-title" class="foundations-h2">
             Two foundations.<br />
             <em class="accent-italic">Already in place.</em>
@@ -70,7 +76,12 @@ const statusLabel: Record<string, string> = {
           <p class="foundations-intro">
             The runtime planned for v2.0 builds on two live components — a compute layer for
             inference routing, and a memory layer for persistent knowledge. Both are sovereign,
-            embedded, and running today.
+            embedded, and running today. Since v1.0.0 the agent layer ships in production form:
+            the engine and gateway are formalised install components
+            (<code>--with-engine</code> / <code>--with-gateway</code>), the six-binary stack
+            deploys through Docker, and multi-tenant isolation is hardened on the production
+            queue path (stale-lease recovery, JWT <code>iss</code>/<code>sub</code>, tenant-scoped
+            revocation).
           </p>
 
           <!-- ── Foundation: Compute ── -->

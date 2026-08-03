@@ -68,7 +68,7 @@ const versionPhaseSchema = z.object({
   description: z.string().min(20),
   milestones: z.array(milestoneSchema).optional(),
   scopeTeaserItems: z.array(z.string().min(1)).optional(),
-  featureRefs: z.array(z.string().regex(/^F-\d{2}$/)).optional(),
+  featureRefs: z.array(z.string().regex(/^F-\d{2,3}$/)).optional(),
   showFeaturesLink: z.boolean().default(false),
 });
 
@@ -120,7 +120,7 @@ export type FeatureGroup = z.infer<typeof featureGroupSchema>;
 // ── Install mode schema ──────────────────────────────────────────────────────
 
 export const INSTALL_LEVELS = ['L0', 'L1', 'L1+', 'L2', 'L3'] as const;
-export const MCP_ACCESS_TYPES = ['stub', 'remote-oauth', 'both'] as const;
+export const MCP_ACCESS_TYPES = ['stub', 'remote-authenticated', 'both'] as const;
 export const INSTALL_STATUSES = ['available', 'planned-v0.5', 'planned-v0.5.1', 'planned-v1.0'] as const;
 
 export const installModeSchema = z.object({

@@ -8,6 +8,15 @@ const GRADE_LABELS: Record<FeatureGroup['grade'], string> = {
   Gold: 'III',
   Platinum: 'IV',
 };
+
+/**
+ * Sentinel used in src/data/features.ts for features accepted into the backlog
+ * without a target release (schema: /^v(?:\d+\.\d+\.\d+|X\.Y\.Z)$/).
+ * Rendered as a readable label instead of the raw sentinel, which means nothing
+ * to a visitor and reads as an oversight.
+ */
+const BACKLOG_SENTINEL = 'vX.Y.Z';
+const BACKLOG_LABEL = 'Backlog · no target version';
 ---
 
 <section class="features section-pad section-gap" aria-labelledby="features-title">
@@ -19,6 +28,7 @@ const GRADE_LABELS: Record<FeatureGroup['grade'], string> = {
     <p class="features-lead">
       Each feature below ships with a stable reference identifier (F-XX) used across
       the documentation and changelog. Anchor links are permanent.
+      <em>{BACKLOG_LABEL}</em> marks scope that is accepted but not yet assigned to a release.
     </p>
     <p class="features-grade-note">
       Grades mark maturity tiers; versions mark delivery. A feature may ship in an earlier version than its grade tier.
@@ -48,7 +58,7 @@ const GRADE_LABELS: Record<FeatureGroup['grade'], string> = {
                 <span class={`feature-status status-${feature.status}`}>
                   {feature.status}
                 </span>
-                <span class="eyebrow feature-version">{feature.version}</span>
+                <span class="eyebrow feature-version">{feature.version === BACKLOG_SENTINEL ? BACKLOG_LABEL : feature.version}</span>
                 <a href={`#${feature.id}`} class="feature-anchor" aria-label={`Permalink to ${feature.name}`}>
                   #
                 </a>

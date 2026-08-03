@@ -485,23 +485,51 @@ const versions: VersionPhase[] = [
   },
   {
     version: 'v0.8.0',
-    status: 'planned',
-    theme: 'Enrichment — Ingest & OCR Groundwork',
+    status: 'in-progress',
+    theme: 'Vault Stability — Reversible Deletion & Hygiene',
     description:
-      'Good memory requires rich sources. v0.8.0 extends the ingest pipeline to handle external documents — PDF, HTML, DOCX, Markdown — with structure-guided chunking that preserves section and table boundaries instead of splitting arbitrarily. On the code side, the index gains qualified method-call resolution, completing accurate call-chain tracing. Together these prepare the groundwork for OCR-backed ingestion in later versions.',
-    scopeTeaserItems: ['Structure-guided document chunking — PDF, HTML, DOCX, Markdown', 'Tables converted to indexed sentences, noise filtered at ingest', 'Qualified method-call resolution in the code index', 'Groundwork for OCR-backed document ingestion'],
-    featureRefs: ['F-06', 'F-70'],
+      'Deleting a note used to mean losing it. v0.8.0 turns on-demand delete into an archival operation: the note\'s Markdown and its history move under an archive tree, a durable JSONL tombstone is written before the cascade, and the note stays recoverable until a configurable 60-day retention deadline, after which a registry-driven GC destroys it. Restoring re-indexes the note as pending-review, so it re-enters the curator instead of going straight back to live. The whole archive lifecycle sits behind an operator-only CLI on a loopback admin namespace — agents can list archives over MCP but never delete, restore, or purge. The same train is set to add an opt-in vault audit and deduplication job, curator threshold tuning, and qualified method-call resolution in the code index — still planned within the v0.8.0 line.',
+    scopeTeaserItems: ['On-demand delete archives the note instead of destroying it — recoverable for the retention window', 'A durable JSONL audit tombstone is written before any cascade', 'Registry-driven GC destroys archives past their 60-day, configurable deadline', 'Restore re-enters the curator as pending-review, never straight back to live', 'Archive lifecycle is operator-only — MCP can list archives, never mutate them', 'Opt-in vault audit and deduplication job, curator tuning, and code-map resolution still planned'],
+    featureRefs: ['F-70', 'F-51', 'F-66', 'F-100'],
     showFeaturesLink: false,
   },
   {
     version: 'v1.0.0',
     grade: 'Gold',
-    status: 'planned',
+    status: 'in-progress',
     theme: 'Production Baseline',
     description:
-      'API stability is a promise, not a feature. v1.0.0 is the version where gradatum makes that promise: the public contracts freeze, semver guarantees kick in, and anything built on top will not break without explicit notice. It also proves 30 days of continuous operation, runs the long-term memory benchmark reproducibly, and adds multi-user support with OAuth login. This is the milestone where gradatum becomes something you can safely build on.',
-    scopeTeaserItems: ['API contracts frozen — safe to build on without breaking changes', 'Privacy filter runs locally — no data sent to external models', '30 days of continuous production operation proven', 'Long-term memory benchmark reproduced and published', 'Multi-user access + OAuth login'],
-    featureRefs: ['F-09', 'F-45', 'F-57', 'F-67', 'F-51', 'F-66', 'F-63', 'F-64', 'F-25'],
+      'API stability is a promise, not a feature. v1.0.0 is the version where gradatum makes that promise: the public contracts freeze, semver guarantees kick in, and anything built on top will not break without explicit notice. The Agent Layer reaches production form: gradatum-engine is a formalised install component (--with-engine / --with-gateway), the gateway routes all inference behind one alias, and the full six-binary stack deploys through Docker with network isolation. Multi-tenant isolation is hardened on the production queue path — stale-lease recovery, JWT iss/sub validation, tenant-scoped revocation — proven over 30 days of continuous operation with per-identity access scopes.',
+    scopeTeaserItems: ['API contracts frozen — safe to build on without breaking changes', '30 days of continuous production operation proven', 'Long-term memory benchmark reproduced and published', 'Multi-user access with per-identity scopes', 'Engine formalised as an install component (--with-engine / --with-gateway)', 'Multi-tenant isolation hardened on the production queue path', 'Full stack via Docker — six binaries, network isolation'],
+    featureRefs: ['F-18', 'F-45', 'F-63', 'F-131'],
+    showFeaturesLink: false,
+  },
+  {
+    version: 'v1.1.0',
+    status: 'planned',
+    theme: 'Storage Backends & Service Discovery',
+    description:
+      'Gradatum runs on local SQLite by default, which keeps a deployment to a single file and a single machine. v1.1.0 makes that a configuration choice rather than a constraint: the vault can sit on replicated SQLite over libsql, or on object storage through S3, GCS, and Azure, without changing the storage interfaces the rest of the codebase depends on. Multi-process deployments also stop relying on hardcoded addresses — components register themselves and resolve each other at runtime.',
+    scopeTeaserItems: [
+      'Replicated SQLite backend over libsql — opt-in, same storage interface',
+      'Object storage backends: S3, GCS, Azure via OpenDAL',
+      'Components resolve each other at runtime — no hardcoded addresses',
+    ],
+    featureRefs: ['F-25', 'F-54', 'F-86'],
+    showFeaturesLink: false,
+  },
+  {
+    version: 'v1.2.0',
+    status: 'planned',
+    theme: 'Privacy — On-Device PII Redaction',
+    description:
+      'Notes ingested from mail, transcripts, or exported documents routinely carry personal data that nobody chose to store. v1.2.0 adds a redaction pass that runs before a note reaches the index: heuristic pattern matching first, then an on-device recognition model. Redacted fields are marked in the note itself, so downstream jobs can tell that a pass occurred instead of assuming it did.',
+    scopeTeaserItems: [
+      'Redaction pass applied before a note reaches the index',
+      'Heuristic pattern matching first, on-device recognition model second',
+      'Redacted fields marked in the note frontmatter',
+    ],
+    featureRefs: ['F-09', 'F-125'],
     showFeaturesLink: false,
   },
   {
@@ -512,7 +540,7 @@ const versions: VersionPhase[] = [
     description:
       "Text was always just the starting point. v2.0.0 extends gradatum to images, audio, and documents — and introduces long-horizon memory consolidation, where the system compresses and learns from its own history over time. This version also ships gradatum-code: a terminal agent that reasons over your codebase using vault memory, recalls past decisions, and executes tasks end-to-end on local hardware — nothing leaves your machine. This is a breaking change by design: the chat API is rebuilt to handle multimodal input natively, completing gradatum's arc from a local knowledge store to a full cognitive infrastructure.",
     scopeTeaserItems: ['Images, audio, and documents understood alongside text', 'Long-horizon memory consolidation — the system learns from its own history', 'Sovereign terminal agent — reasons over your codebase and executes tasks end-to-end', 'Runs entirely on local hardware — nothing leaves your machine'],
-    featureRefs: ['F-49', 'F-69', 'F-26', 'F-76', 'F-77', 'F-79'],
+    featureRefs: ['F-49', 'F-69', 'F-76', 'F-77', 'F-79'],
     showFeaturesLink: false,
   },
 ];

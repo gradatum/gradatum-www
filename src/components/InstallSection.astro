@@ -15,7 +15,7 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
 
     <!-- Installation — 3 voies -->
     <div class="install-oneliner">
-      <div class="eyebrow block-label">Get started — v0.7.6 · Linux x86_64</div>
+      <div class="eyebrow block-label">Get started — v1.0.0 · Linux x86_64</div>
 
       <div class="install-ways">
 
@@ -28,6 +28,8 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
           <p class="install-way-desc">
             Three archives — download only what your deployment needs.
             Linux x86_64. SHA256 and SLSA provenance attestation per archive.
+            Pre-built archives track the latest published tag (currently v0.7.6);
+            v1.0.0 ships as source until its binary release is published.
           </p>
 
           <div class="install-archives">
@@ -93,19 +95,20 @@ gh attestation verify \
         <!-- Voies 2 + 3 en ligne -->
         <div class="install-ways-secondary">
 
-          <!-- Voie 2 — crates.io (name reserved) -->
+          <!-- Voie 2 — crates.io (published) -->
           <div class="install-way">
             <div class="install-way-header">
-              <div class="eyebrow install-way-label">crates.io (name reserved)</div>
-              <span class="install-way-badge install-way-badge--secondary">v1.0 library</span>
+              <div class="eyebrow install-way-label">crates.io</div>
+              <span class="install-way-badge install-way-badge--secondary">source release</span>
             </div>
             <p class="install-way-desc">
-              Source is open on GitHub (Apache-2.0). The crates.io name is reserved —
-              the full embeddable Rust library ships at v1.0 when the API is stable.
+              Source is open on GitHub (Apache-2.0). The full workspace (27 crates)
+              is published on crates.io — currently at v0.7.6; the v1.0.0 library
+              release follows the source tag.
             </p>
             <p class="install-source-note">
               <a href="https://crates.io/crates/gradatum" target="_blank" rel="noopener noreferrer">crates.io/crates/gradatum</a>
-              · name reserved · full library at v1.0 · Apache-2.0
+              · published (v0.7.6) · v1.0.0 source release tagged · Apache-2.0
             </p>
           </div>
 
@@ -132,7 +135,8 @@ cd gradatum &amp;&amp; cargo build --release --workspace</code></pre>
       </div>
 
       <p class="install-alpha-notice">
-        v0.7.6 · Linux x86_64 · API not stable before v1.0. See
+        v1.0.0 · Linux x86_64 · API stable since v1.0. Pre-built archives are at the
+        latest published tag (v0.7.6) until the v1.0.0 binary release lands. See
         <a href="https://github.com/gradatum/gradatum/blob/main/docs/DEPLOYMENT.md" target="_blank" rel="noopener noreferrer">docs/DEPLOYMENT.md</a>
         for the full deployment reference.
       </p>
@@ -205,9 +209,9 @@ cd gradatum &amp;&amp; cargo build --release --workspace</code></pre>
               <dt>MCP access</dt>
               <dd>
                 {mode.mcpAccess === 'both'
-                  ? 'stub + Remote OAuth'
-                  : mode.mcpAccess === 'remote-oauth'
-                    ? 'Remote OAuth'
+                  ? 'stub + authenticated remote MCP'
+                  : mode.mcpAccess === 'remote-authenticated'
+                    ? 'authenticated remote MCP'
                     : 'stub'}
               </dd>
             </dl>

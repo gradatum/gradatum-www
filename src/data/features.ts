@@ -123,7 +123,7 @@ const groups: FeatureGroup[] = [
     grade: 'Silver',
     versionPrefix: 'v0.5.x',
     description:
-      'Completes the durable memory layer, exposes the vault as a queryable MCP-native backend, and adds multi-user isolation with OAuth-based remote access.',
+      'Completes the durable memory layer and exposes the vault as a queryable MCP-native backend, authenticated with a server-issued API key.',
     features: [
       {
         id: 'f-06',
@@ -140,7 +140,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Teams that need to import technical documentation, research papers, or meeting transcripts into the vault without losing the structural context that makes answers accurate.',
         status: 'planned',
-        version: 'v0.8.0',
+        version: 'v1.3.0',
       },
       {
         id: 'f-39',
@@ -252,7 +252,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers ingesting documents that may contain personal data — emails, transcripts, HR notes — and operators who need a compliance-friendly vault with no third-party data processing.',
         status: 'planned',
-        version: 'v1.0.0',
+        version: 'v1.2.0',
       },
       {
         id: 'f-36',
@@ -400,9 +400,9 @@ const groups: FeatureGroup[] = [
       {
         id: 'f-63',
         refLabel: 'F-63',
-        name: 'VaultScope: Multi-Vault and Multi-Agent Addressing — suite F-31',
+        name: 'VaultScope Patterns: Wildcard and Role-Filtered Agent Fan-Out',
         positioning:
-          'Extends multi-vault scope addressing to reach multiple agents in parallel with wildcards and role filters for flexible targeting.',
+          "Extends F-31's addressing from one target to many: a single scope pattern with wildcards and role filters reaches a set of agents in parallel, and merged results still respect agent boundaries.",
         howItWorks: [
           'Query scoping extends beyond single-agent addressing to reach multiple agents in parallel: scope definitions support wildcards and role filters so a distillation job can consolidate knowledge across all agents matching a pattern.',
           'Audit and compaction jobs can target a vault region or agent role rather than hard-coded addresses, making deployments flexible without custom per-agent coordination.',
@@ -415,17 +415,17 @@ const groups: FeatureGroup[] = [
       {
         id: 'f-64',
         refLabel: 'F-64',
-        name: 'Semantic Forget: Intentional Scoped Deletion — suite F-44',
+        name: 'Compliance Forget: Retention Classes with Tamper-Evident Audit Trail',
         positioning:
-          'Adds compliance modes with cryptographic proof of erasure, retention policies for regulated data, and graduated-decay.',
+          'Adds a compliance layer over F-44: a tamper-evident audit trail of every forget, declarative retention classes, and a graduated decay window after which the note can no longer be recovered.',
         howItWorks: [
-          'Compliance mode writes a deletion record to an append-only audit log, cryptographically hashed against the previous entry, so erasure is verifiable and tamper-evident.',
+          'Compliance mode appends a record of each forget to an append-only audit log, cryptographically hashed against the previous entry, so the trail of what was forgotten, and when, is tamper-evident.',
           'Retention policies are declarative: notes tagged with a retention_class are automatically forgotten when their retention window expires, without manual review.',
-          'Graduated decay supports GDPR right-to-be-forgotten: instead of immediate deletion, a configurable window allows recovery; after expiry, the note becomes unrecoverable but the deletion is logged.',
+          'Graduated decay supports GDPR right-to-be-forgotten: rather than erasing on request, a configurable window keeps the note recoverable; once that window expires the note can no longer be recovered, and the forget stays in the audit log.',
         ],
         whoItsFor: 'Teams handling regulated data requiring audit-trail deletion compliance.',
         status: 'planned',
-        version: 'v0.9.0',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-65',
@@ -456,7 +456,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators who need vault data replicated across machines or want read replicas for high-read workloads, without migrating to a heavier database engine.',
         status: 'planned',
-        version: 'v1.0.0',
+        version: 'v1.1.0',
       },
       {
         id: 'f-26',
@@ -472,7 +472,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers with vaults exceeding tens of thousands of notes who find SQLite ANN performance insufficient, and contributors who want to benchmark retrieval quality across storage backends.',
         status: 'planned',
-        version: 'v1.0.0',
+        version: 'v1.3.0',
       },
       {
         id: 'f-37',
@@ -569,7 +569,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators who want to reach their vault from a mobile MCP client or ChatGPT without a VPN, and who want token rotation, explicit consent, and centralized revocation instead of static bearer tokens.',
         status: 'planned',
-        version: 'v1.0.0',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-51',
@@ -585,7 +585,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators maintaining long-lived vaults where notes accumulate from multiple agents or ingestion pipelines, and who need a systematic quality baseline rather than ad-hoc manual review.',
         status: 'planned',
-        version: 'v0.9.0',
+        version: 'v0.8.0',
       },
       {
         id: 'f-02',
@@ -707,7 +707,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Vault maintainers who need the curator admission policy tuned to their own quality and noise profile rather than relying on the initial defaults.',
         status: 'planned',
-        version: 'v0.9.0',
+        version: 'v0.8.0',
       },
       {
         id: 'f-67',
@@ -723,7 +723,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators and cost analysts who need granular visibility into where vault LLM spend is going, and developers building cost-attribution dashboards.',
         status: 'planned',
-        version: 'v1.0.0',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-68',
@@ -851,7 +851,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Agent builders who want a memory layer that volunteers relevant context proactively, rather than only on explicit retrieval.',
         status: 'planned',
-        version: 'v0.9.0',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-81',
@@ -883,7 +883,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Forward-looking users curious about gradatum ingesting handwritten or document-image sources; explicitly exploratory.',
         status: 'planned',
-        version: 'vX.Y.Z',
+        version: 'v1.3.0',
       },
       {
         id: 'f-05',
@@ -963,17 +963,19 @@ const groups: FeatureGroup[] = [
       {
         id: 'f-100',
         refLabel: 'F-100',
-        name: 'Hard-Delete On-Demand: Physical Note Erasure',
+        name: 'On-Demand Delete: Reversible Archival with Retention GC',
         positioning:
-          'Permanently removes a note from the vault by id, bypassing the soft-delete retention layer for compliance-driven erasure.',
+          'Removes a note from the live vault by moving it to an archive tree instead of erasing it — recoverable until a configurable retention deadline, after which it is physically destroyed.',
         howItWorks: [
-          'A privileged DELETE endpoint accepts a note id and immediately removes the record from both the FTS index and the embedding store.',
-          'The operation requires an explicit confirmation header and is irreversible; an audit entry is written before deletion for traceability.',
+          'A delete moves the note\'s Markdown file and its .history/ directory under .archive/ in mirror layout and records a row in the registry-driven archive_index table; a durable JSONL audit tombstone is written before the cascade.',
+          'A boot-and-interval GC selects archives past their 60-day (configurable) retention deadline from the registry — never a filesystem scan — and destroys them physically; destroyed and restored rows survive as history traces.',
+          'Restoring re-indexes the note as pending-review so it re-enters the curator pipeline rather than returning straight to live, with a 409 on ULID collision.',
+          'The gradatum-admin CLI drives delete, archive listing, purge, and restore (single ULID or a from/to range) dry-run by default over a loopback admin namespace; MCP exposes vault_archives_list read-only, so agents can see archives but never mutate them.',
         ],
         whoItsFor:
-          'Privacy-sensitive deployments where regulatory requirements mandate permanent removal rather than soft-delete.',
-        status: 'planned',
-        version: 'v0.9.0',
+          'Operators who need to take notes out of the live vault without an irreversible step, and who want a review window plus an audit trail before anything is physically destroyed.',
+        status: 'released',
+        version: 'v0.8.0',
       },
       {
         id: 'f-101',
@@ -1140,7 +1142,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Teams and individuals who want their agent to build on prior work rather than starting from scratch, reducing repeated mistakes and accelerating task execution.',
         status: 'planned',
-        version: 'v0.9.0',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-79',
@@ -1201,7 +1203,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Multi-process deployments where worker, gateway, and engine addresses change between restarts or deployments.',
         status: 'planned',
-        version: 'v1.0.0',
+        version: 'v1.1.0',
       },
       {
         id: 'f-86',
@@ -1216,7 +1218,113 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Teams that need off-node durability or cross-machine vault access without migrating to a fully hosted product.',
         status: 'planned',
+        version: 'v1.1.0',
+      },
+      {
+        id: 'f-131',
+        refLabel: 'F-131',
+        name: 'Embed Studio Bundle for crates.io Publication',
+        positioning:
+          'Embeds the gradatum-studio bundle inside the published crate, so the web UI ships together with the server instead of requiring a separate build step.',
+        howItWorks: [
+          'The studio frontend is compiled and embedded into the crate artifacts published on crates.io.',
+          'Shipment is one-way: the studio is distributed as an integrated asset of the release rather than a standalone download.',
+        ],
+        whoItsFor:
+          'Operators and OSS users who want to run the full gradatum stack — server plus studio UI — from the published crates without assembling assets manually.',
+        status: 'planned',
         version: 'v1.0.0',
+      },
+      {
+        id: 'f-105',
+        refLabel: 'F-105',
+        name: 'Context Optimization for Local Claude Bench: Prefix Cache + Expand Tool',
+        positioning:
+          'Reduces context cost and latency for the local Claude benchmark path via prefix caching and an expanded tool surface — tracked as backlog.',
+        howItWorks: [
+          'Prefix-cache reuse keeps repeated prompt prefixes out of the per-call context budget for the local bench.',
+          'An expand_tool surface exposes additional tool definitions without ballooning the base prompt.',
+          'Scoped as backlog: no target version committed yet.',
+        ],
+        whoItsFor:
+          'Operators running the local Claude bench who want lower token spend and faster turnarounds on repeated context workloads.',
+        status: 'planned',
+        version: 'vX.Y.Z',
+      },
+      {
+        id: 'f-110',
+        refLabel: 'F-110',
+        name: 'C6 Salience: Per-Note Usage Signal',
+        positioning:
+          'Tracks a salience signal per note from read, search, and recall activity plus F-46 feedback, so retrieval can reflect real usage rather than static recency.',
+        howItWorks: [
+          'Each note accumulates a usage signal from read/search/recall events and F-46 feedback.',
+          'The signal feeds ranking so frequently-used notes surface above merely-recent ones.',
+        ],
+        whoItsFor:
+          'Operators of long-lived vaults who want recall quality to track what actually gets used, not just what was written recently.',
+        status: 'planned',
+        version: 'v0.9.0',
+      },
+      {
+        id: 'f-111',
+        refLabel: 'F-111',
+        name: 'C5 Graduated Forgetting: Relevance-Driven Auto-Downgrade',
+        positioning:
+          'Adds an automatic downgrade policy driven by relevance, so notes that stop mattering are demoted gradually instead of staying at full status forever.',
+        howItWorks: [
+          'A relevance-based policy evaluates notes over time and auto-downgrades those that stop earning attention.',
+          'Downgrades are gradual — notes move down the status ladder rather than being deleted abruptly.',
+        ],
+        whoItsFor:
+          'Vault maintainers who want the knowledge store to stay lean and current without manual demotion sweeps.',
+        status: 'planned',
+        version: 'v0.9.0',
+      },
+      {
+        id: 'f-125',
+        refLabel: 'F-125',
+        name: 'Dual Agent|User Identity: Operator Peer Card + Hybrid Injection',
+        positioning:
+          'Introduces a dual identity model where operations carry an agent or user identity, with an operator peer card keyed by user-id and hybrid identity injection into context.',
+        howItWorks: [
+          'Identity is carried per-operation as agent|user rather than a single fixed principal.',
+          'An operator peer card is keyed by user-id; identity injection into the context is hybrid — combining agent and user signals.',
+        ],
+        whoItsFor:
+          'Deployments with multiple human operators and agent processes sharing one vault, where attribution and scoping must distinguish who or what performed each action.',
+        status: 'planned',
+        version: 'v1.2.0',
+      },
+      {
+        id: 'f-126',
+        refLabel: 'F-126',
+        name: 'Git-Version the Internal Vault Markdown (one-way observability)',
+        positioning:
+          'Versions the vault Markdown inside git for modification-cycle observability — a one-way mirror so history is tracked without coupling vault writes to git.',
+        howItWorks: [
+          'The internal vault Markdown is committed into git to make every modification cycle observable.',
+          'The flow is one-way: git records the history, it does not drive vault mutations.',
+        ],
+        whoItsFor:
+          'Operators who want an auditable modification trail of the vault content for review, backups, or diffing across time.',
+        status: 'planned',
+        version: 'vX.Y.Z',
+      },
+      {
+        id: 'f-127',
+        refLabel: 'F-127',
+        name: 'Unify the Three Rights Stores with Referential Integrity (lot B6)',
+        positioning:
+          'Consolidates the three separate rights storage supports into a single database-backed store with referential integrity, removing drift between them.',
+        howItWorks: [
+          'The three current rights supports are merged into one store backed by the database.',
+          'Referential integrity is enforced at the schema level so a rights entry cannot reference a missing principal or resource.',
+        ],
+        whoItsFor:
+          'Operators and auditors who need a single authoritative rights store instead of reconciling three parallel sources of truth.',
+        status: 'planned',
+        version: 'vX.Y.Z',
       },
     ],
   },
@@ -1317,6 +1425,21 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Advanced deployments where note lifecycle spans multiple processing stages and job sequencing must be explicit and auditable.',
+        status: 'planned',
+        version: 'v2.0.0',
+      },
+      {
+        id: 'f-108',
+        refLabel: 'F-108',
+        name: 'Gateway Tools: Anthropic Server-Tool Loop + Pluggable Web Search',
+        positioning:
+          'Extends the gateway with an Anthropic-compatible server-tool loop and a pluggable web_search tool — the missing tooling bridge for agent-driven gateway workflows.',
+        howItWorks: [
+          'A server-tool loop lets the gateway serve tool calls to Anthropic clients, and a pluggable web_search tool adds live web retrieval as a callable tool.',
+          'Tracked as planned for v2.0.0; the exact tool contract and provider adapters are still under specification.',
+        ],
+        whoItsFor:
+          'Gateway operators and agent builders who want Anthropic-native tool-call round-trips and web-search capabilities without a separate proxy layer.',
         status: 'planned',
         version: 'v2.0.0',
       },

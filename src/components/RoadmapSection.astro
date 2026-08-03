@@ -24,10 +24,10 @@ const CHAPTER_AGENTS_START = 'v0.7.0';    // Context Assembly + Agent Runtime be
     <div class="eyebrow">VI · Status &amp; Roadmap</div>
     <h2 id="roadmap-title" class="roadmap-h2">Roadmap — fifteen versions, four milestones</h2>
     <p class="roadmap-meta">
-      <code>v0.7.6</code> · 31 crates workspace · Apache-2.0 · Rust 2024 · MSRV 1.88+ ·
+      <code>v1.0.0</code> · 31 crates workspace · Apache-2.0 · Rust 2024 · MSRV 1.88+ ·
       <a href="https://github.com/gradatum/gradatum" target="_blank" rel="noopener noreferrer" class="roadmap-meta-link">GitHub</a> ·
       full workspace (27 crates) on <a href="https://crates.io/crates/gradatum" target="_blank" rel="noopener noreferrer" class="roadmap-meta-link">crates.io</a>
-      <span class="roadmap-meta-note">— source releases; API stable at v1.0</span>
+      <span class="roadmap-meta-note">— source releases; API stable since v1.0</span>
     </p>
 
     <div class="version-phases" role="list">
@@ -41,10 +41,12 @@ const CHAPTER_AGENTS_START = 'v0.7.0';    // Context Assembly + Agent Runtime be
                 <span class="chapter-eyebrow eyebrow">Chapter I</span>
                 <h3 class="chapter-title">Memory layer</h3>
                 <p class="chapter-desc">
-                  v0.4.0 → v0.5.1 — Completes the durable memory store: structured ingest,
-                  note history, temporal decay, distillation, MCP-native querying, multi-user
-                  isolation, and OAuth-based remote access. The queryable, sovereign memory
-                  store that other systems — and eventually gradatum itself — will build on.
+                  v0.4.0 → v0.5.1 — Completes the durable memory store: note history,
+                  temporal decay, semantic forget, VaultScope addressing, distillation, and
+                  MCP-native querying. Access is authenticated with a server-issued API key;
+                  multi-user isolation and remote client access are still ahead on the
+                  roadmap. The queryable, sovereign memory store that other systems — and
+                  eventually gradatum itself — will build on.
                 </p>
               </div>
             )}
@@ -53,9 +55,10 @@ const CHAPTER_AGENTS_START = 'v0.7.0';    // Context Assembly + Agent Runtime be
                 <span class="chapter-eyebrow eyebrow">Chapter II</span>
                 <h3 class="chapter-title">Context &amp; recall</h3>
                 <p class="chapter-desc">
-                  v0.7.0 → v0.7.6 — Context assembly, proactive recall, identity, temporal
+                  v0.7.0 → v1.0.0 — Context assembly, proactive recall, identity, temporal
                   search, and studio observability. v0.7.1–v0.7.5 are internal development
-                  milestones, published together as v0.7.6.
+                  milestones, published together as v0.7.6; v1.0.0 freezes the public API
+                  contracts and adds multi-user access with per-identity scopes.
                 </p>
               </div>
             )}
