@@ -31,7 +31,7 @@ const groups: FeatureGroup[] = [
         positioning:
           'Measures recall quality objectively using a curated subset of LongMemEval, a public reference benchmark for long-term memory systems.',
         howItWorks: [
-          'The gradatum-eval crate exposes three coverage levels — smoke (a small set of fast sanity queries), full LongMemEval (deterministic, anchored on a public dataset), and governance-bench (write / forget / consolidate cycles targeting axes not covered by standard benchmarks).',
+          'The gradatum-bench crate exposes three coverage levels — smoke (a small set of fast sanity queries), full LongMemEval (deterministic, anchored on a public dataset), and governance-bench (write / forget / consolidate cycles targeting axes not covered by standard benchmarks).',
           'Scores are computed deterministically so results are comparable across versions.',
         ],
         whoItsFor:
@@ -58,16 +58,15 @@ const groups: FeatureGroup[] = [
       {
         id: 'f-28',
         refLabel: 'F-28',
-        name: 'Install Wizard, One-liner, and Doctor',
+        name: 'Install Wizard and One-liner',
         positioning:
-          'Reduces gradatum setup and diagnostics to two commands, including on a fresh system.',
+          'Reduces gradatum setup to two commands, including on a fresh system.',
         howItWorks: [
-          'gradatum-admin install walks through interactive initialization (directories, permissions, base configuration).',
+          'gradatum-admin init bootstraps a root directory (directories, permissions, base configuration).',
           'A downloadable one-liner script covers the bootstrapping case where no binary is pre-installed.',
-          'gradatum-admin doctor inspects the installation state — dependencies, permissions, connectivity — and reports deviations with corrective suggestions.',
         ],
         whoItsFor:
-          'Anyone installing gradatum for the first time, or an operator diagnosing an existing deployment environment.',
+          'Anyone installing gradatum for the first time.',
         status: 'released',
         version: 'v0.1.0',
       },
@@ -259,10 +258,10 @@ const groups: FeatureGroup[] = [
         refLabel: 'F-36',
         name: 'Drift Detection: Identity Write Hook',
         positioning:
-          "Detects unauthorized or unexpected changes to an agent's identity notes and flags them before they silently alter agent behavior.",
+          "Detects incoherent changes to an agent's identity notes (category-title mismatches) and flags them so they do not silently alter agent behavior.",
         howItWorks: [
           'A DriftDetector is registered as a WriteHook on DocumentStore at startup; it monitors writes to the identity/ locus without a direct vault dependency.',
-          'On each write, the detector computes a semantic distance between the new content and the last validated version; divergence above threshold triggers a drift_detected event.',
+          'On each write, the detector runs a deterministic category-title coherence check; a divergence triggers a drift_detected event (warn-only — it never blocks the write).',
           'The drift event is surfaced via the jobs SSE (Server-Sent Events) stream, allowing operators or higher-level workflows to review the change before it takes effect.',
         ],
         whoItsFor:
@@ -1263,8 +1262,8 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Operators of long-lived vaults who want recall quality to track what actually gets used, not just what was written recently.',
-        status: 'planned',
-        version: 'v0.9.0',
+        status: 'released',
+        version: 'v1.0.0',
       },
       {
         id: 'f-111',
@@ -1325,6 +1324,21 @@ const groups: FeatureGroup[] = [
           'Operators and auditors who need a single authoritative rights store instead of reconciling three parallel sources of truth.',
         status: 'planned',
         version: 'vX.Y.Z',
+      },
+      {
+        id: 'f-112',
+        refLabel: 'F-112',
+        name: 'Conditional Distill Cron: Pressure-Gated Scheduling',
+        positioning:
+          'Runs the distillation pipeline on a schedule, but only when a locus shows enough accumulated pressure — avoiding useless passes on quiet vaults.',
+        howItWorks: [
+          'A cron (default: Sunday 04:00) measures per-locus pressure (count of live, non-processed notes) and enqueues a distill job only for loci above the configured threshold.',
+          'A dedup guard skips loci that already have an in-flight distill job.',
+        ],
+        whoItsFor:
+          'Operators running long-lived vaults who want distillation to run automatically without burning passes on idle sections.',
+        status: 'released',
+        version: 'v1.0.0',
       },
     ],
   },
