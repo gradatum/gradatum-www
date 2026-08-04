@@ -44,6 +44,45 @@ import TweaksPanel from '../components/TweaksPanel.astro';
       <hr class="rule" />
       <MultiStorage />
       <hr class="rule" />
+
+      <!-- Gradatum Studio screenshots -->
+      <section class="studio section-pad" aria-labelledby="studio-title">
+        <div class="studio-inner">
+          <div class="eyebrow">The control surface</div>
+          <h2 id="studio-title" class="chapter-h2">Gradatum Studio</h2>
+          <p class="studio-intro">
+            The Studio is the control surface of the Vault — a self-hosted dashboard with live
+            metrics, a note browser with inline markdown, a scored search panel, a review queue
+            and a job monitor. Your memory, on your hardware.
+          </p>
+          <div class="studio-grid">
+            <figure class="studio-figure">
+              <img
+                src="/studio-dashboard.png"
+                alt="Gradatum Studio — the self-hosted Vault dashboard showing live metrics, note browser, search panel, review queue and jobs monitor."
+                width="1280"
+                height="720"
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption class="studio-caption">Gradatum Studio — vault dashboard</figcaption>
+            </figure>
+            <figure class="studio-figure">
+              <img
+                src="/studio-system.png"
+                alt="Gradatum Studio — the self-hosted system health screen showing vault service status, metrics and resource monitoring."
+                width="1280"
+                height="720"
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption class="studio-caption">Gradatum Studio — system health &amp; metrics</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <hr class="rule" />
       <RoadmapSection />
       <hr class="rule" />
       <QuickStart />
@@ -82,5 +121,59 @@ import TweaksPanel from '../components/TweaksPanel.astro';
 
   .skip-link:focus {
     top: 0.5rem;
+  }
+
+  /* ───── Studio showcase ───── */
+  .studio-inner {
+    max-width: 1080px;
+  }
+
+  .chapter-h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    margin: 0.75rem 0 1.25rem;
+  }
+
+  .studio-intro {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    max-width: 68ch;
+    margin: 0 0 3rem;
+  }
+
+  .studio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 2rem;
+  }
+
+  .studio-figure {
+    margin: 0;
+  }
+
+  .studio-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    background: var(--paper);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--accent) 18%, transparent),
+      0 24px 80px rgba(0, 0, 0, 0.45);
+  }
+
+  .studio-caption {
+    margin-top: 1.25rem;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-soft);
   }
 </style>
