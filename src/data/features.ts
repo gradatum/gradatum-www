@@ -446,16 +446,16 @@ const groups: FeatureGroup[] = [
         refLabel: 'F-25',
         name: 'libsql Remote: Replicated SQLite Backend',
         positioning:
-          'Adds an opt-in remote SQLite backend powered by libsql, enabling vault replication and read replicas without changing the DocumentStore interface.',
+          'Evaluated an opt-in remote SQLite backend powered by libsql for vault replication and read replicas without changing the DocumentStore interface.',
         howItWorks: [
-          'The gradatum-db-sqlite crate exposes a libsql feature flag; enabling it replaces the local SQLite connection with a remote libsql endpoint.',
-          'The DocumentStore, IndexStore, and QueueStore traits remain unchanged — the swap is purely a configuration-level choice with no application code changes.',
-          'An internal poll loop on the libsql queue backend (500 ms interval) bridges the remote queue to the existing channel-based worker dispatch.',
+          'A probe build swapped the local SQLite connection for a remote libsql endpoint behind a feature flag on the gradatum-db-sqlite crate.',
+          'The probe surfaced a silent engine substitution — libsql replaced the SQLite version actually in use (3.46.0 to 3.45.1) with no error or warning.',
+          'Given that failure mode, this approach will not return as-is; not scheduled on any release.',
         ],
         whoItsFor:
-          'Operators who need vault data replicated across machines or want read replicas for high-read workloads, without migrating to a heavier database engine.',
-        status: 'planned',
-        version: 'v1.1.0',
+          'Operators who would need vault data replicated across machines or read replicas for high-read workloads — this path is not currently available.',
+        status: 'roadmap',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-26',
@@ -1109,7 +1109,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers who want a terminal agent that understands their codebase deeply, remembers project history, and executes tasks end-to-end — not just suggest changes — entirely on their own machine.',
         status: 'planned',
-        version: 'v2.0.0',
+        version: 'v3.0.0',
       },
       {
         id: 'f-77',
@@ -1125,7 +1125,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers working on large refactorings or incremental changes where understanding the exact code delta is critical to making the right next decision.',
         status: 'planned',
-        version: 'v2.0.0',
+        version: 'v3.0.0',
       },
       {
         id: 'f-78',
@@ -1157,7 +1157,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers who want their agent to go beyond analysis and actually complete work end-to-end, with full auditability and control.',
         status: 'planned',
-        version: 'v2.0.0',
+        version: 'v3.0.0',
       },
       {
         id: 'f-85',
@@ -1202,22 +1202,23 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Multi-process deployments where worker, gateway, and engine addresses change between restarts or deployments.',
         status: 'planned',
-        version: 'v1.1.0',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-86',
         refLabel: 'F-86',
-        name: 'Cloud Storage Backends: S3, GCS, Azure via OpenDAL',
+        name: 'Cloud Storage Backends: S3 via OpenDAL',
         positioning:
-          'Replaces local-only storage with pluggable cloud backends (S3, GCS, Azure) using the OpenDAL abstraction layer.',
+          'Adds an S3-compatible object storage backend as an alternative to the local filesystem, using the OpenDAL abstraction layer.',
         howItWorks: [
-          'An OpenDAL operator is configured per storage tier (notes, embeddings, artifacts); the same trait interface used for local storage maps transparently to cloud providers.',
-          'No application code changes are required — the swap is a configuration-level choice between local and cloud backend variants.',
+          'A [storage] configuration section chooses between the local filesystem (default, byte-identical to prior behaviour) and any S3-compatible provider (AWS, OVH, MinIO, Ceph, Scaleway…) reached through a configurable endpoint.',
+          'Credentials are read from the process environment, never from configuration. No application code changes are required — the swap is a configuration-level choice.',
+          'GCS and Azure are exposed by the same OpenDAL abstraction but have no backend wired up yet — only the S3-compatible path is implemented.',
         ],
         whoItsFor:
           'Teams that need off-node durability or cross-machine vault access without migrating to a fully hosted product.',
-        status: 'planned',
-        version: 'v1.1.0',
+        status: 'released',
+        version: 'v2.0.0',
       },
       {
         id: 'f-131',
@@ -1344,7 +1345,7 @@ const groups: FeatureGroup[] = [
   },
   {
     grade: 'Platinum',
-    versionPrefix: 'v2.0.x',
+    versionPrefix: 'v3.0.x',
     description:
       'Extends the platform to multimodal inputs, bring-your-own-compute infrastructure, desktop automation, and long-horizon memory consolidation.',
     features: [
@@ -1378,7 +1379,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers building agents that analyze screenshots, diagrams, or document scans — and integrators prepared to migrate from the v1.x text-only ChatMessage API.',
         status: 'planned',
-        version: 'v2.0.0',
+        version: 'v3.0.0',
       },
       {
         id: 'f-10',
@@ -1394,7 +1395,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers building automation agents that interact with desktop applications, analyze UI states, or need to reason about visual content without a separate vision pipeline.',
         status: 'planned',
-        version: 'v2.0.0',
+        version: 'v3.0.0',
       },
       {
         id: 'f-27',
@@ -1410,7 +1411,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Enterprise teams and cloud operators who need gradatum running at scale across multiple regions, with their own compute infrastructure, while retaining full data sovereignty.',
         status: 'planned',
-        version: 'v2.0.0',
+        version: 'v3.0.0',
       },
       {
         id: 'f-21',
@@ -1425,7 +1426,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Homelab deployments with services that need to react to vault changes for automation triggers or notification flows.',
         status: 'planned',
-        version: 'v2.0.0',
+        version: 'v3.0.0',
       },
       {
         id: 'f-52',
@@ -1440,7 +1441,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Advanced deployments where note lifecycle spans multiple processing stages and job sequencing must be explicit and auditable.',
         status: 'planned',
-        version: 'v2.0.0',
+        version: 'v3.0.0',
       },
       {
         id: 'f-108',
@@ -1455,7 +1456,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Gateway operators and agent builders who want Anthropic-native tool-call round-trips and web-search capabilities without a separate proxy layer.',
         status: 'planned',
-        version: 'v2.0.0',
+        version: 'v3.0.0',
       },
     ],
   },

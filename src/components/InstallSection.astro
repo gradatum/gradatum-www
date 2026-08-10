@@ -15,7 +15,7 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
 
     <!-- Installation — 3 voies -->
     <div class="install-oneliner">
-      <div class="eyebrow block-label">Get started — v1.0.0 · Linux x86_64</div>
+      <div class="eyebrow block-label">Get started — v2.0.0 · Linux x86_64</div>
 
       <div class="install-ways">
 
@@ -28,8 +28,8 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
           <p class="install-way-desc">
             Three archives — download only what your deployment needs.
             Linux x86_64. SHA256 and SLSA provenance attestation per archive.
-            Pre-built archives track the latest published tag (currently v0.7.6);
-            v1.0.0 ships as source until its binary release is published.
+            Pre-built archives track the latest published tag (currently v1.0.0);
+            v2.0.0 ships as source until its binary release is published.
           </p>
 
           <div class="install-archives">
@@ -42,7 +42,7 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
                 Contains <code>gradatum-server</code>, <code>gradatum-worker</code>, <code>gradatum-admin</code>.
                 Core vault store, job queue, admin CLI.
               </p>
-              <pre class="install-pre install-archive-pre"><code>gradatum-server-v0.7.6-x86_64-unknown-linux-gnu.tar.gz</code></pre>
+              <pre class="install-pre install-archive-pre"><code>gradatum-server-v1.0.0-x86_64-unknown-linux-gnu.tar.gz</code></pre>
             </div>
 
             <div class="install-archive">
@@ -54,7 +54,7 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
                 Contains <code>gradatum-gateway</code> and <code>gradatum-engine</code>.
                 Router, circuit-breaker, llama-server supervisor. Required for local inference.
               </p>
-              <pre class="install-pre install-archive-pre"><code>gradatum-llm-v0.7.6-x86_64-unknown-linux-gnu.tar.gz</code></pre>
+              <pre class="install-pre install-archive-pre"><code>gradatum-llm-v1.0.0-x86_64-unknown-linux-gnu.tar.gz</code></pre>
             </div>
 
             <div class="install-archive">
@@ -66,7 +66,7 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
                 Contains <code>gradatum-mcp-stub</code>.
                 MCP bridge for agent clients (Claude Code, Claude Desktop, etc.).
               </p>
-              <pre class="install-pre install-archive-pre"><code>gradatum-mcp-v0.7.6-x86_64-unknown-linux-gnu.tar.gz</code></pre>
+              <pre class="install-pre install-archive-pre"><code>gradatum-mcp-v1.0.0-x86_64-unknown-linux-gnu.tar.gz</code></pre>
             </div>
           </div>
 
@@ -87,7 +87,7 @@ sha256sum -c SHA256SUMS --ignore-missing
 
 <span class="install-comment"># verify SLSA build provenance (GitHub native)</span>
 gh attestation verify \
-  gradatum-server-v0.7.6-x86_64-unknown-linux-gnu.tar.gz \
+  gradatum-server-v1.0.0-x86_64-unknown-linux-gnu.tar.gz \
   --repo gradatum/gradatum</code></pre>
           </div>
         </div>
@@ -103,11 +103,11 @@ gh attestation verify \
             </div>
             <p class="install-way-desc">
               Source is open on GitHub (Apache-2.0). The full workspace (27 crates)
-              is published on crates.io at v1.0.0 — the first stable release.
+              is published on crates.io at v2.0.0 — SemVer strict since v1.0.0, the first stable release; v2.0.0 is a major for breaking changes.
             </p>
             <p class="install-source-note">
               <a href="https://crates.io/crates/gradatum" target="_blank" rel="noopener noreferrer">crates.io/crates/gradatum</a>
-              · published (v1.0.0) · Apache-2.0
+              · published (v2.0.0) · Apache-2.0
             </p>
           </div>
 
@@ -125,7 +125,7 @@ gh attestation verify \
 cd gradatum &amp;&amp; cargo build --release --workspace</code></pre>
             <p class="install-source-note">
               <a href="https://github.com/gradatum/gradatum" target="_blank" rel="noopener noreferrer">github.com/gradatum/gradatum</a>
-              · Apache-2.0 · Rust 2024 · MSRV 1.88+
+              · Apache-2.0 · Rust 2024 · MSRV 1.91+
             </p>
           </div>
 
@@ -134,8 +134,8 @@ cd gradatum &amp;&amp; cargo build --release --workspace</code></pre>
       </div>
 
       <p class="install-alpha-notice">
-        v1.0.0 · Linux x86_64 · API stable since v1.0. All 27 crates published on
-        crates.io; pre-built binary archives still at v0.7.6 until a v1.0.0 binary build ships. See
+        v2.0.0 · Linux x86_64 · SemVer strict since v1.0.0 (v2.0.0 is a major for breaking changes). All 27 crates published on
+        crates.io; pre-built binary archives still at v1.0.0 until a v2.0.0 binary build ships. See
         <a href="https://github.com/gradatum/gradatum/blob/main/docs/DEPLOYMENT.md" target="_blank" rel="noopener noreferrer">docs/DEPLOYMENT.md</a>
         for the full deployment reference.
       </p>
@@ -193,6 +193,11 @@ cd gradatum &amp;&amp; cargo build --release --workspace</code></pre>
                   planned for v1.0.0
                 </span>
               )}
+              {mode.status === 'planned' && (
+                <span class="status-badge status-planned" aria-label="Planned — no version committed yet">
+                  planned
+                </span>
+              )}
             </div>
 
             <p class="panel-tagline">{mode.tagline}</p>
@@ -226,44 +231,24 @@ cd gradatum &amp;&amp; cargo build --release --workspace</code></pre>
         <thead>
           <tr>
             <th scope="col">Provider</th>
-            <th scope="col">Flag</th>
+            <th scope="col">gateway.toml</th>
             <th scope="col">Requirement</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Ollama (local)</td>
-            <td><code>--provider ollama</code></td>
-            <td>Ollama installed and running</td>
+            <td>Any OpenAI-compatible endpoint (Ollama, llama.cpp, OpenRouter, self-hosted…)</td>
+            <td><code>[providers.NAME]<br />endpoint = "http://host:port"</code></td>
+            <td>Endpoint reachable, serves <code>/v1/chat/completions</code></td>
           </tr>
           <tr>
-            <td>llama.cpp server</td>
-            <td><code>--provider llamacpp --llm-url URL</code></td>
-            <td>llama.cpp server accessible</td>
+            <td>Cloud provider requiring a key</td>
+            <td><code>api_key_env = "MY_KEY_ENV_VAR"</code> (same block)</td>
+            <td>Env var set with the key</td>
           </tr>
           <tr>
-            <td>OpenRouter</td>
-            <td><code>--provider openrouter --api-key KEY</code></td>
-            <td>OpenRouter API key</td>
-          </tr>
-          <tr>
-            <td>Anthropic</td>
-            <td><code>--provider anthropic --api-key KEY</code></td>
-            <td>Anthropic API key</td>
-          </tr>
-          <tr>
-            <td>OpenAI</td>
-            <td><code>--provider openai --api-key KEY</code></td>
-            <td>OpenAI API key</td>
-          </tr>
-          <tr>
-            <td>Custom OpenAI-compatible</td>
-            <td><code>--provider custom --llm-url URL</code></td>
-            <td>Accessible endpoint</td>
-          </tr>
-          <tr>
-            <td>None (Nano mode)</td>
-            <td><code>--level nano</code></td>
+            <td>None (no gateway installed)</td>
+            <td>—</td>
             <td>—</td>
           </tr>
         </tbody>
@@ -281,7 +266,7 @@ gradatum-admin api-key list   --root /var/lib/gradatum
 gradatum-admin jobs list --root /var/lib/gradatum
 gradatum-admin jobs dlq  --root /var/lib/gradatum
 
-gradatum-admin vault rename "old title" "new title"  # F-39 stable wikilinks</code></pre>
+gradatum-admin vault rename "old title" "new title" --tenant main  # F-39 stable wikilinks</code></pre>
     </div>
 
     <!-- Example topology -->

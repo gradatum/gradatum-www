@@ -121,7 +121,7 @@ export type FeatureGroup = z.infer<typeof featureGroupSchema>;
 
 export const INSTALL_LEVELS = ['L0', 'L1', 'L1+', 'L2', 'L3'] as const;
 export const MCP_ACCESS_TYPES = ['stub', 'remote-authenticated', 'both'] as const;
-export const INSTALL_STATUSES = ['available', 'planned-v0.5', 'planned-v0.5.1', 'planned-v1.0'] as const;
+export const INSTALL_STATUSES = ['available', 'planned-v0.5', 'planned-v0.5.1', 'planned-v1.0', 'planned'] as const;
 
 export const installModeSchema = z.object({
   id: z.string().regex(/^[a-z-]+$/),

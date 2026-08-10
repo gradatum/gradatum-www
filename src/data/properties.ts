@@ -27,12 +27,12 @@ const rawProperties = [
   {
     name: 'Hierarchical ACL',
     description:
-      'Bearer-scoped access to memory loci. Configure from presets (flat, hierarchical, multi-project, team) or write your own.',
+      'Bearer-scoped access to memory loci. Two built-in presets: hierarchical (default) — admin and studio with full access, plus a main-agent orchestrator and typed sub-agents each scoped to their own read/write patterns; flat — a single consumer, a single locus, no isolation. Or point --preset at your own TOML file.',
   },
   {
     name: 'Multi-storage',
     description:
-      'OpenDAL abstraction — Local filesystem available. S3/R2, Azure, GCS planned (feature flags available; backend implementations pending). NFS explicitly rejected.',
+      'OpenDAL abstraction — local filesystem (default) and S3/R2-compatible object storage available since v2.0.0. Azure, GCS planned on the same abstraction. The startup check that once refused NFS was removed in v2.0.0; POSIX lock incompatibility under concurrent writers is now the deploying operator\'s call to make.',
   },
   {
     name: 'Markdown truth',

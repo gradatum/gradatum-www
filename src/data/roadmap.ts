@@ -505,17 +505,19 @@ const versions: VersionPhase[] = [
     showFeaturesLink: false,
   },
   {
-    version: 'v1.1.0',
-    status: 'planned',
-    theme: 'Storage Backends & Service Discovery',
+    version: 'v2.0.0',
+    status: 'done',
+    theme: 'Identity Hardening & Object Storage',
     description:
-      'Gradatum runs on local SQLite by default, which keeps a deployment to a single file and a single machine. v1.1.0 makes that a configuration choice rather than a constraint: the vault can sit on replicated SQLite over libsql, or on object storage through S3, GCS, and Azure, without changing the storage interfaces the rest of the codebase depends on. Multi-process deployments also stop relying on hardcoded addresses — components register themselves and resolve each other at runtime.',
+      "v2.0.0 closes the 1.x line: identity is now strictly credential-derived — no default identity, no client-declared author, no silent fallback. Vault storage gains an S3-compatible object backend as an alternative to the local filesystem, and the startup restriction that refused to run on a network filesystem is removed — that trade-off is now the deploying operator's decision. Link-edge reconciliation repairs notes whose recorded links drifted from their current body. This release breaks public Rust API contracts (trait signatures, an error variant removed, a new required field), which is why it ships as a SemVer major rather than a minor.",
     scopeTeaserItems: [
-      'Replicated SQLite backend over libsql — opt-in, same storage interface',
-      'Object storage backends: S3, GCS, Azure via OpenDAL',
-      'Components resolve each other at runtime — no hardcoded addresses',
+      'Identity strictly credential-derived — no default identity, no silent fallback',
+      'Vault storage on an S3-compatible object backend (local filesystem stays default)',
+      'Network-filesystem startup restriction removed — operator decision now',
+      'Link-edge reconciliation for drifted note links (gradatum-admin repair-note-links)',
+      'Full stack via Docker, one active key per identity, workspace dependency refresh',
     ],
-    featureRefs: ['F-25', 'F-54', 'F-86'],
+    featureRefs: ['F-86'],
     showFeaturesLink: false,
   },
   {
@@ -533,12 +535,12 @@ const versions: VersionPhase[] = [
     showFeaturesLink: false,
   },
   {
-    version: 'v2.0.0',
+    version: 'v3.0.0',
     grade: 'Platinum',
     status: 'planned',
     theme: 'Multimodal, Consolidation & Sovereign Agent Runtime',
     description:
-      "Text was always just the starting point. v2.0.0 extends gradatum to images, audio, and documents — and introduces long-horizon memory consolidation, where the system compresses and learns from its own history over time. This version also ships gradatum-code: a terminal agent that reasons over your codebase using vault memory, recalls past decisions, and executes tasks end-to-end on local hardware — nothing leaves your machine. This is a breaking change by design: the chat API is rebuilt to handle multimodal input natively, completing gradatum's arc from a local knowledge store to a full cognitive infrastructure.",
+      "Text was always just the starting point. v3.0.0 extends gradatum to images, audio, and documents — and introduces long-horizon memory consolidation, where the system compresses and learns from its own history over time. This version also ships gradatum-code: a terminal agent that reasons over your codebase using vault memory, recalls past decisions, and executes tasks end-to-end on local hardware — nothing leaves your machine. This is a breaking change by design: the chat API is rebuilt to handle multimodal input natively, completing gradatum's arc from a local knowledge store to a full cognitive infrastructure.",
     scopeTeaserItems: ['Images, audio, and documents understood alongside text', 'Long-horizon memory consolidation — the system learns from its own history', 'Sovereign terminal agent — reasons over your codebase and executes tasks end-to-end', 'Runs entirely on local hardware — nothing leaves your machine'],
     featureRefs: ['F-49', 'F-69', 'F-76', 'F-77', 'F-79'],
     showFeaturesLink: false,

@@ -8,28 +8,28 @@ interface Backend {
 
 const backends: Backend[] = [
   { name: 'Local FS', tier: 'primary', scheme: 'fs',
-    notes: 'Default. NVMe local only — NFS rejected: POSIX lock incompatibility causes data corruption under concurrent writers.' },
-  { name: 'S3 / R2', tier: 'planned', scheme: 's3',
-    notes: 'AWS S3, Cloudflare R2, MinIO, Backblaze B2. Feature flag available; backend implementation pending.' },
+    notes: 'Default. NVMe local recommended. The startup check that once refused NFS was removed in v2.0.0 — POSIX lock incompatibility under concurrent writers is now the deploying operator\'s call to make, not a blocked configuration.' },
+  { name: 'S3 / R2', tier: 'primary', scheme: 's3',
+    notes: 'AWS S3, Cloudflare R2, MinIO, Backblaze B2, or any other S3-compatible endpoint. Available since v2.0.0 as an alternative to local filesystem — configuration-level choice, no code changes.' },
   { name: 'Azure Blob', tier: 'planned', scheme: 'azblob',
-    notes: 'Azure Blob Storage via OpenDAL azblob service. Feature flag available; backend implementation pending.' },
+    notes: 'Azure Blob Storage via OpenDAL azblob service. Same abstraction as S3; no backend wired up yet.' },
   { name: 'GCS', tier: 'planned', scheme: 'gcs',
-    notes: 'Google Cloud Storage. Service account or ADC auth. Feature flag available; backend implementation pending.' },
+    notes: 'Google Cloud Storage. Same abstraction as S3; no backend wired up yet.' },
 ];
 
 const tierLabel: Record<Backend['tier'], string> = {
-  primary: 'primary',
+  primary: 'available',
   planned: 'planned',
 };
 ---
 <section class="storage section-pad section-gap" aria-labelledby="storage-title">
   <div class="storage-inner">
     <div class="eyebrow">V · Multi-storage</div>
-    <h2 id="storage-title" class="storage-h2">One backend today. More planned.</h2>
+    <h2 id="storage-title" class="storage-h2">Two backends today. More planned.</h2>
     <p class="storage-desc">
       Gradatum uses <a href="https://opendal.apache.org" target="_blank" rel="noopener noreferrer" class="storage-link">Apache OpenDAL</a>
-      as a unified storage abstraction layer. Local filesystem is available today; S3, Azure, and GCS support is planned.
-      NFS is explicitly rejected: POSIX lock incompatibility causes data corruption under concurrent writers.
+      as a unified storage abstraction layer. Local filesystem and S3-compatible object storage are available today; Azure and GCS support is planned on the same abstraction.
+      The startup check that once refused a network filesystem was removed in v2.0.0 — POSIX lock incompatibility under concurrent writers is now the deploying operator's call to make.
     </p>
 
     <ul class="backends-grid" role="list" aria-label="Storage backends">
@@ -49,19 +49,19 @@ const tierLabel: Record<Backend['tier'], string> = {
 
     <div class="storage-config">
       <div class="eyebrow config-label">Example — gradatum.toml</div>
-      <pre class="config-pre"><code><span class="c"># Per-vault storage configuration</span>
-[vaults.main.storage]
-backend = "s3"
-bucket  = "my-gradatum-vault"
-region  = "us-east-1"
-root    = "/gradatum/main"
+      <pre class="config-pre"><code><span class="c"># S3 on OVH — verbatim shape of the [storage] section</span>
+[storage]
+service  = "s3"
+endpoint = "https://s3.gra.io.cloud.ovh.net"
+bucket   = "my-vault"
+region   = "gra"
 
-[vaults.staging.storage]
-backend = "fs"
-root    = "~/.gradatum/vaults/staging"  <span class="c"># local NVMe for testing</span>
+<span class="c"># Local filesystem (default — omit [storage] entirely, or set it explicitly)</span>
+[storage]
+service = "fs"
 
-<span class="c"># NFS rejected: POSIX lock incompatibility (data corruption under concurrent writers)</span>
-<span class="c"># backend = "nfs"  ← will fail at startup with nfs_check.rs guard</span></code></pre>
+<span class="c"># NFS is no longer blocked at startup (restriction removed in v2.0.0) —</span>
+<span class="c"># POSIX lock incompatibility under concurrent writers is the operator's call.</span></code></pre>
     </div>
   </div>
 </section>

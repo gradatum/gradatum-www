@@ -16,17 +16,16 @@
     <div class="qs-blocks">
       <!-- Block 1: Clone & build -->
       <div class="qs-block">
-        <div class="eyebrow block-label">Clone &amp; build (v1.0.0 · API stable)</div>
-        <pre class="qs-pre"><code><span class="c"># build from source</span>
+        <div class="eyebrow block-label">Clone &amp; build (v2.0.0 · SemVer strict)</div>
+        <pre class="qs-pre"><code><span class="c"># clone</span>
 git clone https://github.com/gradatum/gradatum
-cd gradatum && cargo build --release --workspace
+cd gradatum
 
-<span class="c"># initialize a vault with the hierarchical preset</span>
-gradatum-admin init --preset hierarchical \
-  --root /var/lib/gradatum
+<span class="c"># build + init + install systemd units, in one idempotent script</span>
+sudo bash scripts/install-gradatum-services.sh --build
 
-<span class="c"># start the server</span>
-systemctl --user start gradatum-server</code></pre>
+<span class="c"># check it's running (system-scoped unit, not --user)</span>
+sudo systemctl status gradatum-server</code></pre>
       </div>
 
       <!-- Block 2: Write & search via HTTP API -->
@@ -41,10 +40,7 @@ curl -X POST http://localhost:19090/api/v1/vault_write \\
 <span class="c"># search across loci</span>
 curl http://localhost:19090/api/v1/vault_search \\
   -H "Authorization: Bearer &#36;GRADATUM_BEARER" \\
-  -d '&#123;"query":"ULID identity","locus":"projecta/*"&#125;'
-
-<span class="c"># list vaults</span>
-gradatum-admin vault list</code>`}></pre>
+  -d '&#123;"query":"ULID identity","locus":"projecta/*"&#125;'</code>`}></pre>
       </div>
 
       <!-- Block 3: MCP stub -->
@@ -65,12 +61,12 @@ curl http://localhost:19090/api/v1/vault_search \\
     </div>
 
     <p class="qs-note">
-      v1.0.0 — current release. Source on
+      v2.0.0 — current release. Source on
       <a href="https://github.com/gradatum/gradatum" target="_blank" rel="noopener noreferrer" class="qs-note-link">GitHub</a> (Apache-2.0);
-      full workspace (27 crates) on <a href="https://crates.io/crates/gradatum" target="_blank" rel="noopener noreferrer" class="qs-note-link">crates.io</a> at v1.0.0.
+      full workspace (27 crates) on <a href="https://crates.io/crates/gradatum" target="_blank" rel="noopener noreferrer" class="qs-note-link">crates.io</a> at v2.0.0.
       Pre-built binaries (server / llm / mcp) on
       <a href="https://github.com/gradatum/gradatum/releases" target="_blank" rel="noopener noreferrer" class="qs-note-link">GitHub Releases</a>
-      are still at v0.7.6 until a v1.0.0 binary build ships. API stable since v1.0. See the
+      are still at v1.0.0 until a v2.0.0 binary build ships. SemVer strict since v1.0.0 — v2.0.0 is a major for breaking changes. See the
       <a href="/install" class="qs-note-link">Install page</a> for all deployment profiles.
     </p>
   </div>
