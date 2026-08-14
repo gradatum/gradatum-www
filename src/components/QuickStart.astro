@@ -43,15 +43,19 @@ curl http://localhost:19090/api/v1/vault_search \\
   -d '&#123;"query":"ULID identity","locus":"projecta/*"&#125;'</code>`}></pre>
       </div>
 
-      <!-- Block 3: MCP stub -->
+      <!-- Block 3: MCP integration -->
       <div class="qs-block">
-        <div class="eyebrow block-label">MCP integration (MCP stub)</div>
-        <pre class="qs-pre" set:html={`<code><span class="c"># gradatum.toml — MCP stub for Claude Code</span>
-[[mcpServers]]
-name    = &quot;gradatum&quot;
-command = &quot;gradatum-mcp-stub&quot;
-args    = [&quot;--server&quot;, &quot;http://localhost:19090&quot;]
-env     = &#123; GRADATUM_BEARER = &quot;your-bearer-token&quot; &#125;
+        <div class="eyebrow block-label">MCP integration (Streamable HTTP)</div>
+        <pre class="qs-pre" set:html={`<code><span class="c"># .mcp.json — gradatum-server serves MCP natively, no separate bridge process</span>
+&#123;
+  &quot;mcpServers&quot;: &#123;
+    &quot;gradatum&quot;: &#123;
+      &quot;type&quot;: &quot;http&quot;,
+      &quot;url&quot;: &quot;http://127.0.0.1:19090/mcp&quot;,
+      &quot;headers&quot;: &#123; &quot;Authorization&quot;: &quot;Bearer ak_your_api_key&quot; &#125;
+    &#125;
+  &#125;
+&#125;
 
 <span class="c"># Or via HTTP directly (API)</span>
 curl http://localhost:19090/health
@@ -63,10 +67,10 @@ curl http://localhost:19090/api/v1/vault_search \\
     <p class="qs-note">
       v2.0.0 — current release. Source on
       <a href="https://github.com/gradatum/gradatum" target="_blank" rel="noopener noreferrer" class="qs-note-link">GitHub</a> (Apache-2.0);
-      26 of the 31 workspace crates on <a href="https://crates.io/crates/gradatum" target="_blank" rel="noopener noreferrer" class="qs-note-link">crates.io</a> at v2.0.0 (the rest are internal: CLI, MCP stub, test/bench harnesses).
-      Pre-built binaries (server / llm / mcp) on
+      26 of the 31 workspace crates on <a href="https://crates.io/crates/gradatum" target="_blank" rel="noopener noreferrer" class="qs-note-link">crates.io</a> at v2.0.0 (the rest are internal: CLI, test/bench harnesses, and gradatum-mcp-stub — retired from the binary distribution as of 2.0.0, source kept in the repository).
+      Pre-built binaries (server / llm) on
       <a href="https://github.com/gradatum/gradatum/releases" target="_blank" rel="noopener noreferrer" class="qs-note-link">GitHub Releases</a>
-      are still at v1.0.0 until a v2.0.0 binary build ships. SemVer strict since v1.0.0 — v2.0.0 is a major for breaking changes. See the
+      are at v2.0.0. SemVer strict since v1.0.0 — v2.0.0 is a major for breaking changes. See the
       <a href="/install" class="qs-note-link">Install page</a> for all deployment profiles.
     </p>
   </div>

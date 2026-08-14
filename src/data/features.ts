@@ -509,17 +509,17 @@ const groups: FeatureGroup[] = [
       {
         id: 'f-45',
         refLabel: 'F-45',
-        name: 'Multi-User Support: Per-User Vault Isolation',
+        name: 'Multi-Tenant Isolation: Enforced Scopes and Vault Boundaries',
         positioning:
-          'Enables multiple users to share a single gradatum deployment with configurable isolation — private identity, shared or private knowledge, role-based access.',
+          'Enforces tenant-level isolation at the storage layer — scoped vault resolution and write-path guards that fail closed, not just decorative permission checks.',
         howItWorks: [
-          'Each user is represented by a UserRecord with a Bearer JWT; an admin invitation flow provisions new users without exposing the root credential.',
-          'Isolation is per-locus type: identity/ and peers/ are always private; knowledge/ and skills/ are configurable as shared or private per deployment.',
-          'ACL policies in gradatum-acl-policy enforce locus-level access at the storage layer, so isolation is structural rather than enforced only at the API boundary.',
+          'Write paths are gated by an explicit scope check, not a label that looks like access control without enforcing it.',
+          'A dedicated, fail-closed guard resolves the effective read vault, tenant, and write vault for every request.',
+          'The multi-tenant flag runs active in production, backed by a fuzzed no-leak-between-vaults test as a continuous integration guard.',
         ],
         whoItsFor:
-          'Teams and households who want to run one gradatum instance shared across multiple people or agents, each with their own private memory and optionally contributing to shared knowledge.',
-        status: 'planned',
+          'Operators running gradatum for more than one tenant who need vault boundaries enforced at the storage layer rather than assumed by convention.',
+        status: 'released',
         version: 'v1.0.0',
       },
       {
@@ -548,11 +548,12 @@ const groups: FeatureGroup[] = [
           'Job::Audit(AuditMode) supports three modes: Detect (identifies duplicates and near-duplicates by semantic similarity), Deduplicate (merges or flags them), and Both (full pass).',
           'The audit produces a per-locus vault score reflecting coverage, freshness, and uniqueness — visible in the jobs introspection API.',
           'Conflict reports list notes with contradictory claims so operators or distillation jobs can resolve them explicitly rather than leaving ambiguity in the search index.',
+          'Runs on a schedule in production today, regenerating a fresh audit report against the live vault.',
         ],
         whoItsFor:
           'Operators maintaining long-lived vaults where notes accumulate from multiple agents or ingestion pipelines, and who need a systematic quality baseline rather than ad-hoc manual review.',
-        status: 'planned',
-        version: 'v0.8.0',
+        status: 'released',
+        version: 'v1.0.0',
       },
       {
         id: 'f-02',
@@ -737,8 +738,8 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Code maintainers and refactoring tools where knowing the exact implementation that a method call targets is critical to safety and correctness.',
-        status: 'planned',
-        version: 'v0.8.0',
+        status: 'released',
+        version: 'v1.0.0',
       },
       {
         id: 'f-71',
@@ -1079,16 +1080,15 @@ const groups: FeatureGroup[] = [
         refLabel: 'F-50',
         name: 'User Profile: Declarative Identity Document',
         positioning:
-          "Gives the vault a single, operator-editable profile note that describes the user to every agent — taking priority over inferred peer profiles when the two conflict.",
+          'A planned operator-authored profile note that would describe the human working with an agent — what it contains and how it is written are not yet decided.',
         howItWorks: [
-          'vault://main/me.md is a Markdown note in the vault storing explicit preferences, context, and constraints; it is injected into Zone A of the context on every session.',
-          'The profile complements the automatically inferred peers/ locus (built by the Peer distillation job) — explicit declarations in me.md override inferred values.',
-          'Operators edit me.md directly with any Markdown editor; changes take effect on the next context assembly without requiring a restart or re-distillation.',
+          'Still at the scoping stage: the shape of the profile document, who authors it, and how it relates to credential-derived agent identity are open questions.',
+          'No target version is committed — earlier internal milestones once assigned to this feature were never published as releases.',
         ],
         whoItsFor:
-          'Individuals and teams who want to give every agent a reliable baseline understanding of who they are and how they work — without relying entirely on inferred behavior profiles.',
+          'Individuals and teams who want every agent to have a reliable, human-authored picture of who they are working with, once the design is settled.',
         status: 'planned',
-        version: 'v0.7.3',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-58',
@@ -1213,7 +1213,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Teams running multiple isolated knowledge bases — one per project, team, or security boundary — on a single gradatum instance.',
-        status: 'planned',
+        status: 'released',
         version: 'v1.0.0',
       },
       {
@@ -1244,7 +1244,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Operators and OSS users who want to run the full gradatum stack — server plus studio UI — from the published crates without assembling assets manually.',
-        status: 'planned',
+        status: 'released',
         version: 'v1.0.0',
       },
       {
@@ -1283,15 +1283,15 @@ const groups: FeatureGroup[] = [
         refLabel: 'F-111',
         name: 'C5 Graduated Forgetting: Relevance-Driven Auto-Downgrade',
         positioning:
-          'Adds an automatic downgrade policy driven by relevance, so notes that stop mattering are demoted gradually instead of staying at full status forever.',
+          'Adds an automatic downgrade policy driven by relevance — shipped disabled by default, running in dry-run until an operator turns it on.',
         howItWorks: [
-          'A relevance-based policy evaluates notes over time and auto-downgrades those that stop earning attention.',
-          'Downgrades are gradual — notes move down the status ladder rather than being deleted abruptly.',
+          'A relevance-based policy evaluates notes over time and would auto-downgrade those that stop earning attention — gradual demotion, never deletion.',
+          'Ships with the executor off (dry-run only); enabling it in production is a deliberate operator action, not the default behavior.',
         ],
         whoItsFor:
-          'Vault maintainers who want the knowledge store to stay lean and current without manual demotion sweeps.',
-        status: 'planned',
-        version: 'v0.9.0',
+          'Vault maintainers who want a downgrade policy ready to enable once they have reviewed its dry-run reports, without it reshaping the vault the moment they upgrade.',
+        status: 'released',
+        version: 'v1.0.0',
       },
       {
         id: 'f-125',

@@ -26,10 +26,9 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
             <span class="install-way-badge">recommended</span>
           </div>
           <p class="install-way-desc">
-            Three archives — download only what your deployment needs.
+            Two archives — download only what your deployment needs.
             Linux x86_64. SHA256 and SLSA provenance attestation per archive.
-            Pre-built archives track the latest published tag (currently v1.0.0);
-            v2.0.0 ships as source until its binary release is published.
+            Pre-built archives track the latest published tag (v2.0.0).
           </p>
 
           <div class="install-archives">
@@ -40,9 +39,9 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
               </div>
               <p class="install-archive-desc">
                 Contains <code>gradatum-server</code>, <code>gradatum-worker</code>, <code>gradatum-admin</code>.
-                Core vault store, job queue, admin CLI.
+                Core vault store, job queue, admin CLI. Serves MCP natively on <code>/mcp</code>.
               </p>
-              <pre class="install-pre install-archive-pre"><code>gradatum-server-v1.0.0-x86_64-unknown-linux-gnu.tar.gz</code></pre>
+              <pre class="install-pre install-archive-pre"><code>gradatum-server-v2.0.0-x86_64-unknown-linux-gnu.tar.gz</code></pre>
             </div>
 
             <div class="install-archive">
@@ -54,19 +53,7 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
                 Contains <code>gradatum-gateway</code> and <code>gradatum-engine</code>.
                 Router, circuit-breaker, llama-server supervisor. Required for local inference.
               </p>
-              <pre class="install-pre install-archive-pre"><code>gradatum-llm-v1.0.0-x86_64-unknown-linux-gnu.tar.gz</code></pre>
-            </div>
-
-            <div class="install-archive">
-              <div class="install-archive-role">
-                <span class="install-archive-name">gradatum-mcp</span>
-                <span class="install-archive-badge">agent bridge</span>
-              </div>
-              <p class="install-archive-desc">
-                Contains <code>gradatum-mcp-stub</code>.
-                MCP bridge for agent clients (Claude Code, Claude Desktop, etc.).
-              </p>
-              <pre class="install-pre install-archive-pre"><code>gradatum-mcp-v1.0.0-x86_64-unknown-linux-gnu.tar.gz</code></pre>
+              <pre class="install-pre install-archive-pre"><code>gradatum-llm-v2.0.0-x86_64-unknown-linux-gnu.tar.gz</code></pre>
             </div>
           </div>
 
@@ -77,7 +64,7 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
               rel="noopener noreferrer"
               class="install-release-link"
             >github.com/gradatum/gradatum/releases →</a>
-            <span class="install-release-meta">SHA256SUMS · SLSA attestation per archive</span>
+            <span class="install-release-meta">SHA256SUMS · SLSA attestation per archive · SBOM archive included (gradatum-sbom-v2.0.0.tar.gz)</span>
           </div>
 
           <div class="install-verify-block">
@@ -87,7 +74,7 @@ sha256sum -c SHA256SUMS --ignore-missing
 
 <span class="install-comment"># verify SLSA build provenance (GitHub native)</span>
 gh attestation verify \
-  gradatum-server-v1.0.0-x86_64-unknown-linux-gnu.tar.gz \
+  gradatum-server-v2.0.0-x86_64-unknown-linux-gnu.tar.gz \
   --repo gradatum/gradatum</code></pre>
           </div>
         </div>
@@ -135,7 +122,7 @@ cd gradatum &amp;&amp; cargo build --release --workspace</code></pre>
 
       <p class="install-alpha-notice">
         v2.0.0 · Linux x86_64 · SemVer strict since v1.0.0 (v2.0.0 is a major for breaking changes). 26 of the 31 workspace crates published on
-        crates.io; pre-built binary archives still at v1.0.0 until a v2.0.0 binary build ships. See
+        crates.io; pre-built binary archives track v2.0.0. See
         <a href="https://github.com/gradatum/gradatum/blob/main/docs/DEPLOYMENT.md" target="_blank" rel="noopener noreferrer">docs/DEPLOYMENT.md</a>
         for the full deployment reference.
       </p>
@@ -260,7 +247,7 @@ cd gradatum &amp;&amp; cargo build --release --workspace</code></pre>
       <div class="eyebrow block-label">Post-install commands</div>
       <pre class="install-pre"><code>gradatum-admin init --preset hierarchical --root /var/lib/gradatum
 
-gradatum-admin api-key create --root /var/lib/gradatum --owner mcp-stub
+gradatum-admin api-key create --root /var/lib/gradatum --owner my-agent
 gradatum-admin api-key list   --root /var/lib/gradatum
 
 gradatum-admin jobs list --root /var/lib/gradatum

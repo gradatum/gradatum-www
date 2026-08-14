@@ -122,8 +122,8 @@
         <text x="24" y="526" class="svg-label-mono">CLIENTS</text>
 
         <rect x="30" y="536" width="200" height="40" rx="0"
-              fill="none" stroke="var(--accent)" stroke-width="1.5"/>
-        <text x="44" y="560" class="svg-box-main">gradatum-mcp-stub</text>
+              fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <text x="44" y="560" class="svg-box-main" fill="var(--muted)">gradatum-mcp-stub</text>
 
         <rect x="260" y="536" width="180" height="40" rx="0"
               fill="none" stroke="var(--rule)" stroke-width="1"/>
@@ -139,7 +139,7 @@
         <text x="704" y="572" class="svg-box-sub">umbrella SDK facade</text>
 
         <!-- mcp-stub label -->
-        <text x="44" y="592" class="svg-label-sm">stdio → HTTP proxy · Claude Code</text>
+        <text x="44" y="592" class="svg-label-sm">stdio → HTTP proxy · source-only</text>
       </svg>
     </div>
 
@@ -166,7 +166,7 @@
         └────────────────┬────────────────────────┘
                          ↓  CLIENTS
         ┌─────────────────────────────────────────┐
-        │  gradatum-mcp-stub  (stdio→HTTP proxy)  │
+        │  gradatum-mcp-stub  (stdio→HTTP proxy, source-only)  │
         │  gradatum CLI                           │
         │  gradatum-sdk-rs                        │
         │  gradatum  (umbrella SDK facade)        │

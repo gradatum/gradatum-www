@@ -501,7 +501,7 @@ const versions: VersionPhase[] = [
     description:
       'API stability is a promise, not a feature. v1.0.0 is the version where gradatum makes that promise: the public contracts freeze, semver guarantees kick in, and anything built on top will not break without explicit notice. The Agent Layer reaches production form: gradatum-engine is a formalised install component (--with-engine / --with-gateway), the gateway routes all inference behind one alias, and the full six-binary stack deploys through Docker with network isolation. Multi-tenant isolation is hardened on the production queue path — stale-lease recovery, JWT iss/sub validation, tenant-scoped revocation — proven over 30 days of continuous operation with per-identity access scopes.',
     scopeTeaserItems: ['API contracts frozen — safe to build on without breaking changes', '30 days of continuous production operation proven', 'Long-term memory benchmark reproduced and published', 'Multi-user access with per-identity scopes', 'Engine formalised as an install component (--with-engine / --with-gateway)', 'Multi-tenant isolation hardened on the production queue path', 'Full stack via Docker — six binaries, network isolation'],
-    featureRefs: ['F-18', 'F-45', 'F-131'],
+    featureRefs: ['F-18', 'F-45', 'F-131', 'F-51', 'F-70', 'F-111'],
     showFeaturesLink: false,
   },
   {
