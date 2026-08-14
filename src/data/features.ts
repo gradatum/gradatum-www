@@ -139,7 +139,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Teams that need to import technical documentation, research papers, or meeting transcripts into the vault without losing the structural context that makes answers accurate.',
         status: 'planned',
-        version: 'v1.3.0',
+        version: 'v2.2.0',
       },
       {
         id: 'f-39',
@@ -236,22 +236,6 @@ const groups: FeatureGroup[] = [
           'Operators who need to understand which vault features drive LLM spend, and developers building cost-attribution dashboards or budget-alert workflows on top of the vault.',
         status: 'released',
         version: 'v0.3.0',
-      },
-      {
-        id: 'f-09',
-        refLabel: 'F-09',
-        name: 'Privacy Filter: Automatic PII Redaction on Write',
-        positioning:
-          'Intercepts every note before it is stored and redacts personally identifiable information (PII) — without an external API call or network dependency.',
-        howItWorks: [
-          'The PrivacyFilter is registered as a WriteHook on DocumentStore; it runs synchronously on every vault_write before the note reaches the index.',
-          'The initial textual pass uses heuristic pattern matching. A later ONNX (portable neural network runtime) Named Entity Recognition model runs fully on-device with no data leaving the host.',
-          'Filtered fields are marked in the note frontmatter so downstream processes know redaction has occurred.',
-        ],
-        whoItsFor:
-          'Developers ingesting documents that may contain personal data — emails, transcripts, HR notes — and operators who need a compliance-friendly vault with no third-party data processing.',
-        status: 'planned',
-        version: 'v1.2.0',
       },
       {
         id: 'f-36',
@@ -409,7 +393,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor: 'Operators managing multi-agent deployments with distributed knowledge consolidation and querying.',
         status: 'planned',
-        version: 'v1.0.0',
+        version: 'v2.2.0',
       },
       {
         id: 'f-64',
@@ -442,22 +426,6 @@ const groups: FeatureGroup[] = [
         version: 'v0.7.4',
       },
       {
-        id: 'f-25',
-        refLabel: 'F-25',
-        name: 'libsql Remote: Replicated SQLite Backend',
-        positioning:
-          'Evaluated an opt-in remote SQLite backend powered by libsql for vault replication and read replicas without changing the DocumentStore interface.',
-        howItWorks: [
-          'A probe build swapped the local SQLite connection for a remote libsql endpoint behind a feature flag on the gradatum-db-sqlite crate.',
-          'The probe surfaced a silent engine substitution — libsql replaced the SQLite version actually in use (3.46.0 to 3.45.1) with no error or warning.',
-          'Given that failure mode, this approach will not return as-is; not scheduled on any release.',
-        ],
-        whoItsFor:
-          'Operators who would need vault data replicated across machines or read replicas for high-read workloads — this path is not currently available.',
-        status: 'roadmap',
-        version: 'vX.Y.Z',
-      },
-      {
         id: 'f-26',
         refLabel: 'F-26',
         name: 'LanceDB Vector Backend: Scalable Embedding Store',
@@ -471,7 +439,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers with vaults exceeding tens of thousands of notes who find SQLite ANN performance insufficient, and contributors who want to benchmark retrieval quality across storage backends.',
         status: 'planned',
-        version: 'v1.3.0',
+        version: 'v2.1.0',
       },
       {
         id: 'f-37',
@@ -837,22 +805,6 @@ const groups: FeatureGroup[] = [
         version: 'v0.5.2',
       },
       {
-        id: 'f-80',
-        refLabel: 'F-80',
-        name: 'gradatum-as-channel: Proactive MCP Push',
-        positioning:
-          'Lets gradatum initiate — push a relevant memory to your agent before you ask, instead of only answering when queried.',
-        howItWorks: [
-          'Exposes gradatum as an MCP channel capable of server-initiated notifications, not just request/response.',
-          'When a trigger fires (a new note, a scheduled recall), gradatum pushes the relevant context to the connected agent.',
-          'The agent receives proactively surfaced memory without polling the vault.',
-        ],
-        whoItsFor:
-          'Agent builders who want a memory layer that volunteers relevant context proactively, rather than only on explicit retrieval.',
-        status: 'planned',
-        version: 'vX.Y.Z',
-      },
-      {
         id: 'f-81',
         refLabel: 'F-81',
         name: 'HippoRAG-2 Associative Recall: PPR over Wikilink Graph',
@@ -882,7 +834,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Forward-looking users curious about gradatum ingesting handwritten or document-image sources; explicitly exploratory.',
         status: 'planned',
-        version: 'v1.3.0',
+        version: 'v2.2.0',
       },
       {
         id: 'f-05',
@@ -990,6 +942,81 @@ const groups: FeatureGroup[] = [
           'Vaults where automated ingestion produces many low-quality summaries and manual curation is not practical at scale.',
         status: 'planned',
         version: 'vX.Y.Z',
+      },
+      {
+        id: 'f-143',
+        refLabel: 'F-143',
+        name: 'Arrow Interchange Layer: Columnar Boundary for External Analytics',
+        positioning:
+          'Adds an Apache Arrow export layer on top of existing storage traits, so the corpus can be read by analytical tools without depending on the shape of any specific storage engine.',
+        howItWorks: [
+          "A columnar export layer sits above the existing storage traits — the storage engine itself is unchanged; only calls that already return batches convert their output to Arrow's in-memory format.",
+          'Decouples the interchange boundary from any single database implementation, keeping the door open to a future storage engine change without touching business logic.',
+        ],
+        whoItsFor:
+          'Developers and analysts who want to query the memory corpus with standard analytical tooling — bulk reads, not the point lookups the day-to-day API is built for.',
+        status: 'planned',
+        version: 'v2.1.0',
+      },
+      {
+        id: 'f-146',
+        refLabel: 'F-146',
+        name: 'Parquet Corpus Export: Analytics Without Touching the Live Database',
+        positioning:
+          'Exports the memory corpus as Parquet files on object storage, so an external query engine or notebook can analyze it without ever touching the production database.',
+        howItWorks: [
+          'Converts the corpus through the Arrow interchange layer into Parquet, the columnar file format standard for analytical tooling, written to the existing object-storage backend.',
+          'Runs on demand or on a schedule; an explicit exclusion rule decides what never leaves the vault before any file is written, since an export widens the read surface by design.',
+        ],
+        whoItsFor:
+          'Operators and analysts who want to study how the memory corpus evolves over time — which sections stay active, which go stale — without duplicating or exposing the live database.',
+        status: 'planned',
+        version: 'v2.1.0',
+      },
+      {
+        id: 'f-149',
+        refLabel: 'F-149',
+        name: 'Remote Index Mode: Query the Index Database Over the Network',
+        positioning:
+          'Lets the index database live on a remote server reached over its native network protocol, instead of only ever opening a local file.',
+        howItWorks: [
+          'A pure remote mode sends every index query over the network rather than opening a local database file — the local mode remains the unchanged default.',
+          'Vector-search acceleration is not available in remote mode since a standard remote database server does not load local extensions; the existing fallback path covers semantic search instead, at a cost that grows with corpus size.',
+        ],
+        whoItsFor:
+          'Operators who want the index database to run on its own server — for centralization or easier operations — and who can accept that semantic search falls back to a slower path in that mode.',
+        status: 'planned',
+        version: 'v2.1.0',
+      },
+      {
+        id: 'f-152',
+        refLabel: 'F-152',
+        name: 'Per-User Isolation Boundary: Distinct From Multi-Tenant Scoping',
+        positioning:
+          'A planned isolation boundary between individual users sharing one tenant — distinct from the tenant-level scoping already enforced in production.',
+        howItWorks: [
+          'Tenant-level isolation is already live and enforced; this closes the remaining gap where multiple users inside the same tenant are not yet separated from each other.',
+          'Still at the scoping stage — what counts as a user relative to a tenant, and what isolation covers (read, write, search, proactive recall) are open questions to resolve before implementation.',
+        ],
+        whoItsFor:
+          "Teams and households sharing a single gradatum deployment across several people, who need each person's private memory kept separate from the others, not just from other tenants.",
+        status: 'planned',
+        version: 'vX.Y.Z',
+      },
+      {
+        id: 'f-160',
+        refLabel: 'F-160',
+        name: 'Privacy Filter: On-Device Redaction of Personal Data',
+        positioning:
+          'Redacts personal data from a note before it reaches the index — using an on-device recognition model, with no external API call or network dependency.',
+        howItWorks: [
+          'Runs before a note reaches the index, so redaction happens at write time rather than being bolted on afterward.',
+          'Uses an on-device recognition model covering common categories of personal data, with no data ever leaving the host.',
+        ],
+        whoItsFor:
+          'Teams ingesting documents that may carry personal data — emails, transcripts, exported records — who need a compliance-friendly path with no third-party data processing.',
+        status: 'planned',
+        version: 'v2.2.0',
       },
     ],
   },
@@ -1190,21 +1217,6 @@ const groups: FeatureGroup[] = [
         version: 'v1.0.0',
       },
       {
-        id: 'f-54',
-        refLabel: 'F-54',
-        name: 'Service Registry: Register, Heartbeat, and TTL',
-        positioning:
-          'Lets gradatum services discover each other dynamically at runtime without hardcoded addresses or manual configuration.',
-        howItWorks: [
-          'Each service registers itself with a name, address, and TTL on startup; heartbeat pings refresh the TTL and services that stop responding are removed automatically.',
-          'Callers query the registry to resolve the current address of any named component, making deployments resilient to address changes between restarts.',
-        ],
-        whoItsFor:
-          'Multi-process deployments where worker, gateway, and engine addresses change between restarts or deployments.',
-        status: 'planned',
-        version: 'vX.Y.Z',
-      },
-      {
         id: 'f-86',
         refLabel: 'F-86',
         name: 'Cloud Storage Backends: S3 via OpenDAL',
@@ -1294,7 +1306,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Deployments with multiple human operators and agent processes sharing one vault, where attribution and scoping must distinguish who or what performed each action.',
         status: 'planned',
-        version: 'v1.2.0',
+        version: 'v2.1.0',
       },
       {
         id: 'f-126',
@@ -1340,6 +1352,112 @@ const groups: FeatureGroup[] = [
           'Operators running long-lived vaults who want distillation to run automatically without burning passes on idle sections.',
         status: 'released',
         version: 'v1.0.0',
+      },
+      {
+        id: 'f-138',
+        refLabel: 'F-138',
+        name: 'Credential-Derived Identity: No Default, No Client-Declared Author',
+        positioning:
+          "Ties every write's author strictly to the calling credential — never declared by the client, never inferred from a header, never defaulted — closing the identity-spoofing gap by construction.",
+        howItWorks: [
+          "Every write's author is resolved from the caller's credential on both the HTTP and MCP paths; a client-supplied author field is rejected outright.",
+          'Each identity holds exactly one active key; an unresolved call is rejected rather than falling back to a default identity.',
+          'A dedicated bootstrap key is required at install time, and identity write privileges run through a scope separate from administration.',
+        ],
+        whoItsFor:
+          "Operators who need every note's authorship to be cryptographically trustworthy — no spoofed identities, no silent defaults, no ambiguity about who wrote what.",
+        status: 'released',
+        version: 'v2.0.0',
+      },
+      {
+        id: 'f-139',
+        refLabel: 'F-139',
+        name: 'Durable Author Backfill: Offline Re-Attribution Tool',
+        positioning:
+          'An administrative command that assigns an author to pre-existing authorless notes directly on disk — without routing each one through the write API.',
+        howItWorks: [
+          'Selects candidate notes from the index, rewrites the Markdown file and its index row together, and recomputes the content hash that ties the two.',
+          "Runs independently of the server version, is idempotent and resumable, and keeps the index author column and the file's frontmatter author in permanent agreement.",
+        ],
+        whoItsFor:
+          'Operators migrating a vault to credential-derived identity who need every pre-existing note backfilled with a real author, without rewriting history by hand.',
+        status: 'released',
+        version: 'v2.0.0',
+      },
+      {
+        id: 'f-144',
+        refLabel: 'F-144',
+        name: 'Cross-Agent Messaging and Proactive Push (Early Concept)',
+        positioning:
+          'A single delivery mechanism for anything an agent receives without asking — a message from another agent, or a memory the vault decides is worth surfacing on its own.',
+        howItWorks: [
+          'Two use cases are unified under one transport: agent-to-agent messages (sender, recipient, acknowledgment) and proactive push of memory the system judges relevant.',
+          'The delivery mechanism itself — polling, a protocol-level push, or a separate channel — is still an open design question, and adoption of the feature as a whole has not been formally committed.',
+        ],
+        whoItsFor:
+          'Agent builders who want agents to receive relevant input without polling for it — the concrete mechanism is still being designed.',
+        status: 'planned',
+        version: 'v2.2.0',
+      },
+      {
+        id: 'f-150',
+        refLabel: 'F-150',
+        name: 'Engine Config Enforcement: warm_up and max_tokens Wired to Runtime',
+        positioning:
+          'Makes two previously cosmetic engine settings actually take effect at runtime instead of being parsed and silently ignored.',
+        howItWorks: [
+          'Decides and implements a real enforced ceiling for max_tokens, reconciled with the existing hard-coded cap so the two settings never silently conflict.',
+          'Implements the warm_up lazy strategy that the setting already documented, or removes the field if that strategy turns out not to make sense.',
+        ],
+        whoItsFor:
+          'Operators who configure engine behavior through the config file and expect every documented setting to actually change runtime behavior, not just be accepted and dropped.',
+        status: 'planned',
+        version: 'v2.1.0',
+      },
+      {
+        id: 'f-154',
+        refLabel: 'F-154',
+        name: 'Capability-Aware Health Check: Beyond Queue Plumbing',
+        positioning:
+          'Extends the health check to measure the capabilities that actually make the product useful — embedding and curation — instead of only internal queue plumbing.',
+        howItWorks: [
+          'Adds measured status for each core capability: whether the worker is reachable and actually consuming jobs, whether an embedding endpoint responds, whether the review/curation endpoint responds, and whether the web interface bundle is present.',
+          'Treats an unavailable embedder or curation endpoint as a hard failure rather than a healthy status, since those two capabilities are what makes an install actually useful rather than just running.',
+        ],
+        whoItsFor:
+          'Operators and installers who need the health endpoint to catch a broken deployment at setup time — instead of it reporting healthy while the product silently cannot do its job.',
+        status: 'planned',
+        version: 'v2.1.0',
+      },
+      {
+        id: 'f-156',
+        refLabel: 'F-156',
+        name: 'Service Registry: Registration, Heartbeat, and Build Identity',
+        positioning:
+          'Lets every component register itself, send a periodic heartbeat, and expose its build version and commit — so a single query tells you what is running, everywhere.',
+        howItWorks: [
+          'Each component registers with a name, address, and expiry on startup; heartbeat pings keep it listed, and a component that stops responding drops out automatically once its expiry passes.',
+          'Every component also declares its build identity — version and commit — so establishing what a whole fleet is running no longer requires shell access to each machine.',
+        ],
+        whoItsFor:
+          "Operators running several gradatum components across machines who need to answer 'what is running, and which build' with one query instead of connecting to each host.",
+        status: 'planned',
+        version: 'v2.1.0',
+      },
+      {
+        id: 'f-157',
+        refLabel: 'F-157',
+        name: 'Central Configuration Authority: Server as Source of Truth',
+        positioning:
+          "Moves fleet configuration authority to the server, so components take their settings from it instead of each reading its own local file with no way to tell which one actually applies.",
+        howItWorks: [
+          'The server becomes the point where a fleet-wide setting is defined once and takes effect on the intended component, verifiable without shell access to any machine.',
+          "The scope of this authority — which settings it covers, how it interacts with each component's local bootstrap configuration, and what happens if the server is unreachable at startup — is still being defined before implementation begins.",
+        ],
+        whoItsFor:
+          'Operators running multiple components who currently have no way to tell whether a setting drifted between machines without connecting to each one individually.',
+        status: 'planned',
+        version: 'v2.1.0',
       },
     ],
   },
