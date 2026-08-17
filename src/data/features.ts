@@ -975,6 +975,22 @@ const groups: FeatureGroup[] = [
         version: 'v2.1.0',
       },
       {
+        id: 'f-184',
+        refLabel: 'F-184',
+        name: 'Versions as Cards: The Project Map Drops Its Release Axis',
+        positioning:
+          'Turns each version into a card of its own, so a work item states which version carries it instead of restating that version’s delivery status on every single card.',
+        howItWorks: [
+          'A version becomes a ROADMAP card holding the version number and whether that version is internal or public; one BACKLOG card per project holds whatever is not yet scheduled. Every work card carries exactly one link to one of them, and no longer carries a version or a release field of its own.',
+          'Delivery status is derived from that link and the target card’s status, which makes contradictory states unwritable rather than merely forbidden — a card can no longer announce itself as released while the version carrying it has not shipped. The public version a card ships under is frozen once, when that version ships, so a published changelog never rewrites itself afterwards.',
+          'This is a breaking change for existing project-map cards: the card kinds gain two values, and the validator stops requiring the version and release roles it enforces today. A staged migration keeps both forms readable until every consumer has moved.',
+        ],
+        whoItsFor:
+          'Vault maintainers who track work in the project-map section and want the state of a release to be a fact they can query, rather than a pair of fields to keep in sync by hand on every card.',
+        status: 'planned',
+        version: 'v2.1.0',
+      },
+      {
         id: 'f-149',
         refLabel: 'F-149',
         name: 'Remote Index Mode: Query the Index Database Over the Network',
