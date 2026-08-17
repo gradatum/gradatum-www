@@ -16,7 +16,11 @@ src/
 ├── layouts/
 │   └── Base.astro              — HTML shell, meta, font loading, CSS global
 ├── pages/
-│   └── index.astro             — single landing page
+│   ├── index.astro             — landing page
+│   ├── features.astro          — fiches fonctionnalités (source : data/features.ts)
+│   ├── vault.astro · install.astro · use-cases.astro · agents.astro
+│   └── features.json.ts        — artefact machine, produit dist/features.json
+│                                 (refLabel/status/version uniquement — surface minimale)
 ├── components/
 │   ├── Nav.astro               — top navigation bar
 │   ├── Hero.astro              — hero + Cicero quote
@@ -59,8 +63,26 @@ Mise à jour manuelle requise quand `gradatum` docs évoluent.
 ## Deployment
 
 ```
-Forgejo CI  : push main → lxc-500 runner → pnpm build → dist/ → gh-pages branch
-GitHub CI   : push main → GitHub Actions → checkout gradatum sibling → pnpm build → GitHub Pages
+push main (Forgejo) → hook pre-push : gate project-map (source ↔ registre :19090)
+                    → runner lxc-500 → gate project-map → pnpm build → gh-pages (Forgejo)
+                    ⛔ s'arrête là — le site n'est PAS publié
+
+publication        → POST /api/v1/repos/motreffs/gradatum-www/push_mirrors-sync
+                    → miroir → GitHub → GitHub Pages sert gradatum.org
 ```
+
+**La publication est un geste explicite depuis le 2026-08-17** (council 3/3). Le miroir GitHub est
+en `sync_on_commit: false` / `interval: 0s` ; le miroir VPS (`10.77.0.2`) reste automatique — copie
+interne, c'est voulu. ⚠️ La synchro est **par dépôt, pas par miroir** : publier pousse aussi le VPS.
+
+Il n'existe **aucun GitHub Actions** sur ce dépôt : tout passe par la CI Forgejo puis le miroir.
+
+**Contrôles** — deux moments, un seul comparateur (`computeDrift` de `scripts/project-map-gate.mjs`) :
+- avant push : `scripts/hooks/pre-push` → source `data/features.ts` ↔ registre
+- après publication : `scripts/published-check.mjs` (sonde quotidienne côté `homelab-scripts`)
+  → `gh-pages/features.json` lu sur `raw.githubusercontent` ↔ registre. Trois issues : conforme,
+  divergent, **je n'ai pas pu lire** — cette dernière n'est jamais rendue comme un succès.
+
+Domain cible : `gradatum.org` (CNAME dans `public/CNAME`).
 
 Domain cible : `gradatum.org` (CNAME dans `public/CNAME`). DNS 4×A apex à propager.
