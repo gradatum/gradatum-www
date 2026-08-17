@@ -674,8 +674,8 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Vault maintainers who need the curator admission policy tuned to their own quality and noise profile rather than relying on the initial defaults.',
-        status: 'planned',
-        version: 'v0.8.0',
+        status: 'released',
+        version: 'v1.0.0',
       },
       {
         id: 'f-67',
@@ -927,7 +927,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators who need to take notes out of the live vault without an irreversible step, and who want a review window plus an audit trail before anything is physically destroyed.',
         status: 'released',
-        version: 'v0.8.0',
+        version: 'v1.0.0',
       },
       {
         id: 'f-101',
