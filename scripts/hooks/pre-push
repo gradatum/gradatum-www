@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+#
+# pre-push — refuse le push si project-map-gate.mjs détecte un écart entre
+# src/data/features.ts (+ roadmap.ts) et le registre project-map du serveur
+# gradatum. Coût ~100ms, imperceptible.
+#
+# Installation (une seule des deux, au choix de l'opérateur — NON fait
+# automatiquement par ce dépôt) :
+#   git config core.hooksPath scripts/hooks
+#   # ou, sans changer la config git :
+#   ln -sf ../../scripts/hooks/pre-push .git/hooks/pre-push
+#
+# Contournement volontaire (ex. serveur vault gradatum arrêté) :
+#   git push --no-verify
+# Un hook local ne doit jamais devenir un obstacle bloquant si le serveur
+# vault n'est pas joignable — ce contournement reste toujours disponible.
+
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "$REPO_ROOT"
+
+if [ -f "$HOME/.env" ]; then
+  set -a
+  # shellcheck disable=SC1090
+  . "$HOME/.env"
+  set +a
+fi
+
+# Le gate attend GRADATUM_API_KEY — la clé homelab est stockée sous
+# GRADATUM_STUDIO_APIKEY dans ~/.env (cf commande de vérification du plan).
+export GRADATUM_API_KEY="${GRADATUM_API_KEY:-${GRADATUM_STUDIO_APIKEY:-}}"
+export VAULT_SERVER="${VAULT_SERVER:-http://127.0.0.1:19090}"
+
+echo "[pre-push] project-map-gate — vérification synchronisation..."
+
+if ! node scripts/project-map-gate.mjs; then
+  echo "[pre-push] REFUSÉ : écart project-map détecté (ou registre injoignable)." >&2
+  echo "[pre-push] Contournement volontaire : git push --no-verify" >&2
+  exit 1
+fi
+
+echo "[pre-push] OK — push autorisé."
