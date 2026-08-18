@@ -420,7 +420,7 @@ const versions: VersionPhase[] = [
     description:
       'A store that answers queries on demand is still passive. The real value is a system that knows what is relevant before you ask — one that remembers what you worked on yesterday, surfaces the decision you forgot last month, and assembles exactly the right context before sending anything to a model. v0.7.0 is that layer: gradatum stops treating each session as stateless and starts reasoning over everything it has accumulated, on your hardware, across time.',
     scopeTeaserItems: ['Assembles relevant context before each query — not raw retrieval', 'Memory window slides with the conversation — no context cliff', 'Proactively surfaces what you forgot you knew', 'Declarative user profile — gradatum knows who it is talking to', 'Picks only the skills relevant to the current task'],
-    featureRefs: ['F-35', 'F-30', 'F-46', 'F-50', 'F-58', 'F-29', 'F-17', 'F-65', 'F-68', 'F-36'],
+    featureRefs: ['F-35', 'F-30', 'F-46', 'F-50', 'F-58', 'F-29', 'F-17', 'F-195', 'F-68', 'F-36'],
     showFeaturesLink: false,
   },
   {
@@ -460,7 +460,7 @@ const versions: VersionPhase[] = [
     description:
       'Memory fades over time — and sometimes intentionally. v0.7.4 adds temporal search with from/to filters so agents can reason about what happened before or after a specific date. Recency decay down-weights stale notes in relevance scoring, keeping the vault focused on what still matters.',
     scopeTeaserItems: ['Temporal filters: search between two dates', 'Recency decay in relevance scoring', 'Chronological queries without external calendars'],
-    featureRefs: ['F-65', 'F-17'],
+    featureRefs: ['F-195', 'F-17'],
     showFeaturesLink: false,
   },
   {

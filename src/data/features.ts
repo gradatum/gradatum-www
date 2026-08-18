@@ -411,19 +411,49 @@ const groups: FeatureGroup[] = [
         version: 'vX.Y.Z',
       },
       {
-        id: 'f-65',
-        refLabel: 'F-65',
-        name: 'Temporal Index Foundation: Chronological Memory Queries — suite F-55',
+        id: 'f-195',
+        refLabel: 'F-195',
+        name: 'Bounded Chronological Queries: Time-Window Vault Search',
         positioning:
-          'Extends temporal queries with causal chains, concurrent clusters, and historical trends for timeline reconstruction and anomaly detection.',
+          'Restricts vault search to a time window, so an agent can ask what was known before or after a given date instead of searching the whole history.',
         howItWorks: [
-          'A TemporalGraph models temporal relationships between events — not just individual timestamps but causal chains (A caused B) and concurrent clusters (A, B, C happened at the same time).',
-          'Historical trend queries reconstruct how a quantity changed over time: "what was the decision at date X" becomes "show me the decision, how it evolved, and what triggered each change".',
-          'Anomaly detection over the temporal index flags notes with temporal contradictions (event A claims to happen after B, but the timestamps say B happened later) — surfaced to the validation pipeline automatically.',
+          'Search accepts an optional lower and upper time bound; either may be given alone, and an inverted range is rejected at the boundary rather than silently returning nothing.',
+          'The filter applies to both retrieval paths — lexical and semantic — so a bounded query cannot leak results through the path that skipped the filter.',
+          'Each result carries its temporal anchor, letting the caller order and reason about hits without a second lookup. Notes with no temporal entry are excluded when a bound is set, rather than assumed to match.',
         ],
-        whoItsFor: 'Researchers and analysts needing to reconstruct event timelines and detect temporal contradictions.',
+        whoItsFor: 'Agents and analysts reconstructing what was known at a point in time, and anyone narrowing a search to a specific period.',
         status: 'released',
         version: 'v0.7.4',
+      },
+      {
+        id: 'f-196',
+        refLabel: 'F-196',
+        name: 'Temporal Graph: Causal Chains, Concurrent Clusters and Contradictions',
+        positioning:
+          'Models the relationships between events rather than their timestamps alone — which event caused which, which happened together, and which pairs contradict each other.',
+        howItWorks: [
+          'A temporal graph records relationships between events — not just individual timestamps, but causal chains (A caused B) and concurrent clusters (A, B, C happened at the same time).',
+          'Contradiction detection flags notes whose claimed ordering disagrees with their timestamps — event A claims to follow B, while the recorded times say B came later — and surfaces them to the validation pipeline.',
+          'Open design question, deliberately unresolved: whether a causal edge is declared by the writer or inferred from timing and links. A declared edge is data; an inferred one is a hypothesis, and mixing them would make the graph mean nothing in particular.',
+        ],
+        whoItsFor: 'Researchers and analysts reconstructing event timelines and auditing them for internal contradictions.',
+        status: 'planned',
+        version: 'vX.Y.Z',
+      },
+      {
+        id: 'f-197',
+        refLabel: 'F-197',
+        name: 'Historical Trends: How a Decision Evolved and What Triggered Each Change',
+        positioning:
+          'Turns a point-in-time lookup into a trajectory: not only what the decision was on a given date, but how it changed and what drove each change.',
+        howItWorks: [
+          'A trend query returns the ordered series of states a note went through, rather than only its latest revision.',
+          'Each transition can be attributed to what triggered it — this part depends on the temporal graph, and is the only one of the three that does.',
+          'Scope still to be established: whether a trend is computed over a note body, its typed roles, or an extracted value. The vault already keeps note history, so the open question is what is missing between that history and a trend query — not whether to build one from scratch.',
+        ],
+        whoItsFor: 'Analysts auditing how a decision or a value drifted over time, and agents that must explain a change rather than only report the current state.',
+        status: 'planned',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-26',
