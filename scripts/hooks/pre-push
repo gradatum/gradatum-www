@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
 #
-# pre-push — refuse le push si project-map-gate.mjs détecte un écart entre
-# src/data/features.ts (+ roadmap.ts) et le registre project-map du serveur
-# gradatum. Coût ~100ms, imperceptible.
+# pre-push — refuse le push si l'un des deux contrôles détecte un écart :
+#
+#   1. project-map-gate.mjs  — src/data/features.ts (+ roadmap.ts) vs le
+#      registre project-map du serveur gradatum. Coût ~100 ms.
+#   2. rendered-version-check.mjs — les versions AFFICHÉES (nav, pied de page,
+#      section d'installation, noms d'archives) vs la release publiée de
+#      référence. Coût ~2 s : il faut rendre le commit (`astro build`) avant
+#      de pouvoir contrôler le rendu, les sources ne suffisent pas (F-183).
+#      Mesuré le 2026-08-18 : build 1,6 s, contrôle ~0,3 s.
 #
 # Installation (une seule des deux, au choix de l'opérateur — NON fait
 # automatiquement par ce dépôt) :
@@ -36,6 +42,28 @@ echo "[pre-push] project-map-gate — vérification synchronisation..."
 
 if ! node scripts/project-map-gate.mjs; then
   echo "[pre-push] REFUSÉ : écart project-map détecté (ou registre injoignable)." >&2
+  echo "[pre-push] Contournement volontaire : git push --no-verify" >&2
+  exit 1
+fi
+
+# F-183 — les versions affichées se contrôlent sur le RENDU, jamais sur les
+# sources : un composant retiré d'une page ne doit pas faire échouer, un
+# composant inclus doit être vu. Le rendu du commit qu'on pousse n'existe
+# qu'après build — d'où le build ici.
+#
+# Ce temps ne peut pas voir le rendu SERVI (pas encore publié) ; c'est la
+# sonde post-publication qui ferme cet écart, avec le même comparateur en
+# mode --served. Cf. l'en-tête de scripts/rendered-version-check.mjs.
+echo "[pre-push] rendu du commit (astro build)..."
+if ! npm run build --silent >/dev/null; then
+  echo "[pre-push] REFUSÉ : le build échoue — rendu non contrôlable." >&2
+  exit 1
+fi
+
+echo "[pre-push] rendered-version-check — versions affichées vs release publiée..."
+if ! node scripts/rendered-version-check.mjs --dist; then
+  echo "[pre-push] REFUSÉ : le rendu affiche une version qui n'est pas la version publiée" >&2
+  echo "[pre-push]          (ou la référence publiée est injoignable)." >&2
   echo "[pre-push] Contournement volontaire : git push --no-verify" >&2
   exit 1
 fi

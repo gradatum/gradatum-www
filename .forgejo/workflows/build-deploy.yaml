@@ -46,6 +46,14 @@ jobs:
       - name: Build
         run: pnpm build
 
+      # F-183 — les versions affichées se contrôlent sur le RENDU, donc APRÈS
+      # le build. Un push fait avec --no-verify contourne le hook local ;
+      # ce temps-ci ne se contourne pas. Fail-closed : référence publiée
+      # injoignable = exit 2, jamais un succès.
+      - name: Rendered version check
+        run: |
+          node scripts/rendered-version-check.mjs --dist
+
       - name: Verify build output
         run: |
           test -f dist/index.html && echo "OK: index.html present"

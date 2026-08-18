@@ -77,11 +77,55 @@ interne, c'est voulu. ⚠️ La synchro est **par dépôt, pas par miroir** : pu
 
 Il n'existe **aucun GitHub Actions** sur ce dépôt : tout passe par la CI Forgejo puis le miroir.
 
-**Contrôles** — deux moments, un seul comparateur (`computeDrift` de `scripts/project-map-gate.mjs`) :
+**Contrôles** — deux objets contrôlés, chacun avec un comparateur unique.
+
+*1. Synchronisation project-map* — comparateur `computeDrift` (`scripts/project-map-gate.mjs`) :
 - avant push : `scripts/hooks/pre-push` → source `data/features.ts` ↔ registre
 - après publication : `scripts/published-check.mjs` (sonde quotidienne côté `homelab-scripts`)
   → `gh-pages/features.json` lu sur `raw.githubusercontent` ↔ registre. Trois issues : conforme,
   divergent, **je n'ai pas pu lire** — cette dernière n'est jamais rendue comme un succès.
+
+**Contrat de sortie — commun aux DEUX dispositifs ci-dessus** (`project-map-gate.mjs` et
+`published-check.mjs`), trois états jamais deux : `0` conforme (mesuré) · `1` écart **réellement
+mesuré** · `2` **incapable de conclure**. Toute cécité emprunte `2` :
+
+| Dispositif | Chemins rendant `2` |
+|---|---|
+| `project-map-gate.mjs` | clé absente · export injoignable · **export vide** · **fichiers site illisibles** |
+| `published-check.mjs` | artefact publié illisible (404, réseau, schéma) · vault injoignable · **registre master vide** |
+
+Un contrôle qui n'a rien lu n'a rien mesuré : se déclarer « en écart » enverrait chercher un
+écart inexistant et rendrait indiscernables « c'est désynchronisé » et « je n'ai pas pu regarder ».
+⚠️ Piège commun aux deux : `fetchExport()` rend `[]` — *truthy* — sur un registre vide, donc un
+garde `if (!master)` ne l'attrape pas ; il faut un test explicite sur la longueur.
+
+Asymétrie assumée dans `published-check.mjs` : un **registre master** vide aveugle (`2`), un
+**artefact publié** vide est une mesure (`1` — le site publié ne montre réellement aucune feature).
+`published` est l'objet mesuré, `master` la référence.
+
+Aucun consommateur (hook `pre-push`, CI, sonde quotidienne) ne doit reclasser un code par lecture
+du texte de sortie : **les libellés ne sont pas un contrat, le code de sortie l'est.**
+
+⚠️ L'export project-map **ne déduplique pas** : un même numéro peut porter plusieurs cartes.
+`computeDrift` **détecte** cette multiplicité (`DUPLICATE`) au lieu de la résoudre en silence, et
+son verdict ne dépend d'aucun ordre de sortie — API HTTP et CLI `gradatum-admin` rendent le même
+tableau d'erreurs, élément par élément (F-192).
+
+*2. Versions affichées* — comparateur `checkRenderedVersions`
+(`scripts/rendered-version-check.mjs`), contre la **release publiée** de `gradatum/gradatum` :
+- avant push : `scripts/hooks/pre-push` + CI Forgejo → `astro build` puis contrôle du **rendu**
+  produit (`--dist`). Pas les sources : un composant retiré d'une page n'apparaît pas dans le HTML
+  et n'est donc pas contrôlé ; un composant inclus est nécessairement vu.
+- après publication : même script en `--served`, sur le HTML réellement téléchargé depuis
+  `gradatum.org` (pages découvertes via le sitemap servi). **Pas encore branché sur la sonde** —
+  activation possible dès que la première publication portant les marqueurs est en ligne.
+
+Les chaînes restent écrites **à la main** dans les composants : le contrôle **vérifie**, il ne
+dérive pas. L'attribut `data-gradatum-version="current"` déclare seulement « cette chaîne prétend
+être la version publiée courante » — les mentions historiques (« removed in v2.0.0 », « SemVer
+strict since v1.0.0 ») n'en portent pas et ne doivent jamais suivre le tag courant. Les noms
+d'archives (`gradatum-*-vX.Y.Z*.tar.gz`) sont contrôlés sans marqueur, par leur forme, contre la
+liste des artefacts réellement publiés : un visiteur les copie (F-183).
 
 Domain cible : `gradatum.org` (CNAME dans `public/CNAME`).
 

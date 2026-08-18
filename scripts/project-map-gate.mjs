@@ -6,10 +6,18 @@
  * CI gate : vérifie que features.ts + roadmap.ts sont synchronisés avec le
  * project-map master de gradatum.
  *
- * Exit codes :
+ * Exit codes — trois états, jamais deux :
  *   0 = conformance vérifiée
- *   1 = dérive détectée (mismatch feature)
- *   2 = export indisponible (fail-closed)
+ *   1 = dérive RÉELLEMENT MESURÉE (le gate a comparé, et ça diverge)
+ *   2 = incapable de conclure (fail-closed) : clé absente, export injoignable,
+ *       export vide, ou fichiers site illisibles.
+ *
+ * `1` n'est PAS un fourre-tout. Un gate qui n'a rien pu lire n'a rien mesuré :
+ * se déclarer « en dérive » enverrait chercher un écart qui n'existe pas, et
+ * rendrait indiscernables « le site est désynchronisé » et « je n'ai pas pu
+ * regarder ». C'est la classe de défaut que F-192 corrige dans computeDrift —
+ * rendre un verdict ferme sur une mesure non faite ; elle vaut aussi pour le
+ * code de sortie du dispositif lui-même.
  */
 
 import fs from 'node:fs';
@@ -176,11 +184,63 @@ export function mapToSiteStatus(pmRelease) {
 }
 
 // ---------------------------------------------------------------------------
+// F-192 — multiplicité : l'export NE déduplique PAS
+// ---------------------------------------------------------------------------
+
+/**
+ * Ordre total et déterministe sur les numéros de feature.
+ *
+ * F-192 : sans cet ordre, la LISTE d'erreurs suivrait l'ordre du tableau
+ * master, donc la projection interrogée (API HTTP vs CLI `gradatum-admin`),
+ * qui n'est spécifié nulle part. Le verdict serait identique, mais pas sa
+ * restitution — et un diff de sortie CI deviendrait illisible.
+ *
+ * @param {string} a
+ * @param {string} b
+ * @returns {number}
+ */
+export function compareFeatureKey(a, b) {
+  const na = /^F-(\d+)$/.exec(a);
+  const nb = /^F-(\d+)$/.exec(b);
+  if (na && nb) return Number(na[1]) - Number(nb[1]);
+  if (na) return -1;
+  if (nb) return 1;
+  return a < b ? -1 : a > b ? 1 : 0;
+}
+
+/**
+ * Regroupe le master par numéro de feature — SANS écraser.
+ *
+ * F-192 : `new Map(master.map(f => [f.feature, f]))` gardait la DERNIÈRE
+ * entrée vue. L'export ne dédupliquant pas, l'état retenu dépendait de
+ * l'ordre de sortie : mesuré le 2026-08-18, l'API HTTP rendait
+ * `roadmap` puis `released` (gate vert) et la CLI `released` puis `roadmap`
+ * (gate rouge) sur les MÊMES données. Un dispositif de contrôle dont le
+ * verdict dépend d'un ordre non spécifié ne contrôle rien.
+ *
+ * @param {Array<{feature:string,release:string,version:string}>} master
+ * @returns {Map<string, Array<{feature:string,release:string,version:string}>>}
+ */
+export function groupMasterByFeature(master) {
+  const groups = new Map();
+  for (const entry of master) {
+    const existing = groups.get(entry.feature);
+    if (existing) existing.push(entry);
+    else groups.set(entry.feature, [entry]);
+  }
+  return groups;
+}
+
+// ---------------------------------------------------------------------------
 // Logique de vérification (fonction PURE — testable sans I/O)
 // ---------------------------------------------------------------------------
 
 /**
  * Calcule la dérive entre le master project-map et les fichiers site.
+ *
+ * Le résultat est INDÉPENDANT de l'ordre du tableau `master` — tableau
+ * d'erreurs identique élément par élément quelle que soit la projection
+ * interrogée (F-192).
  *
  * @param {Array<{feature:string,release:string,version:string}>} master
  * @param {Array<{refLabel:string,status:string,version:string}>} siteFeatures
@@ -195,21 +255,44 @@ export function computeDrift(master, siteFeatures, siteRoadmap) {
     return { errors };
   }
 
-  // Index de consultation O(1)
-  const masterMap = new Map(master.map((f) => [f.feature, f]));
+  // Index de consultation O(1). masterGroups conserve TOUTES les entrées
+  // d'un même numéro — la multiplicité est détectée, jamais résolue.
+  const masterGroups = groupMasterByFeature(master);
+  const masterKeys = [...masterGroups.keys()].sort(compareFeatureKey);
   const siteMap = new Map(siteFeatures.map((f) => [f.refLabel, f]));
 
   // ── Check 1 : anti-orphelin site → master
   // Chaque feature du site doit exister dans le master.
   for (const [refLabel] of siteMap) {
-    if (!masterMap.has(refLabel)) {
+    if (!masterGroups.has(refLabel)) {
       errors.push(`ORPHAN: ${refLabel} présente sur le site mais absente du master`);
     }
   }
 
   // ── Check 2 : master non-dropped → doit être sur le site avec status+version corrects
-  for (const [key, masterFeat] of masterMap) {
-    const siteStatus = mapToSiteStatus(masterFeat.release);
+  // Précédé du check 0 (DUPLICATE) : un numéro portant plus d'une entrée
+  // non-dropped n'a pas d'état défini, donc rien à comparer en aval.
+  for (const key of masterKeys) {
+    const entries = masterGroups.get(key);
+    const live = entries.filter((e) => e.release !== 'dropped');
+
+    // ── Check 0 : multiplicité (F-192)
+    if (live.length > 1) {
+      // Détail trié : la RESTITUTION aussi doit être indépendante de l'ordre.
+      const detail = live
+        .map((e) => `${e.release}/${e.version}`)
+        .sort()
+        .join(', ');
+      errors.push(
+        `DUPLICATE: ${key} porte ${live.length} entrées non-dropped à l'export ` +
+        `(${detail}) — l'état retenu dépendrait de l'ordre de sortie, ` +
+        `aucune comparaison possible`
+      );
+      continue;
+    }
+
+    const masterFeat = live[0] ?? entries[0];
+    const siteStatus = live.length === 0 ? null : mapToSiteStatus(masterFeat.release);
 
     if (siteStatus === null) {
       // dropped : ne doit PAS être sur le site
@@ -254,10 +337,10 @@ export function computeDrift(master, siteFeatures, siteRoadmap) {
     Object.values(siteRoadmap).flatMap((v) => v.featureRefs)
   );
   for (const ref of allRoadmapRefs) {
-    const masterFeat = masterMap.get(ref);
-    if (!masterFeat) {
+    const group = masterGroups.get(ref);
+    if (!group) {
       errors.push(`ROADMAP_ORPHAN: ${ref} dans roadmap.ts mais absent du master`);
-    } else if (masterFeat.release === 'dropped') {
+    } else if (group.every((e) => e.release === 'dropped')) {
       errors.push(`ROADMAP_ORPHAN: ${ref} dans roadmap.ts mais marqué dropped dans le master`);
     }
   }
@@ -273,14 +356,34 @@ export function computeDrift(master, siteFeatures, siteRoadmap) {
  * Point d'entrée principal du gate.
  * Retourne le code de sortie (0/1/2) — NE fait PAS process.exit() lui-même.
  *
+ * Les trois dépendances d'I/O sont injectables : c'est le seul moyen de
+ * PROUVER par test la discrimination entre « je diverge » (1) et « je n'ai
+ * pas pu regarder » (2), sans casser un fichier source réel.
+ *
+ * @param {{fetchExport?:Function, parseFeatures?:Function, parseRoadmap?:Function}} [deps]
  * @returns {Promise<number>}
  */
-export async function runGate() {
+export async function runGate(deps = {}) {
+  const io = {
+    fetchExport,
+    parseFeatures,
+    parseRoadmap,
+    ...deps,
+  };
+
   console.log('[GATE] Démarrage vérification synchronisation project-map...');
 
-  const master = await fetchExport();
+  const master = await io.fetchExport();
   if (!master) {
     console.error('[GATE] FAIL-CLOSED : export indisponible — synchronisation non vérifiable');
+    return 2;
+  }
+
+  // Export vide = le registre n'a rien rendu. Le gate n'a RIEN à comparer :
+  // c'est une cécité, pas une dérive. (computeDrift rend MASTER_EMPTY dans ce
+  // cas — son contrat est inchangé, mais il ne doit pas se traduire en 1.)
+  if (master.length === 0) {
+    console.error('[GATE] FAIL-CLOSED : export master vide — synchronisation non vérifiable');
     return 2;
   }
 
@@ -288,13 +391,15 @@ export async function runGate() {
 
   let siteFeatures, siteRoadmap;
   try {
-    siteFeatures = parseFeatures();
-    siteRoadmap = parseRoadmap();
+    siteFeatures = io.parseFeatures();
+    siteRoadmap = io.parseRoadmap();
     console.log(`[GATE] Site features.ts : ${siteFeatures.length} features`);
     console.log(`[GATE] Site roadmap.ts : ${Object.keys(siteRoadmap).length} versions`);
   } catch (err) {
-    console.error(`[GATE] Erreur parse fichiers site : ${err.message}`);
-    return 1;
+    // Fichiers site illisibles (ENOENT, droits, disque) : le gate n'a pas
+    // regardé le site. Même classe que l'export injoignable → même code.
+    console.error(`[GATE] FAIL-CLOSED : fichiers site illisibles — synchronisation non vérifiable : ${err.message}`);
+    return 2;
   }
 
   const { errors } = computeDrift(master, siteFeatures, siteRoadmap);

@@ -15,7 +15,7 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
 
     <!-- Installation — 3 voies -->
     <div class="install-oneliner">
-      <div class="eyebrow block-label">Get started — v2.0.0 · Linux x86_64</div>
+      <div class="eyebrow block-label">Get started — <span data-gradatum-version="current">v2.0.0</span> · Linux x86_64</div>
 
       <div class="install-ways">
 
@@ -28,7 +28,7 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
           <p class="install-way-desc">
             Two archives — download only what your deployment needs.
             Linux x86_64. SHA256 and SLSA provenance attestation per archive.
-            Pre-built archives track the latest published tag (v2.0.0).
+            Pre-built archives track the latest published tag (<span data-gradatum-version="current">v2.0.0</span>).
           </p>
 
           <div class="install-archives">
@@ -90,11 +90,11 @@ gh attestation verify \
             </div>
             <p class="install-way-desc">
               Source is open on GitHub (Apache-2.0). 26 of the 31 workspace crates
-              are published on crates.io at v2.0.0 — SemVer strict since v1.0.0, the first stable release; v2.0.0 is a major for breaking changes.
+              are published on crates.io at <span data-gradatum-version="current">v2.0.0</span> — SemVer strict since v1.0.0, the first stable release; v2.0.0 is a major for breaking changes.
             </p>
             <p class="install-source-note">
               <a href="https://crates.io/crates/gradatum" target="_blank" rel="noopener noreferrer">crates.io/crates/gradatum</a>
-              · published (v2.0.0) · Apache-2.0
+              · published (<span data-gradatum-version="current">v2.0.0</span>) · Apache-2.0
             </p>
           </div>
 
@@ -121,8 +121,8 @@ cd gradatum &amp;&amp; cargo build --release --workspace</code></pre>
       </div>
 
       <p class="install-alpha-notice">
-        v2.0.0 · Linux x86_64 · SemVer strict since v1.0.0 (v2.0.0 is a major for breaking changes). 26 of the 31 workspace crates published on
-        crates.io; pre-built binary archives track v2.0.0. See
+        <span data-gradatum-version="current">v2.0.0</span> · Linux x86_64 · SemVer strict since v1.0.0 (v2.0.0 is a major for breaking changes). 26 of the 31 workspace crates published on
+        crates.io; pre-built binary archives track <span data-gradatum-version="current">v2.0.0</span>. See
         <a href="https://github.com/gradatum/gradatum/blob/main/docs/DEPLOYMENT.md" target="_blank" rel="noopener noreferrer">docs/DEPLOYMENT.md</a>
         for the full deployment reference.
       </p>

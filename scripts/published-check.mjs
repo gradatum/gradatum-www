@@ -15,11 +15,18 @@
  * project-map-gate.mjs, jamais réimplémentée ici. Ce script n'ajoute que
  * la mécanique de lecture de l'artefact publié.
  *
- * Exit codes :
- *   0 = publié et conforme
- *   1 = publié et divergent (écarts listés)
- *   2 = lecture impossible (404, réseau, GitHub indisponible, vault injoignable)
- *       — ne doit JAMAIS se rendre comme un succès.
+ * Exit codes — MÊME contrat que project-map-gate.mjs, trois états jamais deux :
+ *   0 = publié et conforme (mesuré)
+ *   1 = divergence RÉELLEMENT MESURÉE (les deux côtés lus, et ça diverge)
+ *   2 = incapable de conclure (fail-closed) : artefact publié illisible (404,
+ *       réseau, JSON/schéma invalide), vault injoignable, ou registre master
+ *       VIDE — ne doit JAMAIS se rendre comme un succès, ni comme un `1`.
+ *
+ * Un registre vide n'est pas une divergence : c'est l'absence de référence à
+ * laquelle comparer. Asymétrie assumée avec un artefact publié vide, lui
+ * PARFAITEMENT mesuré (le site publié ne montre réellement aucune feature) —
+ * `published` est l'objet mesuré, `master` la référence. Vider la référence
+ * aveugle ; vider l'objet mesuré est un constat.
  */
 
 import { fileURLToPath } from 'node:url';
@@ -112,22 +119,40 @@ export async function fetchPublished() {
  * Point d'entrée principal du contrôle post-publication.
  * Retourne le code de sortie (0/1/2) — NE fait PAS process.exit() lui-même.
  *
+ * Dépendances d'I/O injectables, comme runGate : c'est le seul moyen de
+ * PROUVER par test la discrimination entre « ça diverge » (1) et « je n'ai
+ * pas pu conclure » (2).
+ *
+ * @param {{fetchPublished?:Function, fetchExport?:Function}} [deps]
  * @returns {Promise<number>}
  */
-export async function runPublishedCheck() {
+export async function runPublishedCheck(deps = {}) {
+  const io = { fetchPublished, fetchExport, ...deps };
+
   console.log('[PUBLISHED-CHECK] Démarrage vérification post-publication...');
   console.log(`[PUBLISHED-CHECK] Source publiée : ${PUBLISHED_URL}`);
 
-  const published = await fetchPublished();
+  const published = await io.fetchPublished();
   if (!published) {
     console.error('[PUBLISHED-CHECK] FAIL-CLOSED : je n\'ai pas pu lire l\'artefact publié');
     return 2;
   }
   console.log(`[PUBLISHED-CHECK] Publié : ${published.length} features`);
 
-  const master = await fetchExport();
+  const master = await io.fetchExport();
   if (!master) {
     console.error('[PUBLISHED-CHECK] FAIL-CLOSED : je n\'ai pas pu lire le registre master (vault injoignable)');
+    return 2;
+  }
+
+  // Registre master vide = plus de référence à laquelle comparer. Le contrôle
+  // n'a rien mesuré : c'est une cécité, pas une divergence publiée. Sans ce
+  // garde, computeDrift rend MASTER_EMPTY et la sonde quotidienne annoncerait
+  // « artefact publié divergent » sur un vault vide — accusation fausse d'un
+  // artefact sain. Même traitement que runGate (fetchExport rend `[]`, truthy,
+  // sur un export vide : le garde `!master` ci-dessus ne l'attrape pas).
+  if (master.length === 0) {
+    console.error('[PUBLISHED-CHECK] FAIL-CLOSED : registre master vide — conformité non vérifiable');
     return 2;
   }
   console.log(`[PUBLISHED-CHECK] Master export : ${master.length} features`);
