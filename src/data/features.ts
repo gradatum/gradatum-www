@@ -235,7 +235,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators who need to understand which vault features drive LLM spend, and developers building cost-attribution dashboards or budget-alert workflows on top of the vault.',
         status: 'released',
-        version: 'v0.3.0',
+        version: 'v0.4.4',
       },
       {
         id: 'f-36',
