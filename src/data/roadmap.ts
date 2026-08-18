@@ -420,7 +420,7 @@ const versions: VersionPhase[] = [
     description:
       'A store that answers queries on demand is still passive. The real value is a system that knows what is relevant before you ask — one that remembers what you worked on yesterday, surfaces the decision you forgot last month, and assembles exactly the right context before sending anything to a model. v0.7.0 is that layer: gradatum stops treating each session as stateless and starts reasoning over everything it has accumulated, on your hardware, across time.',
     scopeTeaserItems: ['Assembles relevant context before each query — not raw retrieval', 'Memory window slides with the conversation — no context cliff', 'Proactively surfaces what you forgot you knew', 'Declarative user profile — gradatum knows who it is talking to', 'Picks only the skills relevant to the current task'],
-    featureRefs: ['F-35', 'F-30', 'F-46', 'F-50', 'F-58', 'F-29', 'F-17', 'F-195', 'F-68', 'F-36'],
+    featureRefs: ['F-35', 'F-30', 'F-46', 'F-50', 'F-58', 'F-29', 'F-17', 'F-195', 'F-68', 'F-198'],
     showFeaturesLink: false,
   },
   {
@@ -450,7 +450,7 @@ const versions: VersionPhase[] = [
     description:
       'Each agent has its own identity: a soul note that captures its invariants, operational gates, and personality. v0.7.3 ships this as a protected vault section. Every agent can store and retrieve its own identity; enumeration is hidden from unprivileged callers; reads and writes are guarded by per-agent JWT binding. This is the foundation for multi-agent reasoning.',
     scopeTeaserItems: ['Soul notes for agent identity', 'Per-agent identity sections protected by ACL', 'MCP server injects agent identity at initialize time', 'Identity enumeration hidden from unprivileged access'],
-    featureRefs: ['F-34', 'F-36'],
+    featureRefs: ['F-34', 'F-198'],
     showFeaturesLink: false,
   },
   {

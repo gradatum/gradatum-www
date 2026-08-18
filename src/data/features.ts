@@ -238,20 +238,36 @@ const groups: FeatureGroup[] = [
         version: 'v0.4.4',
       },
       {
-        id: 'f-36',
-        refLabel: 'F-36',
-        name: 'Drift Detection: Identity Write Hook',
+        id: 'f-198',
+        refLabel: 'F-198',
+        name: 'Write Coherence Check: Title Category, Declared Section and Tags',
         positioning:
-          "Detects incoherent changes to an agent's identity notes (category-title mismatches) and flags them so they do not silently alter agent behavior.",
+          'Flags notes whose title claims one category while their declared section and tags say another, so an incoherent note is reported rather than silently stored.',
         howItWorks: [
-          'A DriftDetector is registered as a WriteHook on DocumentStore at startup; it monitors writes to the identity/ locus without a direct vault dependency.',
-          'On each write, the detector runs a deterministic category-title coherence check; a divergence triggers a drift_detected event (warn-only — it never blocks the write).',
-          'The drift event is surfaced via the jobs SSE (Server-Sent Events) stream, allowing operators or higher-level workflows to review the change before it takes effect.',
+          'On every vault write, a deterministic check compares the category announced by the title against the declared section hint and the tags, using a fixed table of 13 rules — bounded cardinality, so metric labels cannot explode.',
+          'The check is warn-only in the strictest sense: it adds no error path and cannot fail a write. An incoherence is recorded, never opposed.',
+          'A divergence is recorded three ways: a structured warning, a counter labelled by the rule that fired, and a dedicated audit entry — so it can be counted in aggregate or traced note by note.',
         ],
         whoItsFor:
-          'Operators running persistent agents whose identity notes must not change without explicit authorization — detecting accidental overwrites and adversarial prompt-injection attempts.',
+          'Operators running persistent agents who need incoherent writes reported without ever risking a rejected write, and anyone auditing how consistently a vault is categorised.',
         status: 'released',
         version: 'v0.7.3',
+      },
+      {
+        id: 'f-199',
+        refLabel: 'F-199',
+        name: 'Operator-Visible Write Warnings',
+        positioning:
+          'Makes a write coherence warning reviewable by an operator without reading logs or querying an aggregate counter.',
+        howItWorks: [
+          'Today a warning surfaces three ways — a structured log line, a counter, and an audit entry. None of them is a stream an operator can watch as writes happen.',
+          'A job event stream already exists and carries job lifecycle events; the open question is whether it is the right transport, since a write warning belongs to no job and has no terminal state to close on.',
+          'Deliberately unresolved: whether a stream adds anything over the counter and the audit trail. If it does not, the honest outcome is to drop the claim rather than to ship a channel nobody watches.',
+        ],
+        whoItsFor:
+          'Operators who want to notice an incoherent write as it happens rather than during a later audit.',
+        status: 'planned',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-31',
