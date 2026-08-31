@@ -15,7 +15,7 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
 
     <!-- Installation — 3 voies -->
     <div class="install-oneliner">
-      <div class="eyebrow block-label">Get started — <span data-gradatum-version="current">v2.0.0</span> · Linux x86_64</div>
+      <div class="eyebrow block-label">Get started — <span data-gradatum-version="current">v2.1.0</span> · Linux x86_64</div>
 
       <div class="install-ways">
 
@@ -28,7 +28,7 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
           <p class="install-way-desc">
             Two archives — download only what your deployment needs.
             Linux x86_64. SHA256 and SLSA provenance attestation per archive.
-            Pre-built archives track the latest published tag (<span data-gradatum-version="current">v2.0.0</span>).
+            Pre-built archives track the latest published tag (<span data-gradatum-version="current">v2.1.0</span>).
           </p>
 
           <div class="install-archives">
@@ -41,7 +41,7 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
                 Contains <code>gradatum-server</code>, <code>gradatum-worker</code>, <code>gradatum-admin</code>.
                 Core vault store, job queue, admin CLI. Serves MCP natively on <code>/mcp</code>.
               </p>
-              <pre class="install-pre install-archive-pre"><code>gradatum-server-v2.0.0-x86_64-unknown-linux-gnu.tar.gz</code></pre>
+              <pre class="install-pre install-archive-pre"><code>gradatum-server-v2.1.0-x86_64-unknown-linux-gnu.tar.gz</code></pre>
             </div>
 
             <div class="install-archive">
@@ -53,7 +53,7 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
                 Contains <code>gradatum-gateway</code> and <code>gradatum-engine</code>.
                 Router, circuit-breaker, llama-server supervisor. Required for local inference.
               </p>
-              <pre class="install-pre install-archive-pre"><code>gradatum-llm-v2.0.0-x86_64-unknown-linux-gnu.tar.gz</code></pre>
+              <pre class="install-pre install-archive-pre"><code>gradatum-llm-v2.1.0-x86_64-unknown-linux-gnu.tar.gz</code></pre>
             </div>
           </div>
 
@@ -64,7 +64,7 @@ const defaultMode = installModes.find((m) => m.isDefault) ?? installModes[0];
               rel="noopener noreferrer"
               class="install-release-link"
             >github.com/gradatum/gradatum/releases →</a>
-            <span class="install-release-meta">SHA256SUMS · SLSA attestation per archive · SBOM archive included (gradatum-sbom-v2.0.0.tar.gz)</span>
+            <span class="install-release-meta">SHA256SUMS · SLSA attestation per archive · SBOM archive included (gradatum-sbom-v2.1.0.tar.gz)</span>
           </div>
 
           <div class="install-verify-block">
@@ -74,7 +74,7 @@ sha256sum -c SHA256SUMS --ignore-missing
 
 <span class="install-comment"># verify SLSA build provenance (GitHub native)</span>
 gh attestation verify \
-  gradatum-server-v2.0.0-x86_64-unknown-linux-gnu.tar.gz \
+  gradatum-server-v2.1.0-x86_64-unknown-linux-gnu.tar.gz \
   --repo gradatum/gradatum</code></pre>
           </div>
         </div>
@@ -89,12 +89,12 @@ gh attestation verify \
               <span class="install-way-badge install-way-badge--secondary">source release</span>
             </div>
             <p class="install-way-desc">
-              Source is open on GitHub (Apache-2.0). 26 of the 31 workspace crates
-              are published on crates.io at <span data-gradatum-version="current">v2.0.0</span> — SemVer strict since v1.0.0, the first stable release; v2.0.0 is a major for breaking changes.
+              Source is open on GitHub (Apache-2.0). 26 of the 32 workspace crates
+              are published on crates.io at <span data-gradatum-version="current">v2.1.0</span> — SemVer since v1.0.0, with documented exceptions. v2.1.0 is a minor release that removes public API surface in four crates; every removal is inventoried in the release manifest and matched against the previous release in CI. Read the <a href="https://github.com/gradatum/gradatum/blob/main/docs/UPGRADING-2.0.0-to-2.1.0.md" target="_blank" rel="noopener noreferrer">2.0.0 → 2.1.0 upgrade guide</a> before moving.
             </p>
             <p class="install-source-note">
               <a href="https://crates.io/crates/gradatum" target="_blank" rel="noopener noreferrer">crates.io/crates/gradatum</a>
-              · published (<span data-gradatum-version="current">v2.0.0</span>) · Apache-2.0
+              · published (<span data-gradatum-version="current">v2.1.0</span>) · Apache-2.0
             </p>
           </div>
 
@@ -121,8 +121,8 @@ cd gradatum &amp;&amp; cargo build --release --workspace</code></pre>
       </div>
 
       <p class="install-alpha-notice">
-        <span data-gradatum-version="current">v2.0.0</span> · Linux x86_64 · SemVer strict since v1.0.0 (v2.0.0 is a major for breaking changes). 26 of the 31 workspace crates published on
-        crates.io; pre-built binary archives track <span data-gradatum-version="current">v2.0.0</span>. See
+        <span data-gradatum-version="current">v2.1.0</span> · Linux x86_64 · SemVer since v1.0.0, with documented exceptions (<a href="https://github.com/gradatum/gradatum/blob/main/docs/UPGRADING-2.0.0-to-2.1.0.md" target="_blank" rel="noopener noreferrer">2.0.0 → 2.1.0 upgrade guide</a>). 26 of the 32 workspace crates published on
+        crates.io; pre-built binary archives track <span data-gradatum-version="current">v2.1.0</span>. See
         <a href="https://github.com/gradatum/gradatum/blob/main/docs/DEPLOYMENT.md" target="_blank" rel="noopener noreferrer">docs/DEPLOYMENT.md</a>
         for the full deployment reference.
       </p>
