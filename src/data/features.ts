@@ -139,7 +139,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Teams that need to import technical documentation, research papers, or meeting transcripts into the vault without losing the structural context that makes answers accurate.',
         status: 'planned',
-        version: 'v2.2.0',
+        version: 'v2.4.0',
       },
       {
         id: 'f-39',
@@ -409,7 +409,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor: 'Operators managing multi-agent deployments with distributed knowledge consolidation and querying.',
         status: 'planned',
-        version: 'v2.2.0',
+        version: 'v2.3.0',
       },
       {
         id: 'f-64',
@@ -485,7 +485,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers with vaults exceeding tens of thousands of notes who find SQLite ANN performance insufficient, and contributors who want to benchmark retrieval quality across storage backends.',
         status: 'planned',
-        version: 'v2.1.0',
+        version: 'v2.4.0',
       },
       {
         id: 'f-37',
@@ -881,7 +881,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Forward-looking users curious about gradatum ingesting handwritten or document-image sources; explicitly exploratory.',
         status: 'planned',
-        version: 'v2.2.0',
+        version: 'v2.4.0',
       },
       {
         id: 'f-05',
@@ -1003,7 +1003,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers and analysts who want to query the memory corpus with standard analytical tooling — bulk reads, not the point lookups the day-to-day API is built for.',
         status: 'planned',
-        version: 'v2.1.0',
+        version: 'v2.2.0',
       },
       {
         id: 'f-146',
@@ -1018,7 +1018,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators and analysts who want to study how the memory corpus evolves over time — which sections stay active, which go stale — without duplicating or exposing the live database.',
         status: 'planned',
-        version: 'v2.1.0',
+        version: 'v2.2.0',
       },
       {
         id: 'f-184',
@@ -1034,7 +1034,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Vault maintainers who track work in the project-map section and want the state of a release to be a fact they can query, rather than a pair of fields to keep in sync by hand on every card.',
         status: 'planned',
-        version: 'v2.1.0',
+        version: 'v2.2.0',
       },
       {
         id: 'f-149',
@@ -1049,7 +1049,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators who want the index database to run on its own server — for centralization or easier operations — and who can accept that semantic search falls back to a slower path in that mode.',
         status: 'planned',
-        version: 'v2.1.0',
+        version: 'v2.4.0',
       },
       {
         id: 'f-152',
@@ -1079,7 +1079,259 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Teams ingesting documents that may carry personal data — emails, transcripts, exported records — who need a compliance-friendly path with no third-party data processing.',
         status: 'planned',
+        version: 'v2.4.0',
+      },
+      {
+        id: 'f-153',
+        refLabel: 'F-153',
+        name: "Targeted Role Mutation: Patch a Card's Role Without Rewriting Its Body",
+        positioning:
+          "Lets a client change one typed role (version, status, release, kind) on a project-map card and append a history line, without reading or resending the full body.",
+        howItWorks: [
+          'The current write surface only supports full-body replacement — a caller must hold and resend an entire note just to change one bracketed role, which on large cards means transferring kilobytes to alter a handful of characters.',
+          'A dedicated mutation changes a single typed role and appends a history entry server-side, atomically, under the same optimistic lock, and refuses any attempt to touch the card\'s identity.',
+          "Mutating the version role also updates the title's version suffix, so the title never drifts out of sync with the role it is supposed to reflect.",
+        ],
+        whoItsFor:
+          "Vault maintainers and internal tooling that adjust a card's roadmap status regularly and want to avoid full-body rewrites on records that can never be deleted.",
+        status: 'planned',
         version: 'v2.2.0',
+      },
+      {
+        id: 'f-177',
+        refLabel: 'F-177',
+        name: 'Legacy Queue Removal: Retiring jobs_v2 and Its Deleted-Note Remnants',
+        positioning:
+          'Removes a legacy queue table that kept reappearing on every restart and retained the content of already-deleted notes outside the vault\'s normal lifecycle.',
+        howItWorks: [
+          "The legacy queue's schema is dropped from the startup migration path entirely by a dedicated idempotent migration, leaving the unrelated leader-election table in the same schema untouched.",
+          'All readers of the legacy queue module are removed from the server, worker, and admin CLI, with the affected public contracts documented in the changelog.',
+          'Verified on the deployed fleet after a full restart: the table no longer exists, no migration checksum drifts across binaries, and leader election continues to succeed.',
+        ],
+        whoItsFor:
+          'Operators concerned about stale data retention — the removed table held content from deleted notes with no forensic value, including at least one note carrying infrastructure details.',
+        status: 'planned',
+        version: 'v2.1.0',
+      },
+      {
+        id: 'f-181',
+        refLabel: 'F-181',
+        name: 'Curator Threshold Tuning: Acting on Instrumentation Already Shipped',
+        positioning:
+          "Follows up on the curator's classification instrumentation by adjusting its admission thresholds once real verdict distributions are measured.",
+        howItWorks: [
+          'Builds on instrumentation already shipped that records curator verdicts — admit, reject, downgrade — broken down by section, making the classification path observable for the first time.',
+          'Thresholds are adjusted from that measured distribution rather than by guesswork, validated against a fixed query set compared before and after, since a recall regression is invisible at compile time.',
+        ],
+        whoItsFor:
+          "Vault operators who want the curator's admission behavior tuned to their own corpus rather than left at defaults chosen before any real usage data existed.",
+        status: 'planned',
+        version: 'vX.Y.Z',
+      },
+      {
+        id: 'f-211',
+        refLabel: 'F-211',
+        name: 'Single-Query Card Projection: List Every Card of a Version at Once',
+        positioning:
+          'Adds the version filter an earlier listing feature left out, and returns every axis of a card — id, status, type, release, version, title, dependency roles — in one call.',
+        howItWorks: [
+          'A single projection returns id, status, type, release, version, title, and dependency roles together, filterable on any of them including version — where today no single surface exposes all of them at once.',
+          'Resolving a card by its number becomes one call instead of walking the dependency graph node by node.',
+          'The result count is cross-checked against a direct index read, so a listing that silently omits entries is no longer indistinguishable from a complete one.',
+        ],
+        whoItsFor:
+          'Anyone auditing what a given release milestone contains — previously only answerable by exporting everything and filtering by hand, or by reading the index directly.',
+        status: 'planned',
+        version: 'v2.2.0',
+      },
+      {
+        id: 'f-212',
+        refLabel: 'F-212',
+        name: 'Version Availability Check: Know If a Version Number Is Already Taken',
+        positioning:
+          "Answers whether a given version number is already used by live cards, replacing a manual export-and-filter step with a real query.",
+        howItWorks: [
+          "Returns the list of cards already carrying a given version number along with their status, rather than a plain yes/no — because whether a number is 'free' depends on whether those cards belong to the release about to ship.",
+          "Consumed by the release gate in place of a hand-filtered export, closing a gap that previously let a version number get reused by mistake.",
+        ],
+        whoItsFor:
+          'Release management tooling and operators cutting a new version, who today must export the whole registry and filter it by hand to confirm a version number is free.',
+        status: 'planned',
+        version: 'v2.2.0',
+      },
+      {
+        id: 'f-213',
+        refLabel: 'F-213',
+        name: 'Role Consistency Guard: Reject Incoherent Role Combinations at Write Time',
+        positioning:
+          'Adds a write-time guard that refuses role combinations already known to be invalid, and rejects unknown roles instead of silently discarding them.',
+        howItWorks: [
+          'Enforces a coherence matrix at every write path — for example, a card cannot carry release=roadmap while also carrying a committed target version, a combination measured to affect over half of one registry milestone before this guard existed.',
+          'An unknown role name or an out-of-vocabulary value is refused rather than silently accepted as a generic, uncounted link, closing a gap where a misspelled role produced no error and no effect.',
+          'A role cited inside a code sample is explicitly not treated as a real role, so documentation about the role system itself remains writable.',
+        ],
+        whoItsFor:
+          'Vault maintainers who write project-map cards directly and need bad data caught at write time instead of discovered later by a full manual audit.',
+        status: 'planned',
+        version: 'v2.2.0',
+      },
+      {
+        id: 'f-240',
+        refLabel: 'F-240',
+        name: 'Bounded Audit Report: Publish Capability Status Separately',
+        positioning:
+          'Splits the unbounded capability-status block out of the operational audit report, so a consumer that only wants the status no longer loads the whole report.',
+        howItWorks: [
+          'The audit report grew roughly 76% after a capability-status block was added, and that block grows linearly with every capability the fleet exposes, while no existing read path can fetch a sub-section — only the whole report.',
+          'Publishing the status block as a separate note next to the anomaly report is estimated to cut the read cost by 75-85% for a consumer that only needs status, at the cost of having two notes to tell apart.',
+        ],
+        whoItsFor:
+          'The periodic self-evaluation routine and any other consumer that reads the audit verdict on every pass and only needs the capability-status summary, not the full anomaly report.',
+        status: 'planned',
+        version: 'vX.Y.Z',
+      },
+      {
+        id: 'f-246',
+        refLabel: 'F-246',
+        name: 'Guaranteed Snapshot Capture: Vault-Backed Session Events',
+        positioning:
+          'Moves session-event capture into a dedicated, retrievable vault section instead of a local buffer file that was never reliably converted into durable notes.',
+        howItWorks: [
+          'Captured events are vectorized at write time into a dedicated vault section, so they are retrievable by a later session\'s natural-language search even if no distillation pass has run yet — measured against a prior local-file buffer where only about 8-64% of captured lines were ever converted, depending on the day.',
+          'A capture-to-note pipeline treats capture as a filter, not an author: it distills mechanically, without judgment calls, while high-value notes continue to be written directly during the session.',
+          'A backlog gate fails the synthesis phase while unprocessed captures remain, proven in three states — backlog present, resolved, server down — never producing a false pass.',
+        ],
+        whoItsFor:
+          'Anyone relying on cross-session memory continuity, where a decision or explanation established in one session previously risked never surviving past that session\'s transcript.',
+        status: 'planned',
+        version: 'v2.1.0',
+      },
+      {
+        id: 'f-247',
+        refLabel: 'F-247',
+        name: 'Canonical Title Derivation at Card Creation',
+        positioning:
+          "Derives a project-map card's canonical title — category prefix, project name, version suffix — from its own role fields, instead of accepting any title passed in.",
+        howItWorks: [
+          'Card creation today accepts any title with no check or adjustment; measured across one registry milestone, only 17 of 32 live cards were fully conformant, and 11 titles registry-wide contradicted their own version role.',
+          "The title is derived from data the server already holds at creation — the destination section, the card's project role, and its version role — and reapplying the derivation to an already-conformant title changes nothing.",
+          'Because the version role changes more often than any other title element, the derivation also fires on role mutation, not only at creation, since that is the majority case.',
+        ],
+        whoItsFor:
+          'Vault maintainers who rely on card titles for browsing, export, and lexical lookup, where an inconsistent title space degrades all three.',
+        status: 'planned',
+        version: 'v2.2.0',
+      },
+      {
+        id: 'f-248',
+        refLabel: 'F-248',
+        name: 'Distillation Consolidated Into a Single Dedicated Crate',
+        positioning:
+          'Moves distillation logic scattered across the codebase into one dedicated crate, while keeping the existing job-queue vocabulary in the foundation crate to avoid inverting its dependency graph.',
+        howItWorks: [
+          'Only five source files actually defined distillation logic — the rest merely imported the job-queue vocabulary — so consolidation moved the logic while deliberately leaving the queue\'s data contracts, already persisted for thousands of jobs, untouched.',
+          "Exactly one symbol was removed from the foundation crate's public surface; the removal is named in the changelog with its migration path and recorded in the crate's breaking-change inventory, matched in both directions.",
+        ],
+        whoItsFor:
+          'Contributors maintaining or extending the distillation pipeline, who previously had to know which of many files actually defined the logic versus merely importing shared vocabulary.',
+        status: 'planned',
+        version: 'v2.1.0',
+      },
+      {
+        id: 'f-249',
+        refLabel: 'F-249',
+        name: 'Public Migration Guide and Script: Upgrading From 2.0 to 2.1',
+        positioning:
+          'Ships a public migration guide and script inventorying breaking changes in the 2.1 line, since a minor version is adopted automatically by any consumer pinned loosely.',
+        howItWorks: [
+          'The breaking-change inventory is derived from a public-surface comparison against the 2.0 baseline, not written from memory, with each entry linked to the card that introduced it.',
+          "The accompanying script automates the mechanical substitutions and explicitly lists, in its own header, the categories of change it does not detect, rather than silently skipping them.",
+          'The guide is linked from both the repository homepage and the changelog on the published repository, not only the local working tree.',
+        ],
+        whoItsFor:
+          'Consumers of the gradatum crates who pin a loose version constraint and need to know, at upgrade time, exactly what changed and how to adapt.',
+        status: 'planned',
+        version: 'v2.1.0',
+      },
+      {
+        id: 'f-254',
+        refLabel: 'F-254',
+        name: 'Public Migration Guide and Script: Upgrading From 2.1 to 2.2',
+        positioning:
+          "Extends the migration-guide practice from 2.0→2.1 to the 2.2 line, covering breaking changes in the registry's write contract that a public-API diff tool cannot detect.",
+        howItWorks: [
+          'Breaking changes are inventoried from a measured comparison against the 2.1 public surface, distinguishing tool-detected breaks from ones catalogued by hand, since a stricter write-time validation rule affects accepted data, not symbols.',
+          'The accompanying script is run against a real downstream consumer of the previous version and must produce a working result — compiling for library changes, writing without rejection for data-contract changes.',
+          'Every write refusal introduced by the stricter validation names the expected replacement value in its error message, rather than failing silently on a contract that just changed.',
+        ],
+        whoItsFor:
+          'Consumers of the gradatum registry write API who may be submitting role combinations that were silently accepted under 2.1 and will be rejected under 2.2.',
+        status: 'planned',
+        version: 'v2.2.0',
+      },
+      {
+        id: 'f-256',
+        refLabel: 'F-256',
+        name: 'Dedicated Internal-Card Axis, Independent of Card Type',
+        positioning:
+          "Gives a registry card an explicit way to opt out of the public feature catalog, replacing a guarantee that used to be a side effect of its type field.",
+        howItWorks: [
+          'A dedicated exclusion axis marks a card as internal regardless of its type, read by the export in addition to today\'s filters rather than in place of them.',
+          'The default stays publishable — exclusion is a deliberate act on each card, not an omission, so a missing axis never silently hides a card that should be visible.',
+          'Cards that previously relied on their type to justify staying internal are reviewed individually and given either the new axis or an explicit publication decision.',
+        ],
+        whoItsFor:
+          'Vault maintainers who need to keep certain internal registry cards out of the public feature catalog without repurposing an unrelated status field.',
+        status: 'planned',
+        version: 'v2.2.0',
+      },
+      {
+        id: 'f-261',
+        refLabel: 'F-261',
+        name: 'Provenance-Based Trust Scoring That Actually Varies',
+        positioning:
+          "Derives a note's trust score from its section and document kind instead of a stored constant, so the ranking factor it feeds finally discriminates between notes.",
+        howItWorks: [
+          'Trust is derived at query time from a note\'s section (baseline value) and document kind (whether and how fast it decays), rather than stored and migrated — measured across the full corpus, every note previously carried the same trust value, making the factor a constant multiplier that could not reorder anything.',
+          'Four tiers were set from existing section documentation rather than by analogy: governance-grade sections carry the highest trust and are exempt from decay entirely, since an already-settled decision does not get less true with age.',
+          'The reference query set used to catch ranking regressions was recaptured after the change, since making trust vary necessarily reorders some results relative to a baseline that assumed a constant factor.',
+        ],
+        whoItsFor:
+          'Anyone relying on search ranking quality, where a scoring factor that multiplies every result by the same amount looks like it works but silently contributes nothing to the ordering.',
+        status: 'planned',
+        version: 'v2.1.0',
+      },
+      {
+        id: 'f-265',
+        refLabel: 'F-265',
+        name: 'MCP Tooling Consolidation: Retiring the Duplicated Tool Catalog',
+        positioning:
+          "Consolidates the native MCP tool surface — duplicated between the server and its published stdio proxy — into one dedicated crate, removing a permanently blocking CI parity gate.",
+        howItWorks: [
+          'A continuous-integration gate exists today solely to keep two copies of the MCP tool catalog in sync between the server (about 1,400 lines) and the published proxy (about 1,600 lines) — it detects drift on every integration without preventing the duplication that causes it.',
+          'Consolidation is preceded by an exhaustive measurement pass — genuine definitions versus imports, catalog data versus transport versus processing logic, and what already reaches a published crate\'s public surface — before any code moves.',
+          "Any break to the tool contract itself — a name, an input schema, a behavior — is invisible to Rust's own compatibility tooling and is inventoried by hand in a dedicated MCP migration guide.",
+        ],
+        whoItsFor:
+          'MCP client integrators and contributors maintaining the native tool surface, who today must keep two hand-written catalogs of the same tools in sync.',
+        status: 'planned',
+        version: 'v2.2.0',
+      },
+      {
+        id: 'f-266',
+        refLabel: 'F-266',
+        name: 'Enable Approximate Vector Search: A Path Already Built and Compiled',
+        positioning:
+          'Activates the already-compiled sqlite-vec ANN search path with one configuration key, replacing full-scan semantic search running since the ANN backend\'s original v0.5.3 commitment went unfulfilled.',
+        howItWorks: [
+          'The ANN backend defaults to full brute-force scan for backward compatibility; setting one configuration key at startup registers the sqlite-vec extension, populates its vector table from existing embeddings, and switches the search path — any failure degrades back to full scan without interrupting the service.',
+          'Recall is measured against full scan on a fixed query set before the switch is made default for any consumer, using an existing recall benchmark binary, since a recall regression is invisible at compile time.',
+          'Turning the key on for one instance and making the backend the product-wide default are treated as two distinct decisions — the second is inventoried in the 2.1.0 migration guide separately from the first.',
+        ],
+        whoItsFor:
+          'Operators running gradatum at a corpus size where full-scan semantic search has a measurable latency cost, and who want the vector-search acceleration already compiled into the binary.',
+        status: 'planned',
+        version: 'v2.1.0',
       },
     ],
   },
@@ -1368,7 +1620,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Deployments with multiple human operators and agent processes sharing one vault, where attribution and scoping must distinguish who or what performed each action.',
         status: 'planned',
-        version: 'v2.1.0',
+        version: 'v2.3.0',
       },
       {
         id: 'f-126',
@@ -1459,7 +1711,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Agent builders who want agents to receive relevant input without polling for it — the concrete mechanism is still being designed.',
         status: 'planned',
-        version: 'v2.2.0',
+        version: 'v2.3.0',
       },
       {
         id: 'f-150',
@@ -1474,7 +1726,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators who configure engine behavior through the config file and expect every documented setting to actually change runtime behavior, not just be accepted and dropped.',
         status: 'planned',
-        version: 'v2.1.0',
+        version: 'v2.3.0',
       },
       {
         id: 'f-154',
@@ -1489,7 +1741,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators and installers who need the health endpoint to catch a broken deployment at setup time — instead of it reporting healthy while the product silently cannot do its job.',
         status: 'planned',
-        version: 'v2.1.0',
+        version: 'v2.3.0',
       },
       {
         id: 'f-156',
@@ -1504,7 +1756,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           "Operators running several gradatum components across machines who need to answer 'what is running, and which build' with one query instead of connecting to each host.",
         status: 'planned',
-        version: 'v2.1.0',
+        version: 'v2.3.0',
       },
       {
         id: 'f-157',
@@ -1519,7 +1771,39 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators running multiple components who currently have no way to tell whether a setting drifted between machines without connecting to each one individually.',
         status: 'planned',
-        version: 'v2.1.0',
+        version: 'v2.3.0',
+      },
+      {
+        id: 'f-220',
+        refLabel: 'F-220',
+        name: 'Card Type Vocabulary Reduced From Six Values to Four',
+        positioning:
+          'Collapses the project-map card type field to four values — feature, enhancement, fix, task — after two of six were found undefined anywhere and behaving identically to the others.',
+        howItWorks: [
+          'Existing cards were migrated to the surviving vocabulary using a read-verify-write procedure, since a plain write on a downgraded note would otherwise resurrect it; the resulting distribution across the fleet was verified independently against both note bodies and index columns.',
+          'The two retired type values were removed from the code along with their wire (de)serialization paths, and the error message on an invalid value now names the replacement to use instead.',
+          'A first-match-wins classification rule was added to the write path, closing an ambiguity that previously left common cases undefined.',
+        ],
+        whoItsFor:
+          'Contributors and tooling that write project-map cards, who previously had several indistinguishable ways to express the same non-public card type.',
+        status: 'released',
+        version: 'v2.0.6',
+      },
+      {
+        id: 'f-238',
+        refLabel: 'F-238',
+        name: 'Vitality Scenario: Exercise Every Capability Without Corrupting Usage Data',
+        positioning:
+          'Runs every exposed capability at least once on a schedule, distinguishing a capability that has never been called from one that is broken, without polluting the usage counters it is meant to protect.',
+        howItWorks: [
+          'Each exercised capability\'s own call is subtracted from its usage counter, so the scenario proves a capability still works without making it look used by real traffic — verified end to end, including on capabilities reachable only through a stateless MCP entry point.',
+          'Every artifact the scenario creates during a pass is cleaned up and the absence of residue is verified by direct enumeration, not assumed; one unavoidable audit-trail metadata record is named explicitly rather than hidden.',
+          'Both a clean and an interrupted run are exercised: an interrupted pass leaves an orphan that the next run\'s startup sweep collects by exact marker-title match, under lock.',
+        ],
+        whoItsFor:
+          'Operators who want confidence that every capability the server exposes — including rarely-used administrative ones like restore — actually still works, not just that it compiles.',
+        status: 'released',
+        version: 'v2.0.7',
       },
     ],
   },
