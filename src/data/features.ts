@@ -1110,7 +1110,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Operators concerned about stale data retention — the removed table held content from deleted notes with no forensic value, including at least one note carrying infrastructure details.',
-        status: 'planned',
+        status: 'released',
         version: 'v2.1.0',
       },
       {
@@ -1203,7 +1203,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Anyone relying on cross-session memory continuity, where a decision or explanation established in one session previously risked never surviving past that session\'s transcript.',
-        status: 'planned',
+        status: 'released',
         version: 'v2.1.0',
       },
       {
@@ -1234,7 +1234,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Contributors maintaining or extending the distillation pipeline, who previously had to know which of many files actually defined the logic versus merely importing shared vocabulary.',
-        status: 'planned',
+        status: 'released',
         version: 'v2.1.0',
       },
       {
@@ -1298,7 +1298,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Anyone relying on search ranking quality, where a scoring factor that multiplies every result by the same amount looks like it works but silently contributes nothing to the ordering.',
-        status: 'planned',
+        status: 'released',
         version: 'v2.1.0',
       },
       {
