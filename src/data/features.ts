@@ -1333,6 +1333,38 @@ const groups: FeatureGroup[] = [
         status: 'planned',
         version: 'v2.1.0',
       },
+      {
+        id: 'f-268',
+        refLabel: 'F-268',
+        name: 'Wire the FTS Integrity Guard Into Supervision',
+        positioning:
+          "Wires the fts_integrity_check guard 2.1.1 ships into an actual caller, so silent FTS corruption is caught by monitoring instead of surfacing later as a user's search failing.",
+        howItWorks: [
+          "fts_integrity_check runs FTS5's ranked integrity form (INSERT INTO notes_fts(notes_fts, rank) VALUES('integrity-check', 1)), which compares postings against the content table — unlike a row-count comparison or an unranked integrity check, both of which stayed green on a base later found corrupted.",
+          'The guard exists today but has no caller outside its own test. This feature decides where its verdict surfaces — health endpoint, dedicated endpoint, or a periodic job — and what a red verdict triggers, deliberately not an automatic rebuild, since an automatic rebuild is what let the same class of corruption go undetected through three prior manual repairs.',
+          "The probe's cost on a production-sized index is measured before it is placed on any path called continuously.",
+        ],
+        whoItsFor:
+          "Operators who want stale FTS postings caught by monitoring rather than by a user's search failing first.",
+        status: 'planned',
+        version: 'vX.Y.Z',
+      },
+      {
+        id: 'f-269',
+        refLabel: 'F-269',
+        name: 'Make the Release Gate Patch-Aware',
+        positioning:
+          'Rewrites two release-gate tests that hard-code a MINOR-release assumption, so the SemVer deviations inventory can legitimately read empty on a patch release like 2.1.1.',
+        howItWorks: [
+          "Two tests assert against a populated deviations inventory — a minimum entry count, and one exact deviation triplet — instead of asserting the gate's behavior for a given release rank, so an empty inventory reads as a broken test fixture instead of the correct state for a patch release.",
+          'This feature rewrites both tests to assert behavior per release rank: under a MINOR release, an empty inventory means zero breaking changes are pre-authorized, and any measured break must then fail the gate rather than being silently waved through.',
+          'It also closes a latent false-PASS: the gate matches measured breaks against named authorizations, never the reverse, so a stale authorization whose symbol name later coincides with an unrelated future break would silently cover it — a risk that stays invisible because the gate keeps passing.',
+        ],
+        whoItsFor:
+          'Maintainers of the release pipeline who need the deviations inventory to mean a reviewed allowance for a specific past break, not an artifact that can never return to zero.',
+        status: 'planned',
+        version: 'vX.Y.Z',
+      },
     ],
   },
   {
