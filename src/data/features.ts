@@ -1003,7 +1003,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers and analysts who want to query the memory corpus with standard analytical tooling — bulk reads, not the point lookups the day-to-day API is built for.',
         status: 'planned',
-        version: 'v2.2.0',
+        version: 'v2.4.0',
       },
       {
         id: 'f-146',
@@ -1018,7 +1018,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators and analysts who want to study how the memory corpus evolves over time — which sections stay active, which go stale — without duplicating or exposing the live database.',
         status: 'planned',
-        version: 'v2.2.0',
+        version: 'v2.4.0',
       },
       {
         id: 'f-184',
@@ -1033,7 +1033,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Vault maintainers who track work in the project-map section and want the state of a release to be a fact they can query, rather than a pair of fields to keep in sync by hand on every card.',
-        status: 'planned',
+        status: 'released',
         version: 'v2.2.0',
       },
       {
@@ -1095,7 +1095,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           "Vault maintainers and internal tooling that adjust a card's roadmap status regularly and want to avoid full-body rewrites on records that can never be deleted.",
         status: 'planned',
-        version: 'v2.2.0',
+        version: 'v2.3.0',
       },
       {
         id: 'f-177',
@@ -1250,7 +1250,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Consumers of the gradatum crates who pin a loose version constraint and need to know, at upgrade time, exactly what changed and how to adapt.',
-        status: 'planned',
+        status: 'released',
         version: 'v2.1.0',
       },
       {
@@ -1315,7 +1315,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'MCP client integrators and contributors maintaining the native tool surface, who today must keep two hand-written catalogs of the same tools in sync.',
         status: 'planned',
-        version: 'v2.2.0',
+        version: 'v3.0.0',
       },
       {
         id: 'f-266',
@@ -1330,7 +1330,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Operators running gradatum at a corpus size where full-scan semantic search has a measurable latency cost, and who want the vector-search acceleration already compiled into the binary.',
-        status: 'planned',
+        status: 'released',
         version: 'v2.1.0',
       },
       {
