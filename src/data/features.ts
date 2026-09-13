@@ -267,7 +267,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators who want to notice an incoherent write as it happens rather than during a later audit.',
         status: 'planned',
-        version: 'vX.Y.Z',
+        version: 'v2.5.0',
       },
       {
         id: 'f-31',
@@ -408,7 +408,7 @@ const groups: FeatureGroup[] = [
           'Result merging respects agent boundaries so data stays isolated; a unified result set optionally labels which agent each note came from.',
         ],
         whoItsFor: 'Operators managing multi-agent deployments with distributed knowledge consolidation and querying.',
-        status: 'planned',
+        status: 'released',
         version: 'v2.3.0',
       },
       {
@@ -724,22 +724,6 @@ const groups: FeatureGroup[] = [
         version: 'v1.0.0',
       },
       {
-        id: 'f-67',
-        refLabel: 'F-67',
-        name: 'Event-Log Cost Breakdown Query API — suite F-19',
-        positioning:
-          'Completes event-log cost attribution by adding a query API that surfaces cost breakdowns per feature, per model, and per time window.',
-        howItWorks: [
-          'Builds on the released F-19 event log infrastructure (QaEvent struct, append-only storage, 90-day retention) to expose a dedicated cost-breakdown endpoint.',
-          'Queries span multiple dimensions: cost_per_feature (rolls up all LLM calls tagged with a feature_id), cost_per_model (aggregates by model identifier), and cost_per_day (trends over time).',
-          'Results include estimated cost, token usage, and call frequency, enabling operators to identify cost-optimization opportunities and track spend trends over weeks.',
-        ],
-        whoItsFor:
-          'Operators and cost analysts who need granular visibility into where vault LLM spend is going, and developers building cost-attribution dashboards.',
-        status: 'planned',
-        version: 'vX.Y.Z',
-      },
-      {
         id: 'f-68',
         refLabel: 'F-68',
         name: 'Lessons Recall Pre-Action Hook — suite F-60',
@@ -852,22 +836,6 @@ const groups: FeatureGroup[] = [
         version: 'v0.5.2',
       },
       {
-        id: 'f-81',
-        refLabel: 'F-81',
-        name: 'HippoRAG-2 Associative Recall: PPR over Wikilink Graph',
-        positioning:
-          'Associative recall that follows the wikilink graph — surfacing notes connected to your query, not just lexically or semantically similar ones.',
-        howItWorks: [
-          'Seeds Personalized PageRank (PPR) from the notes that match a query, then propagates over the note wikilink graph.',
-          'Implements the HippoRAG-2 associative-memory approach: graph propagation surfaces indirectly-linked but relevant notes.',
-          'Complements lexical and semantic search with structural, relationship-aware recall.',
-        ],
-        whoItsFor:
-          'Users with densely interlinked vaults who want recall to follow connections that a keyword or embedding match alone would miss.',
-        status: 'planned',
-        version: 'vX.Y.Z',
-      },
-      {
         id: 'f-82',
         refLabel: 'F-82',
         name: 'Arbor HTR: Research Spike',
@@ -944,21 +912,6 @@ const groups: FeatureGroup[] = [
         version: 'vX.Y.Z',
       },
       {
-        id: 'f-84',
-        refLabel: 'F-84',
-        name: 'OKF Interop: Open Knowledge Format Export',
-        positioning:
-          'Exports the vault as an Open Knowledge Format bundle for interop with external knowledge management tools.',
-        howItWorks: [
-          'An export command serialises vault notes, wikilinks, and metadata into a standards-compliant OKF bundle.',
-          'The bundle can be imported into compatible tools or archived as a portable, documented knowledge backup.',
-        ],
-        whoItsFor:
-          'Users who want to migrate their vault, share it with collaborators on other tools, or archive it in a portable format.',
-        status: 'planned',
-        version: 'vX.Y.Z',
-      },
-      {
         id: 'f-100',
         refLabel: 'F-100',
         name: 'On-Demand Delete: Reversible Archival with Retention GC',
@@ -988,7 +941,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Vaults where automated ingestion produces many low-quality summaries and manual curation is not practical at scale.',
         status: 'planned',
-        version: 'vX.Y.Z',
+        version: 'v2.5.0',
       },
       {
         id: 'f-143',
@@ -1188,7 +1141,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'The periodic self-evaluation routine and any other consumer that reads the audit verdict on every pass and only needs the capability-status summary, not the full anomaly report.',
         status: 'planned',
-        version: 'vX.Y.Z',
+        version: 'v2.5.0',
       },
       {
         id: 'f-246',
@@ -1347,7 +1300,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           "Operators who want stale FTS postings caught by monitoring rather than by a user's search failing first.",
         status: 'planned',
-        version: 'vX.Y.Z',
+        version: 'v2.5.0',
       },
       {
         id: 'f-269',
@@ -1363,7 +1316,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Maintainers of the release pipeline who need the deviations inventory to mean a reviewed allowance for a specific past break, not an artifact that can never return to zero.',
         status: 'planned',
-        version: 'vX.Y.Z',
+        version: 'v2.5.0',
       },
     ],
   },
