@@ -1047,7 +1047,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           "Vault maintainers and internal tooling that adjust a card's roadmap status regularly and want to avoid full-body rewrites on records that can never be deleted.",
-        status: 'planned',
+        status: 'released',
         version: 'v2.3.0',
       },
       {
@@ -1604,7 +1604,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Deployments with multiple human operators and agent processes sharing one vault, where attribution and scoping must distinguish who or what performed each action.',
-        status: 'planned',
+        status: 'released',
         version: 'v2.3.0',
       },
       {
@@ -1695,7 +1695,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Agent builders who want agents to receive relevant input without polling for it — the concrete mechanism is still being designed.',
-        status: 'planned',
+        status: 'released',
         version: 'v2.3.0',
       },
       {
@@ -1710,7 +1710,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Operators who configure engine behavior through the config file and expect every documented setting to actually change runtime behavior, not just be accepted and dropped.',
-        status: 'planned',
+        status: 'released',
         version: 'v2.3.0',
       },
       {
@@ -1725,7 +1725,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Operators and installers who need the health endpoint to catch a broken deployment at setup time — instead of it reporting healthy while the product silently cannot do its job.',
-        status: 'planned',
+        status: 'released',
         version: 'v2.3.0',
       },
       {
@@ -1740,7 +1740,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           "Operators running several gradatum components across machines who need to answer 'what is running, and which build' with one query instead of connecting to each host.",
-        status: 'planned',
+        status: 'released',
         version: 'v2.3.0',
       },
       {
