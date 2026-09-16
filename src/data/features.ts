@@ -139,7 +139,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Teams that need to import technical documentation, research papers, or meeting transcripts into the vault without losing the structural context that makes answers accurate.',
         status: 'planned',
-        version: 'v2.4.0',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-39',
@@ -485,7 +485,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers with vaults exceeding tens of thousands of notes who find SQLite ANN performance insufficient, and contributors who want to benchmark retrieval quality across storage backends.',
         status: 'planned',
-        version: 'v2.4.0',
+        version: 'v3.0.0',
       },
       {
         id: 'f-37',
@@ -849,7 +849,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Forward-looking users curious about gradatum ingesting handwritten or document-image sources; explicitly exploratory.',
         status: 'planned',
-        version: 'v2.4.0',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-05',
@@ -941,7 +941,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Vaults where automated ingestion produces many low-quality summaries and manual curation is not practical at scale.',
         status: 'planned',
-        version: 'v2.5.0',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-143',
@@ -956,7 +956,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers and analysts who want to query the memory corpus with standard analytical tooling — bulk reads, not the point lookups the day-to-day API is built for.',
         status: 'planned',
-        version: 'v2.4.0',
+        version: 'v3.0.0',
       },
       {
         id: 'f-146',
@@ -971,7 +971,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators and analysts who want to study how the memory corpus evolves over time — which sections stay active, which go stale — without duplicating or exposing the live database.',
         status: 'planned',
-        version: 'v2.4.0',
+        version: 'v3.0.0',
       },
       {
         id: 'f-184',
@@ -1002,7 +1002,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators who want the index database to run on its own server — for centralization or easier operations — and who can accept that semantic search falls back to a slower path in that mode.',
         status: 'planned',
-        version: 'v2.4.0',
+        version: 'v3.0.0',
       },
       {
         id: 'f-152',
@@ -1031,7 +1031,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Teams ingesting documents that may carry personal data — emails, transcripts, exported records — who need a compliance-friendly path with no third-party data processing.',
-        status: 'planned',
+        status: 'released',
         version: 'v2.4.0',
       },
       {
@@ -1094,7 +1094,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Anyone auditing what a given release milestone contains — previously only answerable by exporting everything and filtering by hand, or by reading the index directly.',
-        status: 'planned',
+        status: 'released',
         version: 'v2.2.0',
       },
       {
@@ -1109,7 +1109,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Release management tooling and operators cutting a new version, who today must export the whole registry and filter it by hand to confirm a version number is free.',
-        status: 'planned',
+        status: 'released',
         version: 'v2.2.0',
       },
       {
@@ -1125,7 +1125,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Vault maintainers who write project-map cards directly and need bad data caught at write time instead of discovered later by a full manual audit.',
-        status: 'planned',
+        status: 'released',
         version: 'v2.2.0',
       },
       {
@@ -1172,7 +1172,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Vault maintainers who rely on card titles for browsing, export, and lexical lookup, where an inconsistent title space degrades all three.',
-        status: 'planned',
+        status: 'released',
         version: 'v2.2.0',
       },
       {
@@ -1207,22 +1207,6 @@ const groups: FeatureGroup[] = [
         version: 'v2.1.0',
       },
       {
-        id: 'f-254',
-        refLabel: 'F-254',
-        name: 'Public Migration Guide and Script: Upgrading From 2.1 to 2.2',
-        positioning:
-          "Extends the migration-guide practice from 2.0→2.1 to the 2.2 line, covering breaking changes in the registry's write contract that a public-API diff tool cannot detect.",
-        howItWorks: [
-          'Breaking changes are inventoried from a measured comparison against the 2.1 public surface, distinguishing tool-detected breaks from ones catalogued by hand, since a stricter write-time validation rule affects accepted data, not symbols.',
-          'The accompanying script is run against a real downstream consumer of the previous version and must produce a working result — compiling for library changes, writing without rejection for data-contract changes.',
-          'Every write refusal introduced by the stricter validation names the expected replacement value in its error message, rather than failing silently on a contract that just changed.',
-        ],
-        whoItsFor:
-          'Consumers of the gradatum registry write API who may be submitting role combinations that were silently accepted under 2.1 and will be rejected under 2.2.',
-        status: 'planned',
-        version: 'v2.2.0',
-      },
-      {
         id: 'f-256',
         refLabel: 'F-256',
         name: 'Dedicated Internal-Card Axis, Independent of Card Type',
@@ -1235,7 +1219,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Vault maintainers who need to keep certain internal registry cards out of the public feature catalog without repurposing an unrelated status field.',
-        status: 'planned',
+        status: 'released',
         version: 'v2.2.0',
       },
       {
@@ -1271,22 +1255,6 @@ const groups: FeatureGroup[] = [
         version: 'v3.0.0',
       },
       {
-        id: 'f-266',
-        refLabel: 'F-266',
-        name: 'Enable Approximate Vector Search: A Path Already Built and Compiled',
-        positioning:
-          'Activates the already-compiled sqlite-vec ANN search path with one configuration key, replacing full-scan semantic search running since the ANN backend\'s original v0.5.3 commitment went unfulfilled.',
-        howItWorks: [
-          'The ANN backend defaults to full brute-force scan for backward compatibility; setting one configuration key at startup registers the sqlite-vec extension, populates its vector table from existing embeddings, and switches the search path — any failure degrades back to full scan without interrupting the service.',
-          'Recall is measured against full scan on a fixed query set before the switch is made default for any consumer, using an existing recall benchmark binary, since a recall regression is invisible at compile time.',
-          'Turning the key on for one instance and making the backend the product-wide default are treated as two distinct decisions — the second is inventoried in the 2.1.0 migration guide separately from the first.',
-        ],
-        whoItsFor:
-          'Operators running gradatum at a corpus size where full-scan semantic search has a measurable latency cost, and who want the vector-search acceleration already compiled into the binary.',
-        status: 'released',
-        version: 'v2.1.0',
-      },
-      {
         id: 'f-268',
         refLabel: 'F-268',
         name: 'Wire the FTS Integrity Guard Into Supervision',
@@ -1300,7 +1268,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           "Operators who want stale FTS postings caught by monitoring rather than by a user's search failing first.",
         status: 'planned',
-        version: 'v2.5.0',
+        version: 'v3.0.0',
       },
       {
         id: 'f-269',
@@ -1317,6 +1285,51 @@ const groups: FeatureGroup[] = [
           'Maintainers of the release pipeline who need the deviations inventory to mean a reviewed allowance for a specific past break, not an artifact that can never return to zero.',
         status: 'planned',
         version: 'v2.5.0',
+      },
+      {
+        id: 'f-298',
+        refLabel: 'F-298',
+        name: 'Privacy Filter Rollout: Sidecar Mode, Masking, and Category Activation',
+        positioning:
+          'Extends the on-device privacy filter with a sidecar deployment mode, an optional masking mode, and a measurement campaign that activates detection categories once validated.',
+        howItWorks: [
+          'A sidecar deployment mode runs the redaction filter as a separate process, an alternative to the default in-process path.',
+          'An optional masking mode replaces outright redaction with a reversible mask for cases where the original value must stay recoverable.',
+          'A measurement campaign validates detection accuracy per category before that category is turned on by default, instead of activating every category at once.',
+        ],
+        whoItsFor:
+          'Operators who need the privacy filter tuned and measured against their own data before trusting every detection category by default.',
+        status: 'planned',
+        version: 'v2.5.0',
+      },
+      {
+        id: 'f-314',
+        refLabel: 'F-314',
+        name: 'Personal-Data Marking: Measurement Campaign and Category Activation',
+        positioning:
+          'Runs a measurement campaign against the personal-data marking mechanism and activates detection categories once their accuracy is validated.',
+        howItWorks: [
+          'Each personal-data detection category is measured against a representative sample before being turned on, rather than enabled by default.',
+          'Categories that clear the accuracy threshold are activated; categories that do not stay flagged for further tuning.',
+        ],
+        whoItsFor:
+          'Operators who want personal-data detection enabled only for categories proven accurate on their own data.',
+        status: 'planned',
+        version: 'v2.5.0',
+      },
+      {
+        id: 'f-316',
+        refLabel: 'F-316',
+        name: 'Reserved Naming Extended to Vault Names',
+        positioning:
+          'Extends the reserved personal-data naming convention so it also applies to vault names, not just note titles and paths.',
+        howItWorks: [
+          'The existing reserved-name family that flags personal or classified content is extended to cover vault names themselves, not only note-level identifiers.',
+        ],
+        whoItsFor:
+          'Operators who want personal-data naming conventions enforced consistently across every level of the vault, including the vault\'s own name.',
+        status: 'planned',
+        version: 'vX.Y.Z',
       },
     ],
   },
@@ -1435,7 +1448,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers who want a terminal agent that understands their codebase deeply, remembers project history, and executes tasks end-to-end — not just suggest changes — entirely on their own machine.',
         status: 'planned',
-        version: 'v3.0.0',
+        version: 'v3.1.0',
       },
       {
         id: 'f-77',
@@ -1451,7 +1464,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers working on large refactorings or incremental changes where understanding the exact code delta is critical to making the right next decision.',
         status: 'planned',
-        version: 'v3.0.0',
+        version: 'v3.1.0',
       },
       {
         id: 'f-78',
@@ -1483,7 +1496,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers who want their agent to go beyond analysis and actually complete work end-to-end, with full auditability and control.',
         status: 'planned',
-        version: 'v3.0.0',
+        version: 'v3.1.0',
       },
       {
         id: 'f-85',
@@ -1756,7 +1769,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Operators running multiple components who currently have no way to tell whether a setting drifted between machines without connecting to each one individually.',
         status: 'planned',
-        version: 'v2.3.0',
+        version: 'v2.5.0',
       },
       {
         id: 'f-220',
@@ -1844,7 +1857,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers building automation agents that interact with desktop applications, analyze UI states, or need to reason about visual content without a separate vision pipeline.',
         status: 'planned',
-        version: 'v3.0.0',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-27',
@@ -1860,7 +1873,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Enterprise teams and cloud operators who need gradatum running at scale across multiple regions, with their own compute infrastructure, while retaining full data sovereignty.',
         status: 'planned',
-        version: 'v3.0.0',
+        version: 'vX.Y.Z',
       },
       {
         id: 'f-21',
@@ -1875,7 +1888,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Homelab deployments with services that need to react to vault changes for automation triggers or notification flows.',
         status: 'planned',
-        version: 'v3.0.0',
+        version: 'v3.1.0',
       },
       {
         id: 'f-52',
@@ -1890,7 +1903,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Advanced deployments where note lifecycle spans multiple processing stages and job sequencing must be explicit and auditable.',
         status: 'planned',
-        version: 'v3.0.0',
+        version: 'v3.1.0',
       },
       {
         id: 'f-108',
@@ -1904,6 +1917,116 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Gateway operators and agent builders who want Anthropic-native tool-call round-trips and web-search capabilities without a separate proxy layer.',
+        status: 'planned',
+        version: 'v3.1.0',
+      },
+      {
+        id: 'f-289',
+        refLabel: 'F-289',
+        name: 'Arrow-Native Storage Contract: Single-Source Schema and Core Traits',
+        positioning:
+          'Defines the storage contract as a single Arrow schema, with derived DDL and typed traits (transactions, catalog, documents, graph, queue, vectors, full-text, telemetry) every backend must implement.',
+        howItWorks: [
+          'A single Arrow schema is the source of truth; SQL DDL for each backend is derived from it rather than maintained by hand.',
+          'Eight core traits (transaction, catalog, documents, graph, queue, vectors, full-text search, telemetry) define the storage contract any backend implementation must satisfy.',
+          'Batch writes use compare-and-swap semantics under a fixed set of consistency rules, so concurrent writers cannot silently overwrite each other.',
+        ],
+        whoItsFor:
+          'Contributors implementing or auditing a gradatum storage backend, who need one authoritative contract instead of inferring it from an existing implementation.',
+        status: 'planned',
+        version: 'v3.0.0',
+      },
+      {
+        id: 'f-290',
+        refLabel: 'F-290',
+        name: 'Telemetry and Event Log Moved Out of the Core Store',
+        positioning:
+          'Moves telemetry and event-log data out of the core transactional store into partitioned Parquet files, queryable through the admin channel without touching live data.',
+        howItWorks: [
+          'Telemetry and event-log records are written as partitioned Parquet files rather than living in the transactional core, in both supported deployment profiles.',
+          'The admin channel queries this Parquet data through an embedded SQL query engine (DataFusion) instead of routing through the live transactional path.',
+        ],
+        whoItsFor:
+          'Operators who want to analyze telemetry and event history without adding query load to the transactional storage path.',
+        status: 'planned',
+        version: 'v3.0.0',
+      },
+      {
+        id: 'f-291',
+        refLabel: 'F-291',
+        name: 'Embedded Storage Core: Single-File Transactional Backend Replacing SQLite',
+        positioning:
+          'Replaces the default SQLite store with a single-file, serializable, single-writer transactional backend for the embedded deployment profile.',
+        howItWorks: [
+          "The embedded profile's transactional core moves to a single-file, serializable key-value store with single-writer semantics, replacing SQLite as the default.",
+          'The change targets the new core storage traits, so higher-level code does not depend on which backend is active.',
+        ],
+        whoItsFor:
+          'Operators running the embedded deployment profile who benefit from a simpler, dependency-free transactional core.',
+        status: 'planned',
+        version: 'v3.0.0',
+      },
+      {
+        id: 'f-292',
+        refLabel: 'F-292',
+        name: 'Lexical Search Engine Rewrite: BM25 Parity and Arrow-Native Hybrid Fusion',
+        positioning:
+          'Rebuilds full-text search on a dedicated lexical engine with matched ranking behavior, and fuses lexical and semantic results directly over Arrow batches.',
+        howItWorks: [
+          'A dedicated full-text search engine replaces the prior lexical index, preserving ranking behavior (including French tokenization and existing relevance tuning) so recall quality carries over.',
+          'Hybrid search fuses lexical and semantic results using Reciprocal Rank Fusion, computed directly over Arrow batches via an embedded SQL query engine.',
+          'A proof-of-absence signal — confirming a topic is truly missing, not just unranked — is served from the storage core rather than bolted on separately.',
+        ],
+        whoItsFor:
+          'Operators and developers who rely on hybrid search quality and need the engine swap to preserve existing ranking behavior.',
+        status: 'planned',
+        version: 'v3.0.0',
+      },
+      {
+        id: 'f-293',
+        refLabel: 'F-293',
+        name: '2.x to 3.0.0 Migration: Streamed Arrow Conversion With a Shadow Dry-Run',
+        positioning:
+          'Ships a dedicated migration command that streams every existing vault through the new Arrow-native storage contract, validated before touching a live deployment.',
+        howItWorks: [
+          'An admin command streams the existing corpus through the new Arrow-native contract into the target backend, rather than requiring a bespoke one-off script per deployment.',
+          'A public upgrade guide documents every breaking change and the exact migration sequence to follow.',
+          'Migration is validated in an isolated container first, then run against a live deployment in shadow mode — writing to the new store alongside the old one — before cutover.',
+        ],
+        whoItsFor:
+          'Operators upgrading an existing gradatum deployment from the 2.x storage engine to 3.0.0, who need a reviewable, reversible migration path rather than a one-way cutover.',
+        status: 'planned',
+        version: 'v3.0.0',
+      },
+      {
+        id: 'f-294',
+        refLabel: 'F-294',
+        name: 'Storage Profile Operations: Health Reporting and Backup Proof',
+        positioning:
+          'Makes the active storage profile visible in health checks and version output, and adds operational probes proven by an actual restore, not just by claim.',
+        howItWorks: [
+          'The active storage profile is reported in both the health endpoint and version output, so operators can confirm which backend a deployment is actually running.',
+          'A dedicated admin channel exposes probes for connection health, backup status, write-ahead-log state, replication lag, and long-running transactions.',
+          'Backup validity is proven by performing an actual restore, not merely checking that a backup file exists; the dependency-audit matrix runs separately per storage profile.',
+        ],
+        whoItsFor:
+          'Operators running gradatum in production who need to verify storage health and backup integrity empirically, per deployment profile.',
+        status: 'planned',
+        version: 'v3.0.0',
+      },
+      {
+        id: 'f-295',
+        refLabel: 'F-295',
+        name: 'Full SQLite Removal: A Single Arrow Storage Contract, Two Installation Profiles',
+        positioning:
+          'Retires SQLite entirely in favor of one Arrow-native storage contract with two installation profiles, each with zero C library dependencies.',
+        howItWorks: [
+          'SQLite is fully removed as a dependency; a single Arrow-based storage contract replaces it across every supported deployment shape.',
+          'The embedded profile defaults to a single-file transactional core plus embedded vector and full-text search engines; the server profile targets PostgreSQL with the same vector and search engines.',
+          'Every storage backend in both profiles is implemented in pure Rust, removing the C library dependencies SQLite required.',
+        ],
+        whoItsFor:
+          'Operators and packagers who want a memory-safe storage stack with no C library dependencies, at either a single-file embedded scale or a networked server scale.',
         status: 'planned',
         version: 'v3.0.0',
       },
