@@ -521,6 +521,121 @@ const versions: VersionPhase[] = [
     showFeaturesLink: false,
   },
   {
+    version: 'v2.4.0',
+    status: 'done',
+    theme: 'Personal-Data Marking, ACL Hardening & Container Packaging',
+    description:
+      'v2.4.0 gives every note a personal-data detection pass at write time — deliberately report-only, so an existing deployment behaves exactly as before until an operator activates a category. Marked notes carry two reserved tags, disappear from the search results of consumers who may not see them, and a false positive can be lifted by an administrative review — the only way to declassify a note. The ACL preset format is hardened with a dedicated validation command, the 2.3.1 → 2.4.0 upgrade path is now exercised end to end by an automated CI harness, and the product ships its first container image — a small, non-root, health-checked build published to the internal registry.',
+    scopeTeaserItems: [
+      'Personal-data detection pass at write time — report-only, categories empty by default',
+      'Marked notes hidden from unauthorized search; false positives lifted by an administrative review',
+      'ACL preset validation command, and a hardened preset format',
+      '2.3.1 → 2.4.0 upgrade harness exercised in CI, with an operational upgrade guide',
+      'First container image — multi-stage, non-root, health-checked, published to the internal registry',
+    ],
+    featureRefs: [],
+    showFeaturesLink: false,
+    milestones: [
+      {
+        status: 'done',
+        title: 'Personal-data detection frontier ships, report-only — a note write is scanned once, and nothing depends on the answer',
+        version: 'v2.4.0',
+        date: '2026-09-16',
+      },
+      {
+        status: 'done',
+        title: 'Marked notes carry two reserved tags and leave the search results of unauthorized consumers, while remaining readable by anyone who can already name them',
+        version: 'v2.4.0',
+        date: '2026-09-16',
+      },
+      {
+        status: 'done',
+        title: 'A false positive can be lifted by an administrative review — the only path able to declassify a note durably',
+        version: 'v2.4.0',
+        date: '2026-09-16',
+      },
+      {
+        status: 'done',
+        title: 'Note listing gains an exact-tag filter, and a truncation bug that dropped tagged notes from sparse pages is fixed',
+        version: 'v2.4.0',
+        date: '2026-09-16',
+      },
+      {
+        status: 'done',
+        title: 'ACL preset format hardened — a removed configuration key, and an operator command to validate a preset before deploying it',
+        version: 'v2.4.0',
+        date: '2026-09-16',
+      },
+      {
+        status: 'done',
+        title: 'The 2.3.1 → 2.4.0 upgrade is now exercised end to end by an automated CI harness, with an operational upgrade guide',
+        version: 'v2.4.0',
+        date: '2026-09-16',
+      },
+      {
+        status: 'done',
+        title: 'First container image ships — multi-stage, non-root, a measured health check, published to the internal registry',
+        version: 'v2.4.0',
+        date: '2026-09-16',
+      },
+      {
+        status: 'done',
+        title: 'Engine preflight now shares its validation with the running service, and the worker health probe no longer conflates a full mailbox with a real backlog',
+        version: 'v2.4.0',
+        date: '2026-09-16',
+      },
+      {
+        status: 'done',
+        title: 'CI build directories are now bounded, closing a disk-exhaustion loop on the build fleet',
+        version: 'v2.4.0',
+        date: '2026-09-16',
+      },
+      {
+        status: 'done',
+        title: 'Tagged — 28 crates published, 4,796 tests PASS',
+        version: 'v2.4.0',
+        date: '2026-09-16',
+      },
+    ],
+  },
+  {
+    version: 'v2.5.0',
+    status: 'in-progress',
+    theme: 'Personal-Data Activation & CI Hardening',
+    description:
+      'v2.5.0 turns the report-only personal-data pass shipped in v2.4.0 into a measured, gradually-activated one: a measurement campaign informs which categories to turn on, and activation itself becomes a first-class operation. A sidecar detector option is added alongside the in-process one, smoke scripts are realigned with the ACL preset registry so a preset change cannot silently drift from what is actually exercised, and the CI runner fleet gains hardened garbage collection to keep build storage bounded over time.',
+    scopeTeaserItems: [
+      'Measurement campaign and category activation for the personal-data marking pass',
+      'Sidecar detector option for personal-data recognition',
+      'Smoke scripts realigned with the ACL preset registry',
+      'CI runner garbage-collection hardening',
+    ],
+    featureRefs: [],
+    showFeaturesLink: false,
+    milestones: [
+      {
+        status: 'planned',
+        title: 'Measurement campaign informs which personal-data categories are safe to activate, then activation ships as a first-class operation',
+        version: 'v2.5.0',
+      },
+      {
+        status: 'planned',
+        title: 'Sidecar detector option ships alongside the in-process one, for personal-data recognition run out of process',
+        version: 'v2.5.0',
+      },
+      {
+        status: 'planned',
+        title: 'Smoke scripts realigned with the ACL preset registry, so a preset change is exercised rather than assumed',
+        version: 'v2.5.0',
+      },
+      {
+        status: 'planned',
+        title: 'CI runner garbage collection hardened across the build fleet, bounding build storage over time',
+        version: 'v2.5.0',
+      },
+    ],
+  },
+  {
     version: 'v3.0.0',
     grade: 'Platinum',
     status: 'planned',
