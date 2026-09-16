@@ -1,6 +1,8 @@
 # gradatum-www — Dependencies
 
 > Generated at scaffold time. Run `pnpm ls` for current tree.
+> Delta 2026-09-16 (`18c03e1..c8a5886`): content-only commits (`features.ts`, `roadmap.ts`,
+> site copy) — `package.json` untouched, no dependency change.
 
 ## Runtime dependencies
 

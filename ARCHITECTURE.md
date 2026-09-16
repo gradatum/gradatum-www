@@ -1,6 +1,8 @@
 # gradatum-www — Architecture
 
 > Static site generator landing page for Gradatum OSS project.
+> Delta 2026-09-16 (`18c03e1..c8a5886`): content-only resync to gradatum 2.4.0 (roadmap status,
+> features registry, quickstart archive). No new component, no structural or dependency change.
 
 ## Stack
 
