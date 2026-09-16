@@ -260,9 +260,9 @@ const groups: FeatureGroup[] = [
         positioning:
           'Makes a write coherence warning reviewable by an operator without reading logs or querying an aggregate counter.',
         howItWorks: [
-          'Today a warning surfaces three ways — a structured log line, a counter, and an audit entry. None of them is a stream an operator can watch as writes happen.',
+          'Each inconsistency is surfaced three ways: a structured log line, a counter, and an audit entry. The counter is read by scraping `GET /metrics` (aggregate, per rule); the audit entry is read from the daily audit file (one line per write). None of them is a stream an operator can watch as writes happen.',
           'A job event stream already exists and carries job lifecycle events; the open question is whether it is the right transport, since a write warning belongs to no job and has no terminal state to close on.',
-          'Deliberately unresolved: whether a stream adds anything over the counter and the audit trail. If it does not, the honest outcome is to drop the claim rather than to ship a channel nobody watches.',
+          'Settled: the job event stream is not the transport — it is keyed by a job and closes at its terminal state, while a write warning belongs to no job and has no end. The check never holds a write, so no review-before-effect window exists; the two channels above are the way to read it.',
         ],
         whoItsFor:
           'Operators who want to notice an incoherent write as it happens rather than during a later audit.',
