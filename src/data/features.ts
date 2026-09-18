@@ -1140,7 +1140,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'The periodic self-evaluation routine and any other consumer that reads the audit verdict on every pass and only needs the capability-status summary, not the full anomaly report.',
-        status: 'planned',
+        status: 'released',
         version: 'v2.5.0',
       },
       {
@@ -1252,7 +1252,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'MCP client integrators and contributors maintaining the native tool surface, who today must keep two hand-written catalogs of the same tools in sync.',
         status: 'planned',
-        version: 'v3.0.0',
+        version: 'v4.0.0',
       },
       {
         id: 'f-268',
@@ -1283,7 +1283,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Maintainers of the release pipeline who need the deviations inventory to mean a reviewed allowance for a specific past break, not an artifact that can never return to zero.',
-        status: 'planned',
+        status: 'released',
         version: 'v2.5.0',
       },
       {
@@ -1299,7 +1299,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Operators who need the privacy filter tuned and measured against their own data before trusting every detection category by default.',
-        status: 'planned',
+        status: 'released',
         version: 'v2.5.0',
       },
       {
@@ -1328,6 +1328,22 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Operators who want personal-data naming conventions enforced consistently across every level of the vault, including the vault\'s own name.',
+        status: 'planned',
+        version: 'vX.Y.Z',
+      },
+      {
+        id: 'f-320',
+        refLabel: 'F-320',
+        name: 'Configuration Drift Reporting Channel',
+        positioning:
+          'Lets a running instance report a mismatch between its declared and actual configuration without requiring shell access to inspect it.',
+        howItWorks: [
+          'Each component compares its declared configuration against what it actually loaded at startup.',
+          'Any mismatch is reported through a queryable channel instead of only appearing in local logs.',
+          'Operators can check for configuration drift remotely, without opening a shell session on the host.',
+        ],
+        whoItsFor:
+          'Operators managing multiple instances, who need to detect configuration drift without comparing files by hand on every host.',
         status: 'planned',
         version: 'vX.Y.Z',
       },
