@@ -266,7 +266,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Operators who want to notice an incoherent write as it happens rather than during a later audit.',
-        status: 'planned',
+        status: 'released',
         version: 'v2.5.0',
       },
       {
@@ -1303,21 +1303,6 @@ const groups: FeatureGroup[] = [
         version: 'v2.5.0',
       },
       {
-        id: 'f-314',
-        refLabel: 'F-314',
-        name: 'Personal-Data Marking: Measurement Campaign and Category Activation',
-        positioning:
-          'Runs a measurement campaign against the personal-data marking mechanism and activates detection categories once their accuracy is validated.',
-        howItWorks: [
-          'Each personal-data detection category is measured against a representative sample before being turned on, rather than enabled by default.',
-          'Categories that clear the accuracy threshold are activated; categories that do not stay flagged for further tuning.',
-        ],
-        whoItsFor:
-          'Operators who want personal-data detection enabled only for categories proven accurate on their own data.',
-        status: 'planned',
-        version: 'v2.5.0',
-      },
-      {
         id: 'f-316',
         refLabel: 'F-316',
         name: 'Reserved Naming Extended to Vault Names',
@@ -1784,7 +1769,7 @@ const groups: FeatureGroup[] = [
         ],
         whoItsFor:
           'Operators running multiple components who currently have no way to tell whether a setting drifted between machines without connecting to each one individually.',
-        status: 'planned',
+        status: 'released',
         version: 'v2.5.0',
       },
       {
@@ -1857,7 +1842,7 @@ const groups: FeatureGroup[] = [
         whoItsFor:
           'Developers building agents that analyze screenshots, diagrams, or document scans — and integrators prepared to migrate from the v1.x text-only ChatMessage API.',
         status: 'planned',
-        version: 'v3.0.0',
+        version: 'v4.0.0',
       },
       {
         id: 'f-10',
